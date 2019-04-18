@@ -76,7 +76,7 @@
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">Google Contacts</span>
+        <span class="hidden-sm-and-down">AirStamp</span>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -102,28 +102,8 @@
         </v-avatar>
       </v-btn>
     </v-toolbar>
-    <v-content>
-      <v-container fluid fill-height>
-        <v-layout justify-center align-center>
-          <v-tooltip right>
-            <template v-slot:activator="{ on }">
-              <v-btn :href="source" icon large target="_blank" v-on="on">
-                <v-icon large>code</v-icon>
-              </v-btn>
-            </template>
-            <span>Source</span>
-          </v-tooltip>
-          <v-tooltip right>
-            <template v-slot:activator="{ on }">
-              <v-btn icon large href="https://codepen.io/johnjleider/pen/EQOYVV" target="_blank" v-on="on">
-                <v-icon large>mdi-codepen</v-icon>
-              </v-btn>
-            </template>
-            <span>Codepen</span>
-          </v-tooltip>
-        </v-layout>
-      </v-container>
-    </v-content>
+    <router-view></router-view>
+
     <v-btn
       fab
       bottom
