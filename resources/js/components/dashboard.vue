@@ -69,7 +69,7 @@
     </v-navigation-drawer>
     <v-toolbar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
-      color="blue darken-3"
+      color="blue-grey darken-4"
       dark
       app
       fixed
@@ -108,7 +108,7 @@
       fab
       bottom
       right
-      color="pink"
+      color="primary"
       dark
       fixed
       @click="dialog = !dialog"

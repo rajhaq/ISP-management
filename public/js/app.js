@@ -2336,6 +2336,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -38443,7 +38475,7 @@ var render = function() {
         {
           attrs: {
             "clipped-left": _vm.$vuetify.breakpoint.lgAndUp,
-            color: "blue darken-3",
+            color: "blue-grey darken-4",
             dark: "",
             app: "",
             fixed: ""
@@ -38525,7 +38557,7 @@ var render = function() {
             fab: "",
             bottom: "",
             right: "",
-            color: "pink",
+            color: "primary",
             dark: "",
             fixed: ""
           },
@@ -38761,83 +38793,121 @@ var render = function() {
         [
           _c(
             "v-layout",
-            { attrs: { "justify-center": "", "align-center": "" } },
+            { attrs: { "justify-center": "", row: "" } },
             [
               _c(
-                "v-tooltip",
-                {
-                  attrs: { right: "" },
-                  scopedSlots: _vm._u([
+                "v-flex",
+                { attrs: { xs4: "" } },
+                [
+                  _c(
+                    "v-card",
                     {
-                      key: "activator",
-                      fn: function(ref) {
-                        var on = ref.on
-                        return [
+                      staticClass: "mx-auto",
+                      attrs: {
+                        color: "blue-grey ",
+                        dark: "",
+                        "max-width": "400"
+                      }
+                    },
+                    [
+                      _c(
+                        "v-card-title",
+                        [
+                          _c("v-icon", { attrs: { large: "", left: "" } }, [
+                            _vm._v("\n              mdi-twitter\n            ")
+                          ]),
+                          _vm._v(" "),
                           _c(
-                            "v-btn",
-                            _vm._g(
-                              {
-                                attrs: {
-                                  href: _vm.source,
-                                  icon: "",
-                                  large: "",
-                                  target: "_blank"
-                                }
-                              },
-                              on
-                            ),
+                            "span",
+                            { staticClass: "title font-weight-light" },
+                            [_vm._v("Twitter")]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        { staticClass: "headline font-weight-bold" },
+                        [
+                          _vm._v(
+                            '\n            "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."\n          '
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c(
+                            "v-list-tile",
+                            { staticClass: "grow" },
                             [
-                              _c("v-icon", { attrs: { large: "" } }, [
-                                _vm._v("code")
-                              ])
+                              _c(
+                                "v-list-tile-avatar",
+                                { attrs: { color: "grey darken-3" } },
+                                [
+                                  _c("v-img", {
+                                    staticClass: "elevation-6",
+                                    attrs: {
+                                      src:
+                                        "https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-list-tile-content",
+                                [_c("v-list-tile-title", [_vm._v("Evan You")])],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-layout",
+                                {
+                                  attrs: {
+                                    "align-center": "",
+                                    "justify-end": ""
+                                  }
+                                },
+                                [
+                                  _c("v-icon", { staticClass: "mr-1" }, [
+                                    _vm._v("mdi-heart")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    { staticClass: "subheading mr-2" },
+                                    [_vm._v("256")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "mr-1" }, [
+                                    _vm._v("·")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("v-icon", { staticClass: "mr-1" }, [
+                                    _vm._v("mdi-share-variant")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "subheading" }, [
+                                    _vm._v("45")
+                                  ])
+                                ],
+                                1
+                              )
                             ],
                             1
                           )
-                        ]
-                      }
-                    }
-                  ])
-                },
-                [_vm._v(" "), _c("span", [_vm._v("Source")])]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-tooltip",
-                {
-                  attrs: { right: "" },
-                  scopedSlots: _vm._u([
-                    {
-                      key: "activator",
-                      fn: function(ref) {
-                        var on = ref.on
-                        return [
-                          _c(
-                            "v-btn",
-                            _vm._g(
-                              {
-                                attrs: {
-                                  icon: "",
-                                  large: "",
-                                  href:
-                                    "https://codepen.io/johnjleider/pen/EQOYVV",
-                                  target: "_blank"
-                                }
-                              },
-                              on
-                            ),
-                            [
-                              _c("v-icon", { attrs: { large: "" } }, [
-                                _vm._v("mdi-codepen")
-                              ])
-                            ],
-                            1
-                          )
-                        ]
-                      }
-                    }
-                  ])
-                },
-                [_vm._v(" "), _c("span", [_vm._v("Codepen")])]
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
               )
             ],
             1
