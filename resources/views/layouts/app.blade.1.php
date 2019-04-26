@@ -18,15 +18,11 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
     <v-app>
-        <v-toolbar color="blue-grey darken-4"
-              dark>
+        <v-toolbar dark color="primary">
             <v-toolbar-title href="{{ url('/') }}">
                     {{ config('app.name', '') }}
             </v-toolbar-title>
