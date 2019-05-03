@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    AirStamp
+                    Call Center
                 </div>
 
                 <div class="links">

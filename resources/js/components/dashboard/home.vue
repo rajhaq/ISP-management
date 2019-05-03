@@ -14,13 +14,13 @@
                   large
                   left
                 >
-                  mdi-twitter
+                  mdi-album
                 </v-icon>
-                <span class="title font-weight-light">Twitter</span>
+                <span class="title font-weight-light">Greetings</span>
               </v-card-title>
 
               <v-card-text class="headline font-weight-bold">
-                "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."
+                "Welcome to our Call Center."
               </v-card-text>
 
               <v-card-actions>
@@ -33,7 +33,7 @@
                   </v-list-tile-avatar>
 
                   <v-list-tile-content>
-                    <v-list-tile-title>Evan You</v-list-tile-title>
+                    <v-list-tile-title>Admin Thomas</v-list-tile-title>
                   </v-list-tile-content>
 
                   <v-layout

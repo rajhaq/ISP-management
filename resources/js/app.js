@@ -37,7 +37,24 @@ Vue.use(Vuetify, {
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+let userType = window.authUser.userType
 
+
+router.beforeEach((to, from, next) => {
+	//document.title=to.meta.title
+   
+    if(to.meta){
+        let allowed = to.meta.allowed
+        for(let a of allowed){
+            if(a!=userType){
+                return
+            }
+        }
+    }
+    
+    next();
+  
+  });
 Vue.component('dashboard', require('./components/dashboard.vue').default);
 import router from './router'
 const app = new Vue({

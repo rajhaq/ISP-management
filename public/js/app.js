@@ -2232,11 +2232,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -38496,7 +38491,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("span", { staticClass: "hidden-sm-and-down" }, [
-                _vm._v("AirStamp")
+                _vm._v("Call Center")
               ])
             ],
             1
@@ -38531,17 +38526,8 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-btn",
-            { attrs: { icon: "", large: "" } },
-            [
-              _c("v-avatar", { attrs: { size: "32px", tile: "" } }, [
-                _c("img", {
-                  attrs: {
-                    src: "https://cdn.vuetifyjs.com/images/logos/logo.svg",
-                    alt: "Vuetify"
-                  }
-                })
-              ])
-            ],
+            { attrs: { icon: "", href: "/logout" } },
+            [_c("v-icon", [_vm._v("power")])],
             1
           )
         ],
@@ -38814,13 +38800,13 @@ var render = function() {
                         "v-card-title",
                         [
                           _c("v-icon", { attrs: { large: "", left: "" } }, [
-                            _vm._v("\n              mdi-twitter\n            ")
+                            _vm._v("\n              mdi-album\n            ")
                           ]),
                           _vm._v(" "),
                           _c(
                             "span",
                             { staticClass: "title font-weight-light" },
-                            [_vm._v("Twitter")]
+                            [_vm._v("Greetings")]
                           )
                         ],
                         1
@@ -38831,7 +38817,7 @@ var render = function() {
                         { staticClass: "headline font-weight-bold" },
                         [
                           _vm._v(
-                            '\n            "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."\n          '
+                            '\n            "Welcome to our Call Center."\n          '
                           )
                         ]
                       ),
@@ -38860,7 +38846,11 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "v-list-tile-content",
-                                [_c("v-list-tile-title", [_vm._v("Evan You")])],
+                                [
+                                  _c("v-list-tile-title", [
+                                    _vm._v("Admin Thomas")
+                                  ])
+                                ],
                                 1
                               ),
                               _vm._v(" "),
@@ -80726,6 +80716,41 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
 * or customize the JavaScript scaffolding to fit your unique needs.
 */
 
+var userType = window.authUser.userType;
+_router__WEBPACK_IMPORTED_MODULE_7__["default"].beforeEach(function (to, from, next) {
+  //document.title=to.meta.title
+  if (to.meta) {
+    var allowed = to.meta.allowed;
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = allowed[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var a = _step.value;
+
+        if (a != userType) {
+          return;
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  }
+
+  next();
+});
 vue__WEBPACK_IMPORTED_MODULE_5___default.a.component('dashboard', __webpack_require__(/*! ./components/dashboard.vue */ "./resources/js/components/dashboard.vue").default);
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_5___default.a({
@@ -80948,13 +80973,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var onlyAdmin = [1];
+var adminAndSale = [1, 2];
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
   routes: [{
     path: '/dashboard',
     name: 'home',
-    component: _components_dashboard_home_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    component: _components_dashboard_home_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    meta: {
+      allowed: onlyAdmin
+    }
+  }, {
+    path: '/dashboard/admin',
+    name: 'home',
+    component: _components_dashboard_home_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    meta: {
+      allowed: onlyAdmin
+    }
   }]
 }));
 
@@ -81050,8 +81087,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/XAMPP/xamppfiles/htdocs/air-stamp/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/XAMPP/xamppfiles/htdocs/air-stamp/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Applications/MAMP/htdocs/callcenter/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/callcenter/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

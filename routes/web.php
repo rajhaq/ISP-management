@@ -16,10 +16,17 @@ Route::get('/', function () {
 });
 Route::get('/dashboard', function () {
     return view('dashboard');
+})->middleware('auth');
+Route::get('/logout', function () {
+	Auth::logout();
+    Session::flush();
+	Session::forget('url.intented');
+	return redirect("/login");
+    
 });
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::any('{slug}', [
+Route::any('/dashboard/{slug}', [
     'uses' => 'HomeController@dashboard',
  ])->where('slug', '([A-z\d-\/_.]+)?')->middleware('auth');
