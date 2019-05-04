@@ -14,6 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/users', 'CustomerController@index')->name('users');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');
