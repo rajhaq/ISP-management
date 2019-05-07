@@ -58,7 +58,9 @@
     </v-app>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.5.14/vuetify.js"></script>
+<script href="{{ asset('js/app.js') }}" ></script>
+
 <script>
     new Vue({ 
         el: '#app', 
