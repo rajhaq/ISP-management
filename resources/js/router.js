@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from './components/dashboard/home.vue'
 import userlist from './components/user/userlist.vue'
-let onlyAdmin = [1]
+let onlyAdmin = ['Admin']
 let adminAndSale = [1, 2]
 Vue.use(Router)
 export default new Router({
