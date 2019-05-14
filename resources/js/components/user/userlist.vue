@@ -77,15 +77,17 @@
             small
             class="mr-2"
             @click="editItem(props.item)"
+			color="primary"
           >
             edit
           </v-icon>
-          <v-icon
+		  
+          <!-- <v-icon
             small
             @click="deleteItem(props.item)"
           >
             delete
-          </v-icon>
+          </v-icon> -->
         </td>
       </template>
       <template v-slot:no-data>
@@ -96,6 +98,25 @@
           </v-flex>
         </v-layout>
       </v-container>
+      <v-snackbar
+        v-model="snackbar"
+        :bottom="y === 'bottom'"
+        :left="x === 'left'"
+        :multi-line="mode === 'multi-line'"
+        :right="x === 'right'"
+        :timeout="timeout"
+        :top="y === 'top'"
+        :vertical="mode === 'vertical'"
+      >
+        {{ text }}
+        <v-btn
+          color="pink"
+          flat
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </v-snackbar>
     </v-content>
     
 </template>
@@ -103,6 +124,12 @@
 <script>
   export default {
     data: () => ({
+      snackbar: false,
+    y: 'top',
+    x: null,
+    mode: '',
+    timeout: 6000,
+    text: 'Hello, I\'m a snackbar',
 	  edit: true,
 	  dialog: false,
 	  dataUser:[],
@@ -161,9 +188,7 @@
     },
 
     watch: {
-      dialog (val) {
-        val || this.close()
-      }
+
     },
 
     created () {
@@ -205,20 +230,44 @@
 
       async save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.dataUser[this.editedIndex], this.editedItem)
-        } else {
-			try{
-				let {data} =await  axios({
-					method: 'post',
-					url:'/api/users',
-					data: this.editedItem
+                try{
+                let {data} =await  axios({
+                  method: 'post',
+                  url:'/app/updateUser',
+                  data: this.editedItem                  
 				})
-				this.dataUser.unshift(this.editedItem)
-			}catch(e){
-			}
+				console.log(data)
+                  this.text="User Edited"
+                  this.snackbar=true;
+                  Object.assign(this.dataUser[this.editedIndex], this.editedItem)
+                  this.close()
+                }catch(e){
+                  this.text="Failed"
+                  this.snackbar=true;
+
+                }
+                                  
+
+        } 
+        else {
+              try{
+                let {data} =await  axios({
+                  method: 'post',
+                  url:'/api/users',
+                  data: this.editedItem
+                  
+                })
+                  this.text="New User Added"
+                  this.snackbar=true;
+                  this.dataUser.unshift(this.editedItem)
+                  this.close()
+                }catch(e){
+                  this.text="Failed"
+                  this.snackbar=true;
+
+                }
 
         }
-        this.close()
       }
     }
   }

@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/users', 'CustomerController@index')->name('users');
+Route::post('/app/updateUser', 'UserController@updateUser');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -2244,65 +2244,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       dialog: false,
       drawer: null,
       items: [{
-        icon: 'contacts',
-        text: 'Customer Contacts'
-      }, {
-        icon: 'history',
-        text: 'Frequently contacted'
-      }, {
-        icon: 'content_copy',
-        text: 'Duplicates'
-      }, {
-        icon: 'keyboard_arrow_up',
-        'icon-alt': 'keyboard_arrow_down',
-        text: 'Labels',
-        model: true,
-        children: [{
-          icon: 'add',
-          text: 'Create label'
-        }]
-      }, {
-        icon: 'keyboard_arrow_up',
-        'icon-alt': 'keyboard_arrow_down',
-        text: 'More',
-        model: false,
-        children: [{
-          text: 'Import'
-        }, {
-          text: 'Export'
-        }, {
-          text: 'Print'
-        }, {
-          text: 'Undo changes'
-        }, {
-          text: 'Other contacts'
-        }]
-      }, {
-        icon: 'settings',
-        text: 'Settings'
-      }, {
-        icon: 'chat_bubble',
-        text: 'Send feedback'
-      }, {
-        icon: 'help',
-        text: 'Help'
-      }, {
-        icon: 'phonelink',
-        text: 'App downloads'
-      }, {
-        icon: 'keyboard',
-        text: 'Go to the old version'
+        icon: 'assignment',
+        text: 'Dashboard',
+        link: ''
+      }, // { icon: 'contacts', text: 'Customer Contacts' },
+      // { icon: 'history', text: 'Frequently contacted' },
+      // { icon: 'content_copy', text: 'Duplicates' },
+      // {
+      //   icon: 'keyboard_arrow_up',
+      //   'icon-alt': 'keyboard_arrow_down',
+      //   text: 'Labels',
+      //   model: true,
+      //   children: [
+      //     { icon: 'add', text: 'Create label' }
+      //   ]
+      // },
+      // {
+      //   icon: 'keyboard_arrow_up',
+      //   'icon-alt': 'keyboard_arrow_down',
+      //   text: 'More',
+      //   model: false,
+      //   children: [
+      //     { text: 'Import' },
+      //     { text: 'Export' },
+      //     { text: 'Print' },
+      //     { text: 'Undo changes' },
+      //     { text: 'Other contacts' }
+      //   ]
+      // },
+      // { icon: 'settings', text: 'Settings' },
+      {
+        icon: 'group',
+        text: 'Users',
+        link: 'userlist'
       }]
     };
   },
   props: {
     source: String
+  },
+  methods: {
+    leftMenu: function leftMenu(i) {
+      console.log(i);
+    },
+    handleGoToMenu: function handleGoToMenu(d) {
+      return d;
+    }
   }
 });
 
@@ -2558,9 +2554,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      snackbar: false,
+      y: 'top',
+      x: null,
+      mode: '',
+      timeout: 6000,
+      text: 'Hello, I\'m a snackbar',
       edit: true,
       dialog: false,
       dataUser: [],
@@ -2610,11 +2633,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item';
     }
   },
-  watch: {
-    dialog: function dialog(val) {
-      val || this.close();
-    }
-  },
+  watch: {},
   created: function created() {
     this.initialize();
   },
@@ -2684,50 +2703,77 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _save = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _ref2, data;
+        var _ref2, data, _ref3, _data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 if (!(this.editedIndex > -1)) {
-                  _context2.next = 4;
+                  _context2.next = 19;
                   break;
                 }
 
-                Object.assign(this.dataUser[this.editedIndex], this.editedItem);
-                _context2.next = 14;
-                break;
+                _context2.prev = 1;
+                _context2.next = 4;
+                return axios({
+                  method: 'post',
+                  url: '/app/updateUser',
+                  data: this.editedItem
+                });
 
               case 4:
-                _context2.prev = 4;
-                _context2.next = 7;
+                _ref2 = _context2.sent;
+                data = _ref2.data;
+                console.log(data);
+                this.text = "User Edited";
+                this.snackbar = true;
+                Object.assign(this.dataUser[this.editedIndex], this.editedItem);
+                this.close();
+                _context2.next = 17;
+                break;
+
+              case 13:
+                _context2.prev = 13;
+                _context2.t0 = _context2["catch"](1);
+                this.text = "Failed";
+                this.snackbar = true;
+
+              case 17:
+                _context2.next = 34;
+                break;
+
+              case 19:
+                _context2.prev = 19;
+                _context2.next = 22;
                 return axios({
                   method: 'post',
                   url: '/api/users',
                   data: this.editedItem
                 });
 
-              case 7:
-                _ref2 = _context2.sent;
-                data = _ref2.data;
+              case 22:
+                _ref3 = _context2.sent;
+                _data = _ref3.data;
+                this.text = "New User Added";
+                this.snackbar = true;
                 this.dataUser.unshift(this.editedItem);
-                _context2.next = 14;
+                this.close();
+                _context2.next = 34;
                 break;
 
-              case 12:
-                _context2.prev = 12;
-                _context2.t0 = _context2["catch"](4);
+              case 30:
+                _context2.prev = 30;
+                _context2.t1 = _context2["catch"](19);
+                this.text = "Failed";
+                this.snackbar = true;
 
-              case 14:
-                this.close();
-
-              case 15:
+              case 34:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[4, 12]]);
+        }, _callee2, this, [[1, 13], [19, 30]]);
       }));
 
       function save() {
@@ -39594,9 +39640,9 @@ var render = function() {
                               item.heading
                                 ? _c("v-subheader", [
                                     _vm._v(
-                                      "\n              " +
+                                      "\n                " +
                                         _vm._s(item.heading) +
-                                        "\n            "
+                                        "\n              "
                                     )
                                   ])
                                 : _vm._e()
@@ -39649,9 +39695,9 @@ var render = function() {
                                           [
                                             _c("v-list-tile-title", [
                                               _vm._v(
-                                                "\n                  " +
+                                                "\n                    " +
                                                   _vm._s(item.text) +
-                                                  "\n                "
+                                                  "\n                  "
                                               )
                                             ])
                                           ],
@@ -39681,7 +39727,14 @@ var render = function() {
                           _vm._l(item.children, function(child, i) {
                             return _c(
                               "v-list-tile",
-                              { key: i, on: { click: function($event) {} } },
+                              {
+                                key: i,
+                                attrs: {
+                                  to: _vm.handleGoToMenu(
+                                    "/dashboard/" + child.link
+                                  )
+                                }
+                              },
                               [
                                 child.icon
                                   ? _c(
@@ -39700,9 +39753,9 @@ var render = function() {
                                   [
                                     _c("v-list-tile-title", [
                                       _vm._v(
-                                        "\n                " +
+                                        "\n                  " +
                                           _vm._s(child.text) +
-                                          "\n              "
+                                          "\n                "
                                       )
                                     ])
                                   ],
@@ -39717,7 +39770,12 @@ var render = function() {
                       )
                     : _c(
                         "v-list-tile",
-                        { key: item.text, on: { click: function($event) {} } },
+                        {
+                          key: item.text,
+                          attrs: {
+                            to: _vm.handleGoToMenu("/dashboard/" + item.link)
+                          }
+                        },
                         [
                           _c(
                             "v-list-tile-action",
@@ -39730,9 +39788,9 @@ var render = function() {
                             [
                               _c("v-list-tile-title", [
                                 _vm._v(
-                                  "\n              " +
+                                  "\n                " +
                                     _vm._s(item.text) +
-                                    "\n            "
+                                    "\n              "
                                 )
                               ])
                             ],
@@ -39797,20 +39855,6 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-btn",
-            { attrs: { icon: "" } },
-            [_c("v-icon", [_vm._v("apps")])],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            { attrs: { icon: "" } },
-            [_c("v-icon", [_vm._v("notifications")])],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn",
             { attrs: { icon: "", href: "/logout" } },
             [_c("v-icon", [_vm._v("power")])],
             1
@@ -39859,7 +39903,7 @@ var render = function() {
             "v-card",
             [
               _c("v-card-title", { staticClass: "grey lighten-4 py-4 title" }, [
-                _vm._v("\n        Create contact\n      ")
+                _vm._v("\n          Create contact\n        ")
               ]),
               _vm._v(" "),
               _c(
@@ -40559,7 +40603,7 @@ var render = function() {
                                   "v-icon",
                                   {
                                     staticClass: "mr-2",
-                                    attrs: { small: "" },
+                                    attrs: { small: "", color: "primary" },
                                     on: {
                                       click: function($event) {
                                         return _vm.editItem(props.item)
@@ -40567,19 +40611,6 @@ var render = function() {
                                     }
                                   },
                                   [_vm._v("\n            edit\n          ")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "v-icon",
-                                  {
-                                    attrs: { small: "" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.deleteItem(props.item)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("\n            delete\n          ")]
                                 )
                               ],
                               1
@@ -40610,6 +40641,44 @@ var render = function() {
               )
             ],
             1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: {
+            bottom: _vm.y === "bottom",
+            left: _vm.x === "left",
+            "multi-line": _vm.mode === "multi-line",
+            right: _vm.x === "right",
+            timeout: _vm.timeout,
+            top: _vm.y === "top",
+            vertical: _vm.mode === "vertical"
+          },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n        " + _vm._s(_vm.text) + "\n        "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "pink", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n          Close\n        ")]
           )
         ],
         1
@@ -82387,7 +82456,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./common */ "./resources/js/common.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -82406,6 +82476,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
 
+
+vue__WEBPACK_IMPORTED_MODULE_5___default.a.mixin(_common__WEBPACK_IMPORTED_MODULE_7__["default"]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -82426,7 +82498,7 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
 */
 
 var userType = window.authUser.userType;
-_router__WEBPACK_IMPORTED_MODULE_7__["default"].beforeEach(function (to, from, next) {
+_router__WEBPACK_IMPORTED_MODULE_8__["default"].beforeEach(function (to, from, next) {
   //document.title=to.meta.title
   if (to.meta) {
     var allowed = to.meta.allowed;
@@ -82464,7 +82536,7 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.component('dashboard', __webpack_requ
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_5___default.a({
   el: '#app',
-  router: _router__WEBPACK_IMPORTED_MODULE_7__["default"],
+  router: _router__WEBPACK_IMPORTED_MODULE_8__["default"],
   store: _store__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
 
@@ -82525,6 +82597,30 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/common.js":
+/*!********************************!*\
+  !*** ./resources/js/common.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  methods: {
+    snacks: function snacks(texts) {
+      this.snackbar = true;
+      this.text = texts;
+      this.snackbar = false;
+    }
+  }
+});
 
 /***/ }),
 

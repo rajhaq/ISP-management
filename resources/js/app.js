@@ -16,6 +16,8 @@ window.Vue = require('vue');
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 
+import common from './common';
+Vue.mixin(common);
 
 /**
  * The following block of code may be used to automatically register your

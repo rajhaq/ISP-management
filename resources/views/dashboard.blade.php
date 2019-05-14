@@ -9,7 +9,6 @@
 
         <title>Call Center</title>
         <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
-       <link href={{ asset('css/all.css' )}} rel="stylesheet">
      
         <script>
    
