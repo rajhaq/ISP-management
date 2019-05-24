@@ -15,7 +15,9 @@ require('./bootstrap');
 window.Vue = require('vue');
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import vueTopprogress from 'vue-top-progress'
 
+Vue.use(vueTopprogress)
 import common from './common';
 Vue.mixin(common);
 

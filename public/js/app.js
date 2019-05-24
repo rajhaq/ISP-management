@@ -2587,7 +2587,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       edit: true,
       dialog: false,
       dataUser: [],
-      userType: ['Admin', 'Supervisor', 'Team Leader', 'Operator'],
+      userType: ['Admin', 'Supervisor', 'Team Leader', 'Operator', 'Ban'],
       headers: [{
         text: 'ID',
         align: 'left',
@@ -43432,6 +43432,18 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-top-progress/dist/vue-top-progress.min.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vue-top-progress/dist/vue-top-progress.min.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,e){ true?module.exports=e():undefined}(this,function(){"use strict";function t(t,e,s){return t<e?e:t>s?s:t}var e=function(){function t(){var s=e.shift();s&&s(t)}var e=[];return function(s){e.push(s),1===e.length&&t()}}(),s={render:function(){var t=this,e=t.$createElement,s=t._self._c||e;return s("transition",{attrs:{css:!1},on:{"before-enter":t.beforeEnter,enter:t.enter,"after-enter":t.afterEnter}},[t.show?s("div",{staticClass:"top-progress",style:t.barStyle},[s("div",{staticClass:"peg",style:t.pegStyle})]):t._e()])},staticRenderFns:[],name:"vueTopprogress",data:function(){return{error:!1,show:!1,progress:0,opacity:1,status:null,isPaused:!1}},props:{speed:{type:Number,default:350},color:{type:String,default:"#29d"},colorShadow:String,errorColor:{type:String,default:"#f44336"},trickle:{type:Boolean,default:!0},trickleSpeed:{type:Number,default:250},easing:{type:String,default:"linear"},height:{type:Number,default:3},minimum:{type:Number,default:.8},maximum:{type:Number,default:97.5},zIndex:{type:Number,default:9999}},computed:{progressColor:function(){return this.error?this.errorColor:this.color},isStarted:function(){return"number"==typeof this.status},boxShadow:function(){return this.colorShadow||this.progressColor},barStyle:function(){return{position:"fixed",top:"0",left:"0",right:"0",width:this.progress+"%",height:this.height+"px",backgroundColor:this.progressColor,transition:"all "+this.speed+"ms "+this.easing,opacity:""+this.opacity,zIndex:""+this.zIndex}},pegStyle:function(){return{display:"block",position:"absolute",right:"0",width:"100px",height:"100%",opacity:this.progress?"1":"0",boxShadow:"0 0 10px "+this.boxShadow+", 0 0 5px "+this.boxShadow,transform:"rotate(3deg) translate(0px, -4px)"}}},methods:{beforeEnter:function(t){this.opacity=0,this.progress=0,this.width=0},enter:function(t,e){this.opacity=1,e()},afterEnter:function(t){this._runStart()},_work:function(){var t=this;setTimeout(function(){t.isStarted&&!t.isPaused&&(t.increase(),t._work())},this.trickleSpeed)},_runStart:function(){this.status=100===this.progress?null:this.progress,this.trickle&&this._work()},start:function(){this.isPaused=!1,this.show?this._runStart():this.show=!0},set:function(s){var r=this;this.isPaused=!1;var i=void 0;i=this.isStarted?s<this.progress?t(s,0,100):t(s,this.minimum,100):0,this.status=100===i?null:i,e(function(t){r.progress=i,100===i?setTimeout(function(){r.opacity=0,setTimeout(function(){r.show=!1,r.error=!1,t()},r.speed)},r.speed):setTimeout(t,r.speed)})},increase:function(e){var s=this.progress;s<100&&"number"!=typeof e&&(e=s>=0&&s<25?3*Math.random()+3:s>=25&&s<50?3*Math.random():s>=50&&s<85?2*Math.random():s>=85&&s<99?.5:0),this.set(t(s+e,0,this.maximum))},decrease:function(t){0!==this.progress&&this.increase(-t)},done:function(){this.set(100)},getProgress:function(){return this.status?this.progress:0},pause:function(){this.isPaused=!0},fail:function(){this.error=!0,this.done()}}},r=function t(e){t.installed||e.component(s.name,s)};return"undefined"!=typeof window&&window.Vue&&r(window.Vue),{vueTopprogress:s,install:r}});
+
+
+/***/ }),
+
 /***/ "./node_modules/vue/dist/vue.common.dev.js":
 /*!*************************************************!*\
   !*** ./node_modules/vue/dist/vue.common.dev.js ***!
@@ -82456,8 +82468,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./common */ "./resources/js/common.js");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var vue_top_progress__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-top-progress */ "./node_modules/vue-top-progress/dist/vue-top-progress.min.js");
+/* harmony import */ var vue_top_progress__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_top_progress__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./common */ "./resources/js/common.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -82477,7 +82491,9 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_5___default.a.mixin(_common__WEBPACK_IMPORTED_MODULE_7__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vue_top_progress__WEBPACK_IMPORTED_MODULE_7___default.a);
+
+vue__WEBPACK_IMPORTED_MODULE_5___default.a.mixin(_common__WEBPACK_IMPORTED_MODULE_8__["default"]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -82498,7 +82514,7 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
 */
 
 var userType = window.authUser.userType;
-_router__WEBPACK_IMPORTED_MODULE_8__["default"].beforeEach(function (to, from, next) {
+_router__WEBPACK_IMPORTED_MODULE_9__["default"].beforeEach(function (to, from, next) {
   //document.title=to.meta.title
   if (to.meta) {
     var allowed = to.meta.allowed;
@@ -82536,7 +82552,7 @@ vue__WEBPACK_IMPORTED_MODULE_5___default.a.component('dashboard', __webpack_requ
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_5___default.a({
   el: '#app',
-  router: _router__WEBPACK_IMPORTED_MODULE_8__["default"],
+  router: _router__WEBPACK_IMPORTED_MODULE_9__["default"],
   store: _store__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
 

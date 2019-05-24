@@ -139,6 +139,7 @@
 		  'Supervisor',
 		  'Team Leader',
 		  'Operator',
+		  'Ban',
 	  ],
 	  
       headers: [
