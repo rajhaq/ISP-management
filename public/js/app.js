@@ -2560,67 +2560,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       snackbar: false,
-      y: 'top',
+      y: "top",
       x: null,
-      mode: '',
+      mode: "",
       timeout: 6000,
-      text: 'Hello, I\'m a snackbar',
+      text: "Hello, I'm a snackbar",
       edit: true,
       dialog: false,
       dataUser: [],
-      userType: ['Admin', 'Supervisor', 'Team Leader', 'Operator', 'Ban'],
+      userType: ["Admin", "Supervisor", "Team Leader", "Operator", "Ban"],
       headers: [{
-        text: 'ID',
-        align: 'left',
-        value: 'id'
+        text: "ID",
+        align: "left",
+        value: "id"
       }, {
-        text: 'Name',
-        value: 'name'
+        text: "Name",
+        value: "name"
       }, {
-        text: 'Email',
-        value: 'email'
+        text: "Email",
+        value: "email"
       }, {
-        text: 'Type',
-        value: 'type'
+        text: "Type",
+        value: "type"
       }],
       emailRules: [function (v) {
-        return !!v || 'E-mail is required';
+        return !!v || "E-mail is required";
       }, function (v) {
-        return /.+@.+/.test(v) || 'E-mail must be valid';
+        return /.+@.+/.test(v) || "E-mail must be valid";
       }],
       usernameRules: [function (v) {
-        return !!v || 'Name is required';
+        return !!v || "Name is required";
       }, function (v) {
-        return (v || '').indexOf(' ') < 0 || 'No spaces are allowed';
+        return (v || "").indexOf(" ") < 0 || "No spaces are allowed";
       }],
       passwordRules: [function (v) {
-        return (v || '').length >= 8 || "A minimum of 8 characters is allowed";
+        return (v || "").length >= 8 || "A minimum of 8 characters is allowed";
       }],
       editedIndex: -1,
       editedItem: {
-        name: '',
-        email: '',
-        username: '',
-        userType: ''
+        name: "",
+        email: "",
+        username: "",
+        userType: ""
       },
       defaultItem: {}
     };
@@ -2630,7 +2615,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     formTitle: function formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item';
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
     }
   },
   watch: {},
@@ -2651,8 +2636,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.prev = 0;
                 _context.next = 3;
                 return axios({
-                  method: 'get',
-                  url: '/api/users'
+                  method: "get",
+                  url: "/api/users"
                 });
 
               case 3:
@@ -2688,7 +2673,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     deleteItem: function deleteItem(item) {
       var index = this.dataUser.indexOf(item);
-      confirm('Are you sure you want to delete this item?') && this.dataUser.splice(index, 1);
+      confirm("Are you sure you want to delete this item?") && this.dataUser.splice(index, 1);
     },
     close: function close() {
       var _this = this;
@@ -2717,8 +2702,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context2.prev = 1;
                 _context2.next = 4;
                 return axios({
-                  method: 'post',
-                  url: '/app/updateUser',
+                  method: "post",
+                  url: "/app/updateUser",
                   data: this.editedItem
                 });
 
@@ -2747,8 +2732,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context2.prev = 19;
                 _context2.next = 22;
                 return axios({
-                  method: 'post',
-                  url: '/api/users',
+                  method: "post",
+                  url: "/api/users",
                   data: this.editedItem
                 });
 
@@ -40610,7 +40595,7 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_vm._v("\n            edit\n          ")]
+                                  [_vm._v("edit")]
                                 )
                               ],
                               1
@@ -40667,7 +40652,7 @@ var render = function() {
           }
         },
         [
-          _vm._v("\n        " + _vm._s(_vm.text) + "\n        "),
+          _vm._v("\n    " + _vm._s(_vm.text) + "\n    "),
           _c(
             "v-btn",
             {
@@ -40678,7 +40663,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n          Close\n        ")]
+            [_vm._v("Close")]
           )
         ],
         1
