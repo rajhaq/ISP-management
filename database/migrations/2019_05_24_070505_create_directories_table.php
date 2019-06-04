@@ -25,9 +25,9 @@ class CreateDirectoriesTable extends Migration
             $table->text('notes')->nullable();
             $table->text('call_eligible')->nullable();
             $table->text('emergency')->nullable();
-            $table->text('oncall')->default('regular');
-            $table->text('general')->default('regular');
-            $table->text('message_handling')->default('regular');
+            $table->text('oncall')->nullable();
+            $table->text('general')->nullable();
+            $table->text('message_handling')->nullable();
 
             $table->integer('status')->default(1);
 
