@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 |
 */
 Route::resource('/users', 'UserController');
+Route::resource('/directories', 'DirectoryController');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

@@ -10,4 +10,8 @@ class Directory extends Model
         'admin_id', 'name', 'position','account_permission', 'gender', 'nickname','routine'
         ,'notes','call_eligible','emergency','oncall','general','message_handling','status'
     ];
+    public function contact()
+    {
+       return $this->hasMany('App\DirectoryContact');
+    }
 }

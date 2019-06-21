@@ -2642,11 +2642,102 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    var _ref;
+    var _editedItem, _ref;
 
     return _ref = {
+      expand: true,
       snackbar: false,
       y: "top",
       x: null,
@@ -2655,7 +2746,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       text: "Hello, I'm a snackbar",
       edit: true,
       dialog: false,
-      dataUser: [],
+      dataDirectories: [],
       userType: ["Admin", "Supervisor", "Team Leader", "Operator", "Ban"],
       headers: [{
         text: "ID",
@@ -2665,11 +2756,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         text: "Name",
         value: "name"
       }, {
-        text: "Email",
-        value: "email"
+        text: "Position",
+        value: "position"
       }, {
-        text: "Type",
-        value: "type"
+        text: "Gender",
+        value: "gender"
       }],
       emailRules: [function (v) {
         return !!v || "E-mail is required";
@@ -2685,33 +2776,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return (v || "").length >= 8 || "A minimum of 8 characters is allowed";
       }],
       editedIndex: -1,
-      editedItem: {
+      editedItem: (_editedItem = {
         name: "",
         email: "",
         username: "",
-        userType: ""
-      },
+        userType: "",
+        permissionValue: [],
+        phone: []
+      }, _defineProperty(_editedItem, "email", []), _defineProperty(_editedItem, "speedial", []), _editedItem),
       defaultItem: {},
       activator: null,
       attach: null,
-      colors: ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
+      colors: ["green", "purple", "indigo", "cyan", "teal", "orange"],
       editing: null,
       index: -1,
-      items: [{
-        header: 'Select an option or create one'
-      }, {
-        text: 'Foo',
-        color: 'blue'
-      }, {
-        text: 'Bar',
-        color: 'red'
-      }],
+      permissionItems: ["Get Message", "Make Changes", "Billing", "Full Access"],
+      genderItems: ["Male", "Female", "Other"],
+      items: ["Gaming", "Programming", "Vue", "Vuetify"],
+      model: ["Vuetify"],
       nonce: 1,
-      menu: false,
-      model: [{
-        text: 'Foo',
-        color: 'blue'
-      }]
+      menu: false
     }, _defineProperty(_ref, "x", 0), _defineProperty(_ref, "search", null), _defineProperty(_ref, "y", 0), _ref;
   },
   props: {
@@ -2723,24 +2807,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   watch: {
-    model: function model(val, prev) {
+    model: function model(val) {
       var _this = this;
 
-      if (val.length === prev.length) return;
-      this.model = val.map(function (v) {
-        if (typeof v === 'string') {
-          v = {
-            text: v,
-            color: _this.colors[_this.nonce - 1]
-          };
-
-          _this.items.push(v);
-
-          _this.nonce++;
-        }
-
-        return v;
-      });
+      if (val.length > 5) {
+        this.$nextTick(function () {
+          return _this.model.pop();
+        });
+      }
     }
   },
   created: function created() {
@@ -2761,13 +2835,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _context.next = 3;
                 return axios({
                   method: "get",
-                  url: "/api/users"
+                  url: "/api/directories"
                 });
 
               case 3:
                 _ref2 = _context.sent;
                 data = _ref2.data;
-                this.dataUser = data;
+                this.dataDirectories = data;
                 _context.next = 10;
                 break;
 
@@ -2791,13 +2865,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }(),
     editItem: function editItem(item) {
       this.edit = false;
-      this.editedIndex = this.dataUser.indexOf(item);
+      this.editedIndex = this.dataDirectories.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
     deleteItem: function deleteItem(item) {
-      var index = this.dataUser.indexOf(item);
-      confirm("Are you sure you want to delete this item?") && this.dataUser.splice(index, 1);
+      var index = this.dataDirectories.indexOf(item);
+      confirm("Are you sure you want to delete this item?") && this.dataDirectories.splice(index, 1);
     },
     close: function close() {
       var _this2 = this;
@@ -2837,7 +2911,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 console.log(data);
                 this.text = "User Edited";
                 this.snackbar = true;
-                Object.assign(this.dataUser[this.editedIndex], this.editedItem);
+                Object.assign(this.dataDirectories[this.editedIndex], this.editedItem);
                 this.close();
                 _context2.next = 17;
                 break;
@@ -2857,7 +2931,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _context2.next = 22;
                 return axios({
                   method: "post",
-                  url: "/api/users",
+                  url: "/api/directories",
                   data: this.editedItem
                 });
 
@@ -2866,7 +2940,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _data = _ref4.data;
                 this.text = "New User Added";
                 this.snackbar = true;
-                this.dataUser.unshift(this.editedItem);
+                this.dataDirectories.push(_data);
                 this.close();
                 _context2.next = 34;
                 break;
@@ -2891,20 +2965,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return save;
     }(),
-    edit: function edit(index, item) {
-      if (!this.editing) {
-        this.editing = item;
-        this.index = index;
-      } else {
-        this.editing = null;
-        this.index = -1;
-      }
-    },
+    // edit(index, item) {
+    //   if (!this.editing) {
+    //     this.editing = item;
+    //     this.index = index;
+    //   } else {
+    //     this.editing = null;
+    //     this.index = -1;
+    //   }
+    // },
     filter: function filter(item, queryText, itemText) {
       if (item.header) return false;
 
       var hasValue = function hasValue(val) {
-        return val != null ? val : '';
+        return val != null ? val : "";
       };
 
       var text = hasValue(itemText);
@@ -40757,7 +40831,11 @@ var render = function() {
                       _c(
                         "v-dialog",
                         {
-                          attrs: { "max-width": "500px" },
+                          attrs: {
+                            fullscreen: "",
+                            "hide-overlay": "",
+                            transition: "dialog-bottom-transition"
+                          },
                           scopedSlots: _vm._u([
                             {
                               key: "activator",
@@ -40772,7 +40850,7 @@ var render = function() {
                                         attrs: { color: "primary", dark: "" },
                                         on: {
                                           click: function($event) {
-                                            _vm.edit = true
+                                            return _vm.close()
                                           }
                                         }
                                       },
@@ -40797,11 +40875,49 @@ var render = function() {
                           _c(
                             "v-card",
                             [
-                              _c("v-card-title", [
-                                _c("span", { staticClass: "headline" }, [
-                                  _vm._v(_vm._s(_vm.formTitle))
-                                ])
-                              ]),
+                              _c(
+                                "v-toolbar",
+                                { attrs: { dark: "", color: "primary" } },
+                                [
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { icon: "", dark: "" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.dialog = false
+                                        }
+                                      }
+                                    },
+                                    [_c("v-icon", [_vm._v("close")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c("v-toolbar-title", [_vm._v("Settings")]),
+                                  _vm._v(" "),
+                                  _c("v-spacer"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-toolbar-items",
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { dark: "", flat: "" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.dialog = false
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Save")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
                               _c(
                                 "v-card-text",
@@ -40816,17 +40932,23 @@ var render = function() {
                                         [
                                           _c(
                                             "v-flex",
-                                            {
-                                              attrs: {
-                                                xs12: "",
-                                                sm12: "",
-                                                md12: ""
-                                              }
-                                            },
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Name")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
                                             [
                                               _c("v-text-field", {
                                                 attrs: {
-                                                  label: "Full Name",
+                                                  outline: "",
+                                                  label: "Name",
                                                   rules: [
                                                     function(v) {
                                                       return (
@@ -40855,16 +40977,22 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "v-flex",
-                                            {
-                                              attrs: {
-                                                xs12: "",
-                                                sm12: "",
-                                                md12: ""
-                                              }
-                                            },
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Position")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
                                             [
                                               _c("v-text-field", {
                                                 attrs: {
+                                                  outline: "",
                                                   label: "Position",
                                                   rules: [
                                                     function(v) {
@@ -40877,16 +41005,16 @@ var render = function() {
                                                 },
                                                 model: {
                                                   value:
-                                                    _vm.editedItem.username,
+                                                    _vm.editedItem.position,
                                                   callback: function($$v) {
                                                     _vm.$set(
                                                       _vm.editedItem,
-                                                      "username",
+                                                      "position",
                                                       $$v
                                                     )
                                                   },
                                                   expression:
-                                                    "editedItem.username"
+                                                    "editedItem.position"
                                                 }
                                               })
                                             ],
@@ -40895,37 +41023,107 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "v-flex",
-                                            {
-                                              attrs: {
-                                                xs12: "",
-                                                sm12: "",
-                                                md12: ""
-                                              }
-                                            },
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Permission")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-select", {
+                                                attrs: {
+                                                  outline: "",
+                                                  items: _vm.permissionItems,
+                                                  attach: "",
+                                                  chips: "",
+                                                  label: "Permission",
+                                                  multiple: ""
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem
+                                                      .permissionValue,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "permissionValue",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.permissionValue"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Gender")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-select", {
+                                                attrs: {
+                                                  outline: "",
+                                                  items: _vm.genderItems,
+                                                  label: "Gender"
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.gender,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "gender",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.gender"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Phone")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
                                             [
                                               _c("v-combobox", {
                                                 attrs: {
-                                                  filter: _vm.filter,
-                                                  "hide-no-data": !_vm.search,
-                                                  items: _vm.items,
-                                                  "search-input": _vm.search,
+                                                  label: "Phone",
+                                                  outline: "",
                                                   "hide-selected": "",
-                                                  label: "Search for an option",
                                                   multiple: "",
-                                                  "small-chips": "",
-                                                  solo: ""
-                                                },
-                                                on: {
-                                                  "update:searchInput": function(
-                                                    $event
-                                                  ) {
-                                                    _vm.search = $event
-                                                  },
-                                                  "update:search-input": function(
-                                                    $event
-                                                  ) {
-                                                    _vm.search = $event
-                                                  }
+                                                  "small-chips": ""
                                                 },
                                                 scopedSlots: _vm._u([
                                                   {
@@ -40936,37 +41134,39 @@ var render = function() {
                                                           "v-list-tile",
                                                           [
                                                             _c(
-                                                              "span",
-                                                              {
-                                                                staticClass:
-                                                                  "subheading"
-                                                              },
-                                                              [_vm._v("Create")]
-                                                            ),
-                                                            _vm._v(" "),
-                                                            _c(
-                                                              "v-chip",
-                                                              {
-                                                                attrs: {
-                                                                  color:
-                                                                    _vm.colors[
-                                                                      _vm.nonce -
-                                                                        1
-                                                                    ] +
-                                                                    " lighten-3",
-                                                                  label: "",
-                                                                  small: ""
-                                                                }
-                                                              },
+                                                              "v-list-tile-content",
                                                               [
-                                                                _vm._v(
-                                                                  "\n                                                    " +
-                                                                    _vm._s(
-                                                                      _vm.search
-                                                                    ) +
-                                                                    "\n                                                    "
+                                                                _c(
+                                                                  "v-list-tile-title",
+                                                                  [
+                                                                    _vm._v(
+                                                                      '\n                                No results matching "\n                                '
+                                                                    ),
+                                                                    _c(
+                                                                      "strong",
+                                                                      [
+                                                                        _vm._v(
+                                                                          _vm._s(
+                                                                            _vm.search
+                                                                          )
+                                                                        )
+                                                                      ]
+                                                                    ),
+                                                                    _vm._v(
+                                                                      '". Press\n                                '
+                                                                    ),
+                                                                    _c("kbd", [
+                                                                      _vm._v(
+                                                                        "enter"
+                                                                      )
+                                                                    ]),
+                                                                    _vm._v(
+                                                                      " to create a new one\n                              "
+                                                                    )
+                                                                  ]
                                                                 )
-                                                              ]
+                                                              ],
+                                                              1
                                                             )
                                                           ],
                                                           1
@@ -40974,227 +41174,18 @@ var render = function() {
                                                       ]
                                                     },
                                                     proxy: true
-                                                  },
-                                                  {
-                                                    key: "selection",
-                                                    fn: function(ref) {
-                                                      var item = ref.item
-                                                      var parent = ref.parent
-                                                      var selected =
-                                                        ref.selected
-                                                      return [
-                                                        item === Object(item)
-                                                          ? _c(
-                                                              "v-chip",
-                                                              {
-                                                                attrs: {
-                                                                  color:
-                                                                    item.color +
-                                                                    " lighten-3",
-                                                                  selected: selected,
-                                                                  label: "",
-                                                                  small: ""
-                                                                }
-                                                              },
-                                                              [
-                                                                _c(
-                                                                  "span",
-                                                                  {
-                                                                    staticClass:
-                                                                      "pr-2"
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "\n                                                    " +
-                                                                        _vm._s(
-                                                                          item.text
-                                                                        ) +
-                                                                        "\n                                                    "
-                                                                    )
-                                                                  ]
-                                                                ),
-                                                                _vm._v(" "),
-                                                                _c(
-                                                                  "v-icon",
-                                                                  {
-                                                                    attrs: {
-                                                                      small: ""
-                                                                    },
-                                                                    on: {
-                                                                      click: function(
-                                                                        $event
-                                                                      ) {
-                                                                        return parent.selectItem(
-                                                                          item
-                                                                        )
-                                                                      }
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "close"
-                                                                    )
-                                                                  ]
-                                                                )
-                                                              ],
-                                                              1
-                                                            )
-                                                          : _vm._e()
-                                                      ]
-                                                    }
-                                                  },
-                                                  {
-                                                    key: "item",
-                                                    fn: function(ref) {
-                                                      var index = ref.index
-                                                      var item = ref.item
-                                                      return [
-                                                        _c(
-                                                          "v-list-tile-content",
-                                                          [
-                                                            _vm.editing === item
-                                                              ? _c(
-                                                                  "v-text-field",
-                                                                  {
-                                                                    attrs: {
-                                                                      autofocus:
-                                                                        "",
-                                                                      flat: "",
-                                                                      "background-color":
-                                                                        "transparent",
-                                                                      "hide-details":
-                                                                        "",
-                                                                      solo: ""
-                                                                    },
-                                                                    on: {
-                                                                      keyup: function(
-                                                                        $event
-                                                                      ) {
-                                                                        if (
-                                                                          !$event.type.indexOf(
-                                                                            "key"
-                                                                          ) &&
-                                                                          _vm._k(
-                                                                            $event.keyCode,
-                                                                            "enter",
-                                                                            13,
-                                                                            $event.key,
-                                                                            "Enter"
-                                                                          )
-                                                                        ) {
-                                                                          return null
-                                                                        }
-                                                                        return _vm.edit(
-                                                                          index,
-                                                                          item
-                                                                        )
-                                                                      }
-                                                                    },
-                                                                    model: {
-                                                                      value:
-                                                                        _vm
-                                                                          .editing
-                                                                          .text,
-                                                                      callback: function(
-                                                                        $$v
-                                                                      ) {
-                                                                        _vm.$set(
-                                                                          _vm.editing,
-                                                                          "text",
-                                                                          $$v
-                                                                        )
-                                                                      },
-                                                                      expression:
-                                                                        "editing.text"
-                                                                    }
-                                                                  }
-                                                                )
-                                                              : _c(
-                                                                  "v-chip",
-                                                                  {
-                                                                    attrs: {
-                                                                      color:
-                                                                        item.color +
-                                                                        " lighten-3",
-                                                                      dark: "",
-                                                                      label: "",
-                                                                      small: ""
-                                                                    }
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "\n                                                    " +
-                                                                        _vm._s(
-                                                                          item.text
-                                                                        ) +
-                                                                        "\n                                                    "
-                                                                    )
-                                                                  ]
-                                                                )
-                                                          ],
-                                                          1
-                                                        ),
-                                                        _vm._v(" "),
-                                                        _c("v-spacer"),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "v-list-tile-action",
-                                                          {
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                $event.stopPropagation()
-                                                              }
-                                                            }
-                                                          },
-                                                          [
-                                                            _c(
-                                                              "v-btn",
-                                                              {
-                                                                attrs: {
-                                                                  icon: ""
-                                                                },
-                                                                on: {
-                                                                  click: function(
-                                                                    $event
-                                                                  ) {
-                                                                    $event.stopPropagation()
-                                                                    $event.preventDefault()
-                                                                    return _vm.edit(
-                                                                      index,
-                                                                      item
-                                                                    )
-                                                                  }
-                                                                }
-                                                              },
-                                                              [
-                                                                _c("v-icon", [
-                                                                  _vm._v(
-                                                                    _vm._s(
-                                                                      _vm.editing !==
-                                                                        item
-                                                                        ? "edit"
-                                                                        : "check"
-                                                                    )
-                                                                  )
-                                                                ])
-                                                              ],
-                                                              1
-                                                            )
-                                                          ],
-                                                          1
-                                                        )
-                                                      ]
-                                                    }
                                                   }
                                                 ]),
                                                 model: {
-                                                  value: _vm.model,
+                                                  value: _vm.editedItem.phone,
                                                   callback: function($$v) {
-                                                    _vm.model = $$v
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "phone",
+                                                      $$v
+                                                    )
                                                   },
-                                                  expression: "model"
+                                                  expression: "editedItem.phone"
                                                 }
                                               })
                                             ],
@@ -41203,19 +41194,78 @@ var render = function() {
                                           _vm._v(" "),
                                           _c(
                                             "v-flex",
-                                            {
-                                              attrs: {
-                                                xs12: "",
-                                                sm12: "",
-                                                md12: ""
-                                              }
-                                            },
+                                            { attrs: { xs4: "" } },
                                             [
-                                              _c("v-text-field", {
+                                              _c("v-subheader", [
+                                                _vm._v("Email")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-combobox", {
                                                 attrs: {
-                                                  rules: _vm.emailRules,
-                                                  label: "Email"
+                                                  outline: "",
+                                                  label: "Email",
+                                                  "hide-selected": "",
+                                                  multiple: "",
+                                                  "small-chips": ""
                                                 },
+                                                scopedSlots: _vm._u([
+                                                  {
+                                                    key: "no-data",
+                                                    fn: function() {
+                                                      return [
+                                                        _c(
+                                                          "v-list-tile",
+                                                          [
+                                                            _c(
+                                                              "v-list-tile-content",
+                                                              [
+                                                                _c(
+                                                                  "v-list-tile-title",
+                                                                  [
+                                                                    _vm._v(
+                                                                      '\n                                No results matching "\n                                '
+                                                                    ),
+                                                                    _c(
+                                                                      "strong",
+                                                                      [
+                                                                        _vm._v(
+                                                                          _vm._s(
+                                                                            _vm.search
+                                                                          )
+                                                                        )
+                                                                      ]
+                                                                    ),
+                                                                    _vm._v(
+                                                                      '". Press\n                                '
+                                                                    ),
+                                                                    _c("kbd", [
+                                                                      _vm._v(
+                                                                        "enter"
+                                                                      )
+                                                                    ]),
+                                                                    _vm._v(
+                                                                      " to create a new one\n                              "
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          ],
+                                                          1
+                                                        )
+                                                      ]
+                                                    },
+                                                    proxy: true
+                                                  }
+                                                ]),
                                                 model: {
                                                   value: _vm.editedItem.email,
                                                   callback: function($$v) {
@@ -41232,80 +41282,467 @@ var render = function() {
                                             1
                                           ),
                                           _vm._v(" "),
-                                          _vm.edit
-                                            ? _c(
-                                                "v-flex",
-                                                {
-                                                  attrs: {
-                                                    xs12: "",
-                                                    sm12s: "",
-                                                    md12: ""
-                                                  }
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Speed Dial")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-combobox", {
+                                                attrs: {
+                                                  label: "Speed Dial",
+                                                  outline: "",
+                                                  "hide-selected": "",
+                                                  multiple: "",
+                                                  "small-chips": ""
                                                 },
-                                                [
-                                                  _c("v-text-field", {
-                                                    attrs: {
-                                                      rules: _vm.passwordRules,
-                                                      label: "Password",
-                                                      type: "password"
-                                                    },
-                                                    model: {
-                                                      value:
-                                                        _vm.editedItem.password,
-                                                      callback: function($$v) {
-                                                        _vm.$set(
-                                                          _vm.editedItem,
-                                                          "password",
-                                                          $$v
+                                                scopedSlots: _vm._u([
+                                                  {
+                                                    key: "no-data",
+                                                    fn: function() {
+                                                      return [
+                                                        _c(
+                                                          "v-list-tile",
+                                                          [
+                                                            _c(
+                                                              "v-list-tile-content",
+                                                              [
+                                                                _c(
+                                                                  "v-list-tile-title",
+                                                                  [
+                                                                    _vm._v(
+                                                                      '\n                                No results matching "\n                                '
+                                                                    ),
+                                                                    _c(
+                                                                      "strong",
+                                                                      [
+                                                                        _vm._v(
+                                                                          _vm._s(
+                                                                            _vm.search
+                                                                          )
+                                                                        )
+                                                                      ]
+                                                                    ),
+                                                                    _vm._v(
+                                                                      '". Press\n                                '
+                                                                    ),
+                                                                    _c("kbd", [
+                                                                      _vm._v(
+                                                                        "enter"
+                                                                      )
+                                                                    ]),
+                                                                    _vm._v(
+                                                                      " to create a new one\n                              "
+                                                                    )
+                                                                  ]
+                                                                )
+                                                              ],
+                                                              1
+                                                            )
+                                                          ],
+                                                          1
                                                         )
-                                                      },
-                                                      expression:
-                                                        "editedItem.password"
-                                                    }
-                                                  })
-                                                ],
-                                                1
-                                              )
-                                            : _vm._e(),
+                                                      ]
+                                                    },
+                                                    proxy: true
+                                                  }
+                                                ]),
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem.speedial,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "speedial",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.speedial"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Nickname")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  outline: "",
+                                                  label: "Nickname"
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem.nickname,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "nickname",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.nickname"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Notes")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-textarea", {
+                                                attrs: {
+                                                  outline: "",
+                                                  label: "Notes"
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.notes,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "notes",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression: "editedItem.notes"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Eligible on call")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-textarea", {
+                                                attrs: {
+                                                  outline: "",
+                                                  label: "Eligible on call"
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem
+                                                      .call_eligible,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "call_eligible",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.call_eligible"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Routine Instrucions")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-textarea", {
+                                                attrs: {
+                                                  outline: "",
+                                                  label: "Routine Instrucions"
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.routine,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "routine",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.routine"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Emergency Instrucions")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-textarea", {
+                                                attrs: {
+                                                  outline: "",
+                                                  label: "Emergency Instrucions"
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem.emergency,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "emergency",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.emergency"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("On Call Instrucions")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-textarea", {
+                                                attrs: {
+                                                  outline: "",
+                                                  label: "On Call Instrucions"
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.oncall,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "oncall",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.oncall"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v("Genral Instrucions")
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-textarea", {
+                                                attrs: {
+                                                  outline: "",
+                                                  label: "Genral Instrucions"
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.general,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "general",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.general"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs4: "" } },
+                                            [
+                                              _c("v-subheader", [
+                                                _vm._v(
+                                                  "Message Handling Instruction"
+                                                )
+                                              ])
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            { attrs: { xs8: "" } },
+                                            [
+                                              _c("v-textarea", {
+                                                attrs: {
+                                                  outline: "",
+                                                  label:
+                                                    "Message Handling Instruction"
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem
+                                                      .message_handling,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "message_handling",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.message_handling"
+                                                }
+                                              })
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-layout",
+                                        { attrs: { row: "" } },
+                                        [
+                                          _c("v-flex", {
+                                            attrs: { "offset-lg8": "" }
+                                          }),
                                           _vm._v(" "),
                                           _c(
                                             "v-flex",
                                             {
                                               attrs: {
                                                 xs12: "",
-                                                sm12: "",
-                                                md12: ""
+                                                lg2: "",
+                                                "ma-1": ""
                                               }
                                             },
                                             [
-                                              _c("v-select", {
-                                                attrs: {
-                                                  items: _vm.userType,
-                                                  rules: [
-                                                    function(v) {
-                                                      return (
-                                                        !!v ||
-                                                        "User type is required"
-                                                      )
-                                                    }
-                                                  ],
-                                                  label: "User Type",
-                                                  required: ""
-                                                },
-                                                model: {
-                                                  value:
-                                                    _vm.editedItem.userType,
-                                                  callback: function($$v) {
-                                                    _vm.$set(
-                                                      _vm.editedItem,
-                                                      "userType",
-                                                      $$v
-                                                    )
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  attrs: {
+                                                    color: "error",
+                                                    dark: "",
+                                                    large: "",
+                                                    block: ""
                                                   },
-                                                  expression:
-                                                    "editedItem.userType"
-                                                }
-                                              })
+                                                  on: {
+                                                    click: function($event) {
+                                                      _vm.dialog = false
+                                                    }
+                                                  }
+                                                },
+                                                [_vm._v("Cancel")]
+                                              )
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-flex",
+                                            {
+                                              attrs: {
+                                                xs12: "",
+                                                lg2: "",
+                                                "ma-1": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-btn",
+                                                {
+                                                  attrs: {
+                                                    color: "error",
+                                                    dark: "",
+                                                    large: "",
+                                                    block: ""
+                                                  },
+                                                  on: { click: _vm.save }
+                                                },
+                                                [_vm._v("Add")]
+                                              )
                                             ],
                                             1
                                           )
@@ -41314,38 +41751,6 @@ var render = function() {
                                       )
                                     ],
                                     1
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c("v-spacer"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        flat: ""
-                                      },
-                                      on: { click: _vm.close }
-                                    },
-                                    [_vm._v("Cancel")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        color: "blue darken-1",
-                                        flat: ""
-                                      },
-                                      on: { click: _vm.save }
-                                    },
-                                    [_vm._v("Save")]
                                   )
                                 ],
                                 1
@@ -41362,37 +41767,71 @@ var render = function() {
                   _vm._v(" "),
                   _c("v-data-table", {
                     staticClass: "elevation-1",
-                    attrs: { headers: _vm.headers, items: _vm.dataUser },
+                    attrs: {
+                      headers: _vm.headers,
+                      items: _vm.dataDirectories,
+                      expand: _vm.expand,
+                      "item-key": "name"
+                    },
                     scopedSlots: _vm._u([
                       {
                         key: "items",
                         fn: function(props) {
                           return [
-                            _c("td", [_vm._v(_vm._s(props.item.id))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(props.item.name))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(props.item.email))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(props.item.userType))]),
-                            _vm._v(" "),
                             _c(
-                              "td",
-                              { staticClass: "justify-center layout px-0" },
+                              "tr",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    props.expanded = !props.expanded
+                                  }
+                                }
+                              },
                               [
+                                _c("td", [_vm._v(_vm._s(props.item.id))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(props.item.name))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(props.item.position))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(props.item.gender))]),
+                                _vm._v(" "),
                                 _c(
-                                  "v-icon",
-                                  {
-                                    staticClass: "mr-2",
-                                    attrs: { small: "", color: "primary" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.editItem(props.item)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("edit")]
+                                  "td",
+                                  { staticClass: "justify-center layout px-0" },
+                                  [
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "mr-2",
+                                        attrs: { small: "", color: "primary" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.editItem(props.item)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("edit")]
+                                    )
+                                  ],
+                                  1
                                 )
+                              ]
+                            )
+                          ]
+                        }
+                      },
+                      {
+                        key: "expand",
+                        fn: function(props) {
+                          return [
+                            _c(
+                              "v-card",
+                              { attrs: { flat: "" } },
+                              [
+                                _c("v-card-text", [
+                                  _vm._v(_vm._s(props.item.gender))
+                                ])
                               ],
                               1
                             )
@@ -41448,7 +41887,7 @@ var render = function() {
           }
         },
         [
-          _vm._v("\n        " + _vm._s(_vm.text) + "\n        "),
+          _vm._v("\n    " + _vm._s(_vm.text) + "\n    "),
           _c(
             "v-btn",
             {
