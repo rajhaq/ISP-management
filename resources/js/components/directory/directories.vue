@@ -60,7 +60,7 @@
                       <v-flex xs8>
                         <v-select
                         outline
-                          v-model="editedItem.permissionValue"
+                          v-model="editedItem.account_permission"
                           :items="permissionItems"
                           attach
                           chips
@@ -230,6 +230,7 @@
               <tr @click="props.expanded = !props.expanded">
               <td>{{ props.item.id }}</td>
               <td>{{ props.item.name }}</td>
+              <td>{{ props.item.nickname }}</td>
               <td>{{ props.item.position }}</td>
               <td>{{ props.item.gender }}</td>
               <td class="justify-center layout px-0">
@@ -246,7 +247,15 @@
             </template>
             <template v-slot:expand="props">
         <v-card flat>
-          <v-card-text>{{ props.item.gender }}</v-card-text>
+          <v-card-text v-if="props.item.account_permission">Account Permission: {{ props.item.account_permission }}</v-card-text>
+          <v-card-text v-if="props.item.call_eligible">Call Eligible: {{ props.item.call_eligible }}</v-card-text>
+          <v-card-text v-for="(contact , index) in props.item.contact" v-if="props.item.contact">{{contact.contact_type}}: {{contact.contact}}</v-card-text>
+          <v-card-text v-if="props.item.oncall">On Call: {{ props.item.oncall }}</v-card-text>
+          <v-card-text v-if="props.item.emergency">Emergency: {{ props.item.emergency }}</v-card-text>
+          <v-card-text v-if="props.item.genral">Genral: {{ props.item.genral }}</v-card-text>
+          <v-card-text v-if="props.item.message_handling">Message Handling: {{ props.item.message_handling }}</v-card-text>
+          <v-card-text v-if="props.item.notes">Notes: {{ props.item.notes }}</v-card-text>
+          <v-card-text v-if="props.item.routine">Routine: {{ props.item.routine }}</v-card-text>
         </v-card>
       </template>
             <template v-slot:no-data>
@@ -293,6 +302,7 @@ export default {
         text: "Name",
         value: "name"
       },
+      { text: "Nickname", value: "nickname" },
       { text: "Position", value: "position" },
       { text: "Gender", value: "gender" }
     ],
@@ -314,7 +324,7 @@ export default {
       email: "",
       username: "",
       userType: "",
-      permissionValue: [],
+      account_permission: [],
       phone: [],
       email: [],
       speedial: []
@@ -371,6 +381,25 @@ export default {
       this.edit = false;
       this.editedIndex = this.dataDirectories.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.editedItem.account_permission=this.editedItem.account_permission.split(",");
+      this.editedItem.phone=[];
+      this.editedItem.speedial=[];
+      this.editedItem.email=[];
+      for(let d of this.editedItem.contact) 
+      {
+        if(d.contact_type=='phone')
+        {
+          this.editedItem.phone.push(d.contact);
+        }
+        else if(d.contact_type=='speedial')
+        {
+          this.editedItem.speedial.push(d.speedial);
+        }
+        else if(d.contact_type=='email')
+        {
+          this.editedItem.email.push(d.email);
+        }
+      }
       this.dialog = true;
     },
 

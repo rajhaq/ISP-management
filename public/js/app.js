@@ -2732,6 +2732,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _editedItem, _ref;
@@ -2755,6 +2764,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         text: "Name",
         value: "name"
+      }, {
+        text: "Nickname",
+        value: "nickname"
       }, {
         text: "Position",
         value: "position"
@@ -2781,7 +2793,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         email: "",
         username: "",
         userType: "",
-        permissionValue: [],
+        account_permission: [],
         phone: []
       }, _defineProperty(_editedItem, "email", []), _defineProperty(_editedItem, "speedial", []), _editedItem),
       defaultItem: {},
@@ -2867,6 +2879,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.edit = false;
       this.editedIndex = this.dataDirectories.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.editedItem.account_permission = this.editedItem.account_permission.split(",");
+      this.editedItem.phone = [];
+      this.editedItem.speedial = [];
+      this.editedItem.email = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.editedItem.contact[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var d = _step.value;
+
+          if (d.contact_type == 'phone') {
+            this.editedItem.phone.push(d.contact);
+          } else if (d.contact_type == 'speedial') {
+            this.editedItem.speedial.push(d.speedial);
+          } else if (d.contact_type == 'email') {
+            this.editedItem.email.push(d.email);
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
       this.dialog = true;
     },
     deleteItem: function deleteItem(item) {
@@ -41048,16 +41095,16 @@ var render = function() {
                                                 model: {
                                                   value:
                                                     _vm.editedItem
-                                                      .permissionValue,
+                                                      .account_permission,
                                                   callback: function($$v) {
                                                     _vm.$set(
                                                       _vm.editedItem,
-                                                      "permissionValue",
+                                                      "account_permission",
                                                       $$v
                                                     )
                                                   },
                                                   expression:
-                                                    "editedItem.permissionValue"
+                                                    "editedItem.account_permission"
                                                 }
                                               })
                                             ],
@@ -41792,6 +41839,8 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("td", [_vm._v(_vm._s(props.item.name))]),
                                 _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(props.item.nickname))]),
+                                _vm._v(" "),
                                 _c("td", [_vm._v(_vm._s(props.item.position))]),
                                 _vm._v(" "),
                                 _c("td", [_vm._v(_vm._s(props.item.gender))]),
@@ -41829,11 +41878,90 @@ var render = function() {
                               "v-card",
                               { attrs: { flat: "" } },
                               [
-                                _c("v-card-text", [
-                                  _vm._v(_vm._s(props.item.gender))
-                                ])
+                                props.item.account_permission
+                                  ? _c("v-card-text", [
+                                      _vm._v(
+                                        "Account Permission: " +
+                                          _vm._s(props.item.account_permission)
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                props.item.call_eligible
+                                  ? _c("v-card-text", [
+                                      _vm._v(
+                                        "Call Eligible: " +
+                                          _vm._s(props.item.call_eligible)
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm._l(props.item.contact, function(
+                                  contact,
+                                  index
+                                ) {
+                                  return props.item.contact
+                                    ? _c("v-card-text", [
+                                        _vm._v(
+                                          _vm._s(contact.contact_type) +
+                                            ": " +
+                                            _vm._s(contact.contact)
+                                        )
+                                      ])
+                                    : _vm._e()
+                                }),
+                                _vm._v(" "),
+                                props.item.oncall
+                                  ? _c("v-card-text", [
+                                      _vm._v(
+                                        "On Call: " + _vm._s(props.item.oncall)
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                props.item.emergency
+                                  ? _c("v-card-text", [
+                                      _vm._v(
+                                        "Emergency: " +
+                                          _vm._s(props.item.emergency)
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                props.item.genral
+                                  ? _c("v-card-text", [
+                                      _vm._v(
+                                        "Genral: " + _vm._s(props.item.genral)
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                props.item.message_handling
+                                  ? _c("v-card-text", [
+                                      _vm._v(
+                                        "Message Handling: " +
+                                          _vm._s(props.item.message_handling)
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                props.item.notes
+                                  ? _c("v-card-text", [
+                                      _vm._v(
+                                        "Notes: " + _vm._s(props.item.notes)
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                props.item.routine
+                                  ? _c("v-card-text", [
+                                      _vm._v(
+                                        "Routine: " + _vm._s(props.item.routine)
+                                      )
+                                    ])
+                                  : _vm._e()
                               ],
-                              1
+                              2
                             )
                           ]
                         }
