@@ -118,7 +118,7 @@ export default {
     edit: true,
     dialog: false,
     dataUser: [],
-    userType: ["Admin", "Supervisor", "Team Leader", "Operator", "Ban"],
+    userType: ["Admin", "Manager", "Collector"],
 
     headers: [
       { text: "ID", align: "left", value: "id" },
