@@ -20,8 +20,8 @@ class CreateCustomersTable extends Migration
             $table->string('name');
             $table->string('ccontact')->nullable();;
             $table->text('address');
-            $table->integer('area');
-            $table->integer('package');
+            $table->integer('area_id');
+            $table->integer('package_id');
             $table->integer('status')->default(1);
             $table->timestamps();
         });

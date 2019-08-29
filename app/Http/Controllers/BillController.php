@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Auth;
+use App\Bill;
 class BillController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $data=Bill::orderBy('id', 'DESC')
+        ->get();
+        return $data;
     }
 
     /**
@@ -23,7 +26,7 @@ class BillController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -34,7 +37,24 @@ class BillController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $auth_id=Auth::id();
+        $request->request->add(['admin_id' => $auth_id]);
+        $create=Bill::create($request->all());
+        if($create)
+        {
+            return response()->json([
+                'msg' => 'Inserted',
+                'status' => $create
+           ],200);
+        }
+        else
+        {
+            return response()->json([
+                'msg' => 'Inserted',
+                'status' => false
+           ],200);
+        }
+
     }
 
     /**
@@ -45,7 +65,8 @@ class BillController extends Controller
      */
     public function show($id)
     {
-        //
+        $data=Bill::find($id);
+        return $data;
     }
 
     /**
@@ -56,7 +77,7 @@ class BillController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -68,7 +89,13 @@ class BillController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $update=Bill::where('id',$id)->update($request->all());
+        return $update;
+    }
+    public function updateData(Request $request)
+    {
+        $update=Bill::where('id',$request->id)->update($request->all());
+        return $update;
     }
 
     /**
@@ -79,6 +106,9 @@ class BillController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Bill::where('id','=',$id)
+          ->first();
+        $data->delete();
+        return $data;
     }
 }

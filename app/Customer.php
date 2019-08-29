@@ -8,7 +8,19 @@ class Customer extends Model
 {
 
     protected $fillable = [
-        'user_id', 'shop_name', 'shop_contact','shop_instagram', 'shop_facebook', 'shop_snapchat','shop_address'
-        ,'shop_map','shop_location','shop_type','status'
+        'admin_id', 'email', 'name','ccontact', 'address', 'area_id','package_id',
+        'status'
     ];
+    public function admin()
+    {
+       return $this->belongsTo('App\User', 'admin_id');
+    } 
+    public function package()
+    {
+       return $this->belongsTo('App\Package', 'package_id');
+    } 
+    public function area()
+    {
+       return $this->belongsTo('App\Area', 'area_id');
+    } 
 }

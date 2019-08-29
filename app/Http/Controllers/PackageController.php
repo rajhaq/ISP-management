@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Package;
+use Auth;
 class PackageController extends Controller
 {
     /**
@@ -13,7 +14,9 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        $data=Package::orderBy('id', 'DESC')
+        ->get();
+        return $data;
     }
 
     /**
@@ -23,7 +26,7 @@ class PackageController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -34,7 +37,24 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $auth_id=Auth::id();
+        $request->request->add(['admin_id' => $auth_id]);
+        $create=Package::create($request->all());
+        if($create)
+        {
+            return response()->json([
+                'msg' => 'Inserted',
+                'status' => $create
+           ],200);
+        }
+        else
+        {
+            return response()->json([
+                'msg' => 'Inserted',
+                'status' => false
+           ],200);
+        }
+
     }
 
     /**
@@ -45,7 +65,8 @@ class PackageController extends Controller
      */
     public function show($id)
     {
-        //
+        $data=Package::find($id);
+        return $data;
     }
 
     /**
@@ -56,7 +77,7 @@ class PackageController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -68,7 +89,13 @@ class PackageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $update=Package::where('id',$id)->update($request->all());
+        return $update;
+    }
+    public function updateData(Request $request)
+    {
+        $update=Package::where('id',$request->id)->update($request->all());
+        return $update;
     }
 
     /**
@@ -79,6 +106,9 @@ class PackageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Package::where('id','=',$id)
+          ->first();
+        $data->delete();
+        return $data;
     }
 }
