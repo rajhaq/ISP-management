@@ -7,7 +7,7 @@
           <!-- CSRF Token -->
        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Call Center</title>
+        <title>ISP</title>
         <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
      
         <script>

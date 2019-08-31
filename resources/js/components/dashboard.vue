@@ -78,7 +78,7 @@
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer" ></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down" >Call Center</span>
+        <span class="hidden-sm-and-down" >ISP</span>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -101,7 +101,7 @@
     </v-toolbar>
     <router-view></router-view>
 
-    <v-btn
+    <!-- <v-btn
       fab
       bottom
       right
@@ -175,7 +175,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
+     -->
   </v-app>
 </template>
 
@@ -213,6 +213,9 @@
         //   ]
         // },
         // { icon: 'settings', text: 'Settings' },
+        { icon: 'group', 
+        text: 'Area',
+        link: 'arealist' },
         { icon: 'group', 
         text: 'Users',
         link: 'userlist' },

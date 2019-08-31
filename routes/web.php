@@ -14,6 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+//resource
+Route::resource('/app/area', 'AreaController');
+Route::resource('/app/bill', 'BillController');
+Route::resource('/app/customer', 'CustomerController');
+Route::resource('/app/package', 'PackageController');
+Route::resource('/app/invoice', 'InvoiceController');
+
+
 Route::get('/users', 'CustomerController@index')->name('users');
 Route::post('/app/updateUser', 'UserController@updateUser');
 
