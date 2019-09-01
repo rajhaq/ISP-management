@@ -8,6 +8,7 @@
 							<v-toolbar-title>Area List</v-toolbar-title>
 							<v-divider class="mx-2" inset vertical></v-divider>
 							<v-spacer></v-spacer>
+							<v-btn color="error" v-show="selected[0]"@click="deleteSelected">Delete All</v-btn>
 							<v-dialog v-model="dialog" max-width="500px" persistent>
 								<template v-slot:activator="{ on }">
 									<v-btn color="primary" dark class="mb-2" v-on="on" @click="edit=true">New Area</v-btn>
@@ -15,7 +16,7 @@
 								<v-card>
 									<v-card-title>
 										<span class="headline">{{ formTitle }}</span>
-									</v-card-title>
+									</v-card-title >
 
 									<v-card-text>
 										<v-container grid-list-md>
@@ -75,15 +76,14 @@
 								<td>{{ props.item.id }}</td>
 								<td>{{ props.item.name }}</td>
 								<td>{{ props.item.code }}</td>
-								<td class="justify-center layout px-0">
-									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">edit</v-icon>
+								<td>
+									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">
+										edit
+									</v-icon>
 
-									<!-- <v-icon
-							small
-							@click="deleteItem(props.item)"
-						>
-							delete
-									</v-icon>-->
+									<v-icon small @click="deleteItem(props.item)" color="error">
+										delete
+									</v-icon>
 								</td>
 							</template>
 							<template v-slot:no-data>
@@ -94,32 +94,43 @@
 				</v-flex>
 			</v-layout>
 		</v-container>
+		<zmodaldelete :trigger="isDeleteAll" :title="deleteTitle" :body="deleteBody" @request="deleteAll">
+		</zmodaldelete>
+		<zmodaldelete :trigger="isDelete" :title="deleteTitle" :body="deleteBody" @request="remove">
+		</zmodaldelete>
+
 		<v-snackbar
 			v-model="snackbar"
-			:bottom="y === 'bottom'"
-			:left="x === 'left'"
-			:multi-line="mode === 'multi-line'"
+			:multi-line="'multi-line'"
 			:right="x === 'right'"
-			:timeout="timeout"
+			:timeout="timeout=5000"
 			:top="y === 'top'"
-			:vertical="mode === 'vertical'"
+			:vertical="'vertical'"
+			:color="snackBarColor"
 		>
 			{{ text }}
-			<v-btn color="pink" flat @click="snackbar = false">Close</v-btn>
+			<v-btn flat @click="snackbar = false">Close</v-btn>
 		</v-snackbar>
 	</v-content>
 </template>
 
 <script>
+import zmodaldelete from './../common/zmodaldelete';
+
 export default {
 	data: () => ({
+		snackBarColor:'green',
+		isDelete:false,
+		isDeleteAll:false,
+		dataIndex:null,
+		deleteTitle:'',
+		deleteBody:'',
 		search:'',
 		selected: [],
 		snackbar: false,
 		y: "top",
 		x: null,
 		mode: "",
-		timeout: 6000,
 		text: "Hello, I'm a snackbar",
 		edit: true,
 		dialog: false,
@@ -142,6 +153,10 @@ export default {
 	}),
 	props: {
 		source: String
+	},
+	components:
+	{
+		zmodaldelete,
 	},
 	computed: {
 		formTitle() {
@@ -174,9 +189,36 @@ export default {
 		},
 
 		deleteItem(item) {
-			const index = this.dataList.indexOf(item);
-			confirm("Are you sure you want to delete this item?") &&
-				this.dataList.splice(index, 1);
+			this.dataIndex = this.dataList.indexOf(item);
+			this.deleteTitle="Are you sure you want to delete this item?";
+			this.isDelete=!this.isDelete;
+		},
+		async remove()
+		{
+			try {
+				let { data } = await axios({
+					method: "delete",
+					url: "/app/area/"+this.dataList[this.dataIndex].id,
+				});
+				this.snackBarColor='green';
+				this.text = "Successfully Removed";
+				this.snackbar = true;
+				this.dataList.splice(this.dataIndex,1);
+				this.close();
+			} catch (e) {
+				this.snackBarColor='red';
+				this.text = "Failed";
+				this.snackbar = true;
+			}
+		},
+		deleteSelected()
+		{
+			this.deleteTitle="Are you sure you want to delete selected item?";
+			this.isDeleteAll=!this.isDeleteAll;
+		},
+		deleteAll()
+		{
+
 		},
 
 		close() {

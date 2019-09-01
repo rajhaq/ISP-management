@@ -2068,6 +2068,7 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _common_zmodaldelete__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../common/zmodaldelete */ "./resources/js/components/common/zmodaldelete.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2186,16 +2187,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      snackBarColor: 'green',
+      isDelete: false,
+      isDeleteAll: false,
+      dataIndex: null,
+      deleteTitle: '',
+      deleteBody: '',
       search: '',
       selected: [],
       snackbar: false,
       y: "top",
       x: null,
       mode: "",
-      timeout: 6000,
       text: "Hello, I'm a snackbar",
       edit: true,
       dialog: false,
@@ -2224,6 +2235,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   props: {
     source: String
+  },
+  components: {
+    zmodaldelete: _common_zmodaldelete__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: {
     formTitle: function formTitle() {
@@ -2284,9 +2298,64 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.dialog = true;
     },
     deleteItem: function deleteItem(item) {
-      var index = this.dataList.indexOf(item);
-      confirm("Are you sure you want to delete this item?") && this.dataList.splice(index, 1);
+      this.dataIndex = this.dataList.indexOf(item);
+      this.deleteTitle = "Are you sure you want to delete this item?";
+      this.isDelete = !this.isDelete;
     },
+    remove: function () {
+      var _remove = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var _ref2, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return axios({
+                  method: "delete",
+                  url: "/app/area/" + this.dataList[this.dataIndex].id
+                });
+
+              case 3:
+                _ref2 = _context2.sent;
+                data = _ref2.data;
+                this.snackBarColor = 'green';
+                this.text = "Successfully Removed";
+                this.snackbar = true;
+                this.dataList.splice(this.dataIndex, 1);
+                this.close();
+                _context2.next = 17;
+                break;
+
+              case 12:
+                _context2.prev = 12;
+                _context2.t0 = _context2["catch"](0);
+                this.snackBarColor = 'red';
+                this.text = "Failed";
+                this.snackbar = true;
+
+              case 17:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[0, 12]]);
+      }));
+
+      function remove() {
+        return _remove.apply(this, arguments);
+      }
+
+      return remove;
+    }(),
+    deleteSelected: function deleteSelected() {
+      this.deleteTitle = "Are you sure you want to delete selected item?";
+      this.isDeleteAll = !this.isDeleteAll;
+    },
+    deleteAll: function deleteAll() {},
     close: function close() {
       var _this = this;
 
@@ -2299,20 +2368,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     save: function () {
       var _save = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _ref2, data, _ref3, _data;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var _ref3, data, _ref4, _data;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 if (!(this.editedIndex > -1)) {
-                  _context2.next = 19;
+                  _context3.next = 19;
                   break;
                 }
 
-                _context2.prev = 1;
-                _context2.next = 4;
+                _context3.prev = 1;
+                _context3.next = 4;
                 return axios({
                   method: "put",
                   url: "/app/area/" + this.dataList[this.editedIndex].id,
@@ -2320,29 +2389,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 4:
-                _ref2 = _context2.sent;
-                data = _ref2.data;
+                _ref3 = _context3.sent;
+                data = _ref3.data;
                 console.log(data);
                 this.text = "User Edited";
                 this.snackbar = true;
                 Object.assign(this.dataList[this.editedIndex], this.editedItem);
                 this.close();
-                _context2.next = 17;
+                _context3.next = 17;
                 break;
 
               case 13:
-                _context2.prev = 13;
-                _context2.t0 = _context2["catch"](1);
+                _context3.prev = 13;
+                _context3.t0 = _context3["catch"](1);
                 this.text = "Failed";
                 this.snackbar = true;
 
               case 17:
-                _context2.next = 34;
+                _context3.next = 34;
                 break;
 
               case 19:
-                _context2.prev = 19;
-                _context2.next = 22;
+                _context3.prev = 19;
+                _context3.next = 22;
                 return axios({
                   method: "post",
                   url: "/app/area",
@@ -2350,27 +2419,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 22:
-                _ref3 = _context2.sent;
-                _data = _ref3.data;
+                _ref4 = _context3.sent;
+                _data = _ref4.data;
                 this.text = "New area added";
                 this.snackbar = true;
                 this.dataList.unshift(_data.status);
                 this.close();
-                _context2.next = 34;
+                _context3.next = 34;
                 break;
 
               case 30:
-                _context2.prev = 30;
-                _context2.t1 = _context2["catch"](19);
+                _context3.prev = 30;
+                _context3.t1 = _context3["catch"](19);
                 this.text = "Failed";
                 this.snackbar = true;
 
               case 34:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this, [[1, 13], [19, 30]]);
+        }, _callee3, this, [[1, 13], [19, 30]]);
       }));
 
       function save() {
@@ -2379,6 +2448,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return save;
     }()
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/zmodaldelete.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/common/zmodaldelete.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      dialog: false
+    };
+  },
+  props: {
+    trigger: false,
+    title: '',
+    body: ''
+  },
+  methods: {
+    deleteData: function deleteData() {
+      this.$emit('request');
+      this.dialog = false;
+    }
+  },
+  watch: {
+    trigger: function trigger() {
+      this.dialog = true;
+    }
   }
 });
 
@@ -39987,6 +40104,23 @@ var render = function() {
                           _c("v-spacer"),
                           _vm._v(" "),
                           _c(
+                            "v-btn",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.selected[0],
+                                  expression: "selected[0]"
+                                }
+                              ],
+                              attrs: { color: "error" },
+                              on: { click: _vm.deleteSelected }
+                            },
+                            [_vm._v("Delete All")]
+                          ),
+                          _vm._v(" "),
+                          _c(
                             "v-dialog",
                             {
                               attrs: { "max-width": "500px", persistent: "" },
@@ -40238,7 +40372,6 @@ var render = function() {
                                 _vm._v(" "),
                                 _c(
                                   "td",
-                                  { staticClass: "justify-center layout px-0" },
                                   [
                                     _c(
                                       "v-icon",
@@ -40251,7 +40384,28 @@ var render = function() {
                                           }
                                         }
                                       },
-                                      [_vm._v("edit")]
+                                      [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\tedit\n\t\t\t\t\t\t\t\t"
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        attrs: { small: "", color: "error" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deleteItem(props.item)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\tdelete\n\t\t\t\t\t\t\t\t"
+                                        )
+                                      ]
                                     )
                                   ],
                                   1
@@ -40297,17 +40451,34 @@ var render = function() {
         1
       ),
       _vm._v(" "),
+      _c("zmodaldelete", {
+        attrs: {
+          trigger: _vm.isDeleteAll,
+          title: _vm.deleteTitle,
+          body: _vm.deleteBody
+        },
+        on: { request: _vm.deleteAll }
+      }),
+      _vm._v(" "),
+      _c("zmodaldelete", {
+        attrs: {
+          trigger: _vm.isDelete,
+          title: _vm.deleteTitle,
+          body: _vm.deleteBody
+        },
+        on: { request: _vm.remove }
+      }),
+      _vm._v(" "),
       _c(
         "v-snackbar",
         {
           attrs: {
-            bottom: _vm.y === "bottom",
-            left: _vm.x === "left",
-            "multi-line": _vm.mode === "multi-line",
+            "multi-line": "multi-line",
             right: _vm.x === "right",
-            timeout: _vm.timeout,
+            timeout: (_vm.timeout = 5000),
             top: _vm.y === "top",
-            vertical: _vm.mode === "vertical"
+            vertical: "vertical",
+            color: _vm.snackBarColor
           },
           model: {
             value: _vm.snackbar,
@@ -40322,7 +40493,7 @@ var render = function() {
           _c(
             "v-btn",
             {
-              attrs: { color: "pink", flat: "" },
+              attrs: { flat: "" },
               on: {
                 click: function($event) {
                   _vm.snackbar = false
@@ -40330,6 +40501,84 @@ var render = function() {
               }
             },
             [_vm._v("Close")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/zmodaldelete.vue?vue&type=template&id=11cf8c87&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/common/zmodaldelete.vue?vue&type=template&id=11cf8c87& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { persistent: "", "max-width": "350" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-card",
+        [
+          _c("v-card-title", [_vm._v(_vm._s(_vm.title))]),
+          _vm._v(" "),
+          _c("v-card-text", [_vm._v(_vm._s(_vm.body))]),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "green darken-1", flat: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.dialog = false
+                    }
+                  }
+                },
+                [_vm._v("Disagree")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "green darken-1", flat: "" },
+                  on: { click: _vm.deleteData }
+                },
+                [_vm._v("Agree")]
+              )
+            ],
+            1
           )
         ],
         1
@@ -83328,6 +83577,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_arealist_vue_vue_type_template_id_19b7219c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_arealist_vue_vue_type_template_id_19b7219c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/common/zmodaldelete.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/common/zmodaldelete.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _zmodaldelete_vue_vue_type_template_id_11cf8c87___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./zmodaldelete.vue?vue&type=template&id=11cf8c87& */ "./resources/js/components/common/zmodaldelete.vue?vue&type=template&id=11cf8c87&");
+/* harmony import */ var _zmodaldelete_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./zmodaldelete.vue?vue&type=script&lang=js& */ "./resources/js/components/common/zmodaldelete.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _zmodaldelete_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _zmodaldelete_vue_vue_type_template_id_11cf8c87___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _zmodaldelete_vue_vue_type_template_id_11cf8c87___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/common/zmodaldelete.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/common/zmodaldelete.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/common/zmodaldelete.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_zmodaldelete_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./zmodaldelete.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/zmodaldelete.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_zmodaldelete_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/common/zmodaldelete.vue?vue&type=template&id=11cf8c87&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/common/zmodaldelete.vue?vue&type=template&id=11cf8c87& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_zmodaldelete_vue_vue_type_template_id_11cf8c87___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./zmodaldelete.vue?vue&type=template&id=11cf8c87& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/zmodaldelete.vue?vue&type=template&id=11cf8c87&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_zmodaldelete_vue_vue_type_template_id_11cf8c87___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_zmodaldelete_vue_vue_type_template_id_11cf8c87___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
