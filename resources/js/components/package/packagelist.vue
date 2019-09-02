@@ -5,13 +5,13 @@
 				<v-flex xs12>
 					<v-card>
 						<v-toolbar flat color="white">
-							<v-toolbar-title>Customer List</v-toolbar-title>
+							<v-toolbar-title>Package List</v-toolbar-title>
 							<v-divider class="mx-2" inset vertical></v-divider>
 							<v-spacer></v-spacer>
-							<v-btn color="error" v-show="selected[0]" @click="deleteSelected">Delete All</v-btn>
+							<v-btn color="error" v-show="selected[0]"@click="deleteSelected">Delete All</v-btn>
 							<v-dialog v-model="dialog" max-width="500px" persistent>
 								<template v-slot:activator="{ on }">
-									<v-btn color="primary" dark class="mb-2" v-on="on" @click="edit=true">New Customer</v-btn>
+									<v-btn color="primary" dark class="mb-2" v-on="on" @click="edit=true">New Package</v-btn>
 								</template>
 								<v-card>
 									<v-card-title>
@@ -24,52 +24,23 @@
 												<v-flex xs12 sm12 md12>
 													<v-text-field
 														v-model="editedItem.name"
-														label="Customer Name"
+														label="Name"
 														:rules="[v => !!v || 'Name is required']"
 														required
 													></v-text-field>
 												</v-flex>
-												<v-flex xs12 sm12 md6>
-													<v-text-field
-														v-model="editedItem.contact"
-														label="Phone"
-														required
-													></v-text-field>
-												</v-flex>
-												<v-flex xs12 sm12 md6>
-													<v-text-field
-														v-model="editedItem.email"
-														label="Email"
-														required
-													></v-text-field>
-												</v-flex>
 												<v-flex xs12 sm12 md12>
-													<v-textarea
-                                                        name="input-7-1"
-                                                        label="Address"
-														:rules="[v => !!v || 'Address is required']"
-                                                        v-model="editedItem.address"
-                                                    ></v-textarea>
-												</v-flex>
-												<v-flex xs12 sm12 md12>
-													<v-select
-                                                        v-model="editedItem.package_id"
-                                                        item-text="name"
-                                                        item-value="id"
-														:rules="[v => !!v || 'Package is required']"
-                                                        :items="dataPackages"
-                                                        label="Package"
-                                                        ></v-select>
+													<v-text-field
+														v-model="editedItem.price"
+														:rules="[v => !!v || 'Price is required']"
+														label="Price"
+													></v-text-field>
 												</v-flex>
                                                 <v-flex xs12 sm12 md12>
-													<v-select
-                                                        v-model="editedItem.area_id"
-                                                        item-text="name"
-                                                        item-value="id"
-														:rules="[v => !!v || 'Area is required']"
-                                                        :items="dataAreas"
-                                                        label="Area"
-                                                        ></v-select>
+													<v-text-field
+														v-model="editedItem.code"
+														label="Package Code(optional)"
+													></v-text-field>
 												</v-flex>
 											</v-layout>
 										</v-container>
@@ -111,9 +82,8 @@
 								</td>
 								<td>{{ props.item.id }}</td>
 								<td>{{ props.item.name }}</td>
-								<td>{{ props.item.address }}</td>
-								<td>{{ props.item.area.name }}</td>
-								<td>{{ props.item.package.price }}</td>
+								<td>{{ props.item.price }}</td>
+								<td>{{ props.item.code }}</td>
 								<td>
 									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">
 										edit
@@ -163,9 +133,7 @@ export default {
 		dataIndex:null,
 		deleteTitle:'',
 		deleteBody:'',
-        search:'',
-        dataPackages:[],
-        dataAreas:[],
+		search:'',
 		selected: [],
 		snackbar: false,
 		y: "top",
@@ -174,28 +142,20 @@ export default {
 		text: "Hello, I'm a snackbar",
 		edit: true,
 		dialog: false,
-        dataList: [],
-        items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+		dataList: [],
 		headers: [
 			{ text: "ID", align: "left", value: "id" },
 			{
 				text: "Name",
 				value: "name"
 			},
-			{ text: "Address", value: "address" },
-			{ text: "Area", value: "area" },
-			{ text: "Package", value: "package" },
+			{ text: "Code", value: "code" },
 			{ text: "Action", value:"action"}
 		],
 		editedIndex: -1,
 		editedItem: {
 			name: "",
 			code: "",
-			address: "",
-			contact: "",
-			email: "",
-			area_id: "",
-			package_id: "",
 		},
 		defaultItem: {}
 	}),
@@ -223,23 +183,9 @@ export default {
 			try {
 				let { data } = await axios({
 					method: "get",
-					url: "/app/customer"
-				});
-				this.dataList = data;
-            } catch (e) {}
-            try {
-				let { data } = await axios({
-					method: "get",
 					url: "/app/package"
 				});
-				this.dataPackages = data;
-            } catch (e) {}
-            try {
-				let { data } = await axios({
-					method: "get",
-					url: "/app/area"
-				});
-				this.dataAreas = data;
+				this.dataList = data;
 			} catch (e) {}
 		},
 
@@ -260,7 +206,7 @@ export default {
 			try {
 				let { data } = await axios({
 					method: "delete",
-					url: "/app/customer/"+this.dataList[this.dataIndex].id,
+					url: "/app/package/"+this.dataList[this.dataIndex].id,
 				});
 				this.snackBarColor='green';
 				this.text = "Successfully Removed";
@@ -296,7 +242,7 @@ export default {
 				try {
 					let { data } = await axios({
 						method: "put",
-						url: "/app/customer/"+this.dataList[this.editedIndex].id,
+						url: "/app/package/"+this.dataList[this.editedIndex].id,
 						data: this.editedItem
 					});
 					console.log(data);
@@ -312,7 +258,7 @@ export default {
 				try {
 					let { data } = await axios({
 						method: "post",
-						url: "/app/customer",
+						url: "/app/package",
 						data: this.editedItem
 					});
 					this.text = "Data added";

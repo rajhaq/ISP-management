@@ -238,7 +238,7 @@ export default {
 						data: this.editedItem
 					});
 					console.log(data);
-					this.text = "User Edited";
+					this.text = "Data Edited";
 					this.snackbar = true;
 					Object.assign(this.dataList[this.editedIndex], this.editedItem);
 					this.close();
@@ -253,7 +253,7 @@ export default {
 						url: "/app/area",
 						data: this.editedItem
 					});
-					this.text = "New area added";
+					this.text = "Data added";
 					this.snackbar = true;
 					this.dataList.unshift(data.status);
 					this.close();

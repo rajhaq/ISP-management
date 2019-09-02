@@ -15,6 +15,8 @@ class CustomerController extends Controller
     public function index()
     {
         $data=Customer::orderBy('id', 'DESC')
+        ->with('area')
+        ->with('package')
         ->get();
         return $data;
     }
