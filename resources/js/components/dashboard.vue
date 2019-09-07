@@ -187,6 +187,7 @@
       drawer: null,
       items: [
         { icon: 'assignment', text: 'Dashboard', link:'' },
+        { icon: 'assignment', text: 'Bill', link:'billlist' },
         // { icon: 'contacts', text: 'Customer Contacts' },
         // { icon: 'history', text: 'Frequently contacted' },
         // { icon: 'content_copy', text: 'Duplicates' },

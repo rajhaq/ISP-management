@@ -28,13 +28,7 @@
 														required
 													></v-text-field>
 												</v-flex>
-												<v-flex xs12 sm12 md12>
-													<v-text-field
-														v-model="editedItem.username"
-														label="UserID"
-														:rules="usernameRules"
-													></v-text-field>
-												</v-flex>
+
 												<v-flex xs12 sm12 md12>
 													<v-text-field :rules="emailRules" v-model="editedItem.email" label="Email"></v-text-field>
 												</v-flex>
@@ -174,7 +168,6 @@ export default {
 		editedItem: {
 			name: "",
 			email: "",
-			username: "",
 			userType: ""
 		},
 		defaultItem: {}

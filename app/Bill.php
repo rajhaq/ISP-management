@@ -8,7 +8,7 @@ class Bill extends Model
 {
     protected $fillable = [
         'admin_id', 'customer_id', 'package','price', 
-        'status'
+        'startdate', 'enddate', 'month', 'year','status'
     ];
     public function admin()
     {

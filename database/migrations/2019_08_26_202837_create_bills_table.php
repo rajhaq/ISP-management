@@ -19,6 +19,10 @@ class CreateBillsTable extends Migration
             $table->integer('customer_id');
             $table->string('package')->nullable();
             $table->integer('price');
+            $table->date('startdate');
+            $table->date('enddate');
+            $table->integer('month');
+            $table->integer('year');
             $table->integer('status')->default(1);
             $table->timestamps();
         });

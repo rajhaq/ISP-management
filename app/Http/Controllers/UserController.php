@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data=User::select('email','id','name','username','userType')
+        $data=User::select('email','id','name','userType')
         ->get();
         return $data;
     }
@@ -40,7 +40,6 @@ class UserController extends Controller
         $user->name=$request->input('name');
         $user->email=$request->input('email');
         $user->userType=$request->input('userType');
-        $user->username=$request->input('username');
         $user->password=bcrypt($request->input('password'));
         $user->save();
         return $user;

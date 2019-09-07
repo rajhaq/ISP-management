@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Bill;
+use App\Customer;
+use Carbon\Carbon;
+
 class BillController extends Controller
 {
      /**
@@ -110,5 +113,48 @@ class BillController extends Controller
           ->first();
         $data->delete();
         return $data;
+    }
+    public function generate()
+    {
+        $users=Customer::where('status',1)
+        ->with('package')
+        ->get();
+        $date = Carbon::now(); 
+        $month=date_format($date,"m");
+        $year=date_format($date,"Y");
+        $bills=Bill::where('enddate',date_format($date,"y-m-m"))
+        ->get();
+        if(count($bills))
+        {
+            return response()->json([
+                'msg' => 'Error',
+                'status' => $users,
+                'month' => $month,
+                'year' => $year,
+           ],200);            
+    
+        }
+
+       foreach($users as $user)
+            {
+                Bill::create(
+                    [
+                        'admin_id' => 1,
+                        'customer_id' => $user->id,
+                        'package' => $user->package_id,
+                        'price' => $user->package->price,
+                        'startdate' => date_format($date,"y-m-m"),
+                        'enddate' => date_format($date,"y-m-m"),
+                        'month' => $month,
+                        'year' => $year,
+                    ]
+                    );
+            }
+            return response()->json([
+                'msg' => 'Inserted',
+                'status' => $users,
+                'month' => $month,
+                'year' => $year,
+           ],200);
     }
 }

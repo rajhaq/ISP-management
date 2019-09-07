@@ -5,6 +5,7 @@ import userlist from './components/user/userlist.vue'
 import arealist from './components/area/arealist.vue'
 import packagelist from './components/package/packagelist.vue'
 import customerlist from './components/customer/customerlist.vue'
+import billlist from './components/bill/billlist.vue'
 let onlyAdmin = ['Admin']
 let adminAndSale = [1, 2]
 Vue.use(Router)
@@ -57,7 +58,15 @@ export default new Router({
 			}
 				  
 		},
-		
+		{
+			path: '/dashboard/billlist',
+			name: 'billlist',
+			component: billlist,
+			meta: {
+				allowed: onlyAdmin
+			}
+				  
+		},		
 				  
 	    						
 		]
