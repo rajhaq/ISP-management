@@ -17,7 +17,9 @@ class BillController extends Controller
      */
     public function index()
     {
-        $data=Bill::orderBy('id', 'DESC')
+        $data=Bill::with('customer')
+        ->with('package_data')
+        ->orderBy('id', 'DESC')
         ->get();
         return $data;
     }

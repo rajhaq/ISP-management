@@ -2471,6 +2471,24 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2640,7 +2658,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       filterValue: {
         year: '',
         month: ''
@@ -2690,8 +2710,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       deleteTitle: '',
       deleteBody: '',
       search: '',
+      dataList: [],
       dataPackages: [],
-      dataAreas: [],
+      dataCustomer: [],
       selected: [],
       snackbar: false,
       y: "top",
@@ -2699,41 +2720,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       mode: "",
       text: "Hello, I'm a snackbar",
       edit: true,
-      dialog: false,
-      dataList: [],
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-      headers: [{
-        text: "ID",
-        align: "left",
-        value: "id"
-      }, {
-        text: "Name",
-        value: "name"
-      }, {
-        text: "Address",
-        value: "address"
-      }, {
-        text: "Area",
-        value: "area"
-      }, {
-        text: "Package",
-        value: "package"
-      }, {
-        text: "Action",
-        value: "action"
-      }],
-      editedIndex: -1,
-      editedItem: {
-        name: "",
-        code: "",
-        address: "",
-        contact: "",
-        email: "",
-        area_id: "",
-        package_id: ""
-      },
-      defaultItem: {}
-    };
+      dialog: false
+    }, _defineProperty(_ref, "dataList", []), _defineProperty(_ref, "items", ['Foo', 'Bar', 'Fizz', 'Buzz']), _defineProperty(_ref, "headers", [{
+      text: "ID",
+      align: "left",
+      value: "id"
+    }, {
+      text: "Year",
+      value: "year"
+    }, {
+      text: "Month",
+      value: "month"
+    }, {
+      text: "Customer",
+      value: "customer_id"
+    }, {
+      text: "Package",
+      value: "package"
+    }, {
+      text: "Bill Amount",
+      value: "price"
+    }, {
+      text: "Action",
+      value: "action"
+    }]), _defineProperty(_ref, "editedIndex", -1), _defineProperty(_ref, "editedItem", {
+      customer_id: "",
+      package: "",
+      price: "",
+      year: "",
+      month: ""
+    }), _defineProperty(_ref, "defaultItem", {}), _ref;
   },
   props: {
     source: String
@@ -2758,11 +2774,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    selectCustomer: function selectCustomer(item) {
+      console.log('customer clicked');
+      var data = {};
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.dataCustomer[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var d = _step.value;
+
+          if (d.id == item) {
+            data = d;
+            break;
+          }
+        } // let customer = this.dataCustomer.indexOf(item);
+
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      this.editedItem.package = data.package_id;
+      this.editedItem.price = data.package.price;
+    },
     initialize: function () {
       var _initialize = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var _ref, data, _ref2, _data, _ref3, _data2;
+        var _ref2, data, _ref3, _data, _ref4, _data2;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -2772,12 +2823,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 3;
                 return axios({
                   method: "get",
-                  url: "/app/customer"
+                  url: "/app/bill"
                 });
 
               case 3:
-                _ref = _context.sent;
-                data = _ref.data;
+                _ref2 = _context.sent;
+                data = _ref2.data;
                 this.dataList = data;
                 _context.next = 10;
                 break;
@@ -2791,13 +2842,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 13;
                 return axios({
                   method: "get",
-                  url: "/app/package"
+                  url: "/app/customer"
                 });
 
               case 13:
-                _ref2 = _context.sent;
-                _data = _ref2.data;
-                this.dataPackages = _data;
+                _ref3 = _context.sent;
+                _data = _ref3.data;
+                this.dataCustomer = _data;
                 _context.next = 20;
                 break;
 
@@ -2810,13 +2861,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 23;
                 return axios({
                   method: "get",
-                  url: "/app/area"
+                  url: "/app/package"
                 });
 
               case 23:
-                _ref3 = _context.sent;
-                _data2 = _ref3.data;
-                this.dataAreas = _data2;
+                _ref4 = _context.sent;
+                _data2 = _ref4.data;
+                this.dataPackages = _data2;
                 _context.next = 30;
                 break;
 
@@ -2841,7 +2892,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     editItem: function editItem(item) {
       this.edit = false;
       this.editedIndex = this.dataList.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.editedItem.year = item.year;
+      this.editedItem.month = item.month;
+      this.editedItem.customer_id = item.customer_id;
+      this.editedItem.package = parseInt(item.package);
+      this.editedItem.price = item.price;
       this.dialog = true;
     },
     deleteItem: function deleteItem(item) {
@@ -2849,11 +2904,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.deleteTitle = "Are you sure you want to delete this item?";
       this.isDelete = !this.isDelete;
     },
+    invoiceItem: function invoiceItem(item) {},
     remove: function () {
       var _remove = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _ref4, data;
+        var _ref5, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
@@ -2863,12 +2919,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context2.next = 3;
                 return axios({
                   method: "delete",
-                  url: "/app/customer/" + this.dataList[this.dataIndex].id
+                  url: "/app/bill/" + this.dataList[this.dataIndex].id
                 });
 
               case 3:
-                _ref4 = _context2.sent;
-                data = _ref4.data;
+                _ref5 = _context2.sent;
+                data = _ref5.data;
                 this.snackBarColor = 'green';
                 this.text = "Successfully Removed";
                 this.snackbar = true;
@@ -2916,7 +2972,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _save = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-        var _ref5, data, _ref6, _data3;
+        var _ref6, data, _ref7, _data3;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
@@ -2931,13 +2987,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context3.next = 4;
                 return axios({
                   method: "put",
-                  url: "/app/customer/" + this.dataList[this.editedIndex].id,
+                  url: "/app/bill/" + this.dataList[this.editedIndex].id,
                   data: this.editedItem
                 });
 
               case 4:
-                _ref5 = _context3.sent;
-                data = _ref5.data;
+                _ref6 = _context3.sent;
+                data = _ref6.data;
                 console.log(data);
                 this.text = "Data Edited";
                 this.snackbar = true;
@@ -2953,40 +3009,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.snackbar = true;
 
               case 17:
-                _context3.next = 34;
+                _context3.next = 36;
                 break;
 
               case 19:
-                _context3.prev = 19;
-                _context3.next = 22;
+                this.editedItem.startdate = this.editedItem.year + '-' + this.editedItem.month + '-' + this.editedItem.month;
+                this.editedItem.enddate = this.editedItem.year + '-' + this.editedItem.month + '-' + this.editedItem.month;
+                _context3.prev = 21;
+                _context3.next = 24;
                 return axios({
                   method: "post",
-                  url: "/app/customer",
+                  url: "/app/bill",
                   data: this.editedItem
                 });
 
-              case 22:
-                _ref6 = _context3.sent;
-                _data3 = _ref6.data;
+              case 24:
+                _ref7 = _context3.sent;
+                _data3 = _ref7.data;
                 this.text = "Data added";
                 this.snackbar = true;
                 this.dataList.unshift(_data3.status);
                 this.close();
-                _context3.next = 34;
+                _context3.next = 36;
                 break;
 
-              case 30:
-                _context3.prev = 30;
-                _context3.t1 = _context3["catch"](19);
+              case 32:
+                _context3.prev = 32;
+                _context3.t1 = _context3["catch"](21);
                 this.text = "Failed";
                 this.snackbar = true;
 
-              case 34:
+              case 36:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[1, 13], [19, 30]]);
+        }, _callee3, this, [[1, 13], [21, 32]]);
       }));
 
       function save() {
@@ -42094,138 +42152,37 @@ var render = function() {
                                                   }
                                                 },
                                                 [
-                                                  _c("v-text-field", {
+                                                  _c("v-select", {
                                                     attrs: {
-                                                      label: "Customer Name",
+                                                      "item-text": "name",
+                                                      "item-value": "id",
                                                       rules: [
                                                         function(v) {
                                                           return (
                                                             !!v ||
-                                                            "Name is required"
+                                                            "Customer is required"
                                                           )
                                                         }
                                                       ],
-                                                      required: ""
+                                                      items: _vm.dataCustomer,
+                                                      label: "Customer"
+                                                    },
+                                                    on: {
+                                                      change: _vm.selectCustomer
                                                     },
                                                     model: {
                                                       value:
-                                                        _vm.editedItem.name,
+                                                        _vm.editedItem
+                                                          .customer_id,
                                                       callback: function($$v) {
                                                         _vm.$set(
                                                           _vm.editedItem,
-                                                          "name",
+                                                          "customer_id",
                                                           $$v
                                                         )
                                                       },
                                                       expression:
-                                                        "editedItem.name"
-                                                    }
-                                                  })
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-flex",
-                                                {
-                                                  attrs: {
-                                                    xs12: "",
-                                                    sm12: "",
-                                                    md6: ""
-                                                  }
-                                                },
-                                                [
-                                                  _c("v-text-field", {
-                                                    attrs: {
-                                                      label: "Phone",
-                                                      required: ""
-                                                    },
-                                                    model: {
-                                                      value:
-                                                        _vm.editedItem.contact,
-                                                      callback: function($$v) {
-                                                        _vm.$set(
-                                                          _vm.editedItem,
-                                                          "contact",
-                                                          $$v
-                                                        )
-                                                      },
-                                                      expression:
-                                                        "editedItem.contact"
-                                                    }
-                                                  })
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-flex",
-                                                {
-                                                  attrs: {
-                                                    xs12: "",
-                                                    sm12: "",
-                                                    md6: ""
-                                                  }
-                                                },
-                                                [
-                                                  _c("v-text-field", {
-                                                    attrs: {
-                                                      label: "Email",
-                                                      required: ""
-                                                    },
-                                                    model: {
-                                                      value:
-                                                        _vm.editedItem.email,
-                                                      callback: function($$v) {
-                                                        _vm.$set(
-                                                          _vm.editedItem,
-                                                          "email",
-                                                          $$v
-                                                        )
-                                                      },
-                                                      expression:
-                                                        "editedItem.email"
-                                                    }
-                                                  })
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-flex",
-                                                {
-                                                  attrs: {
-                                                    xs12: "",
-                                                    sm12: "",
-                                                    md12: ""
-                                                  }
-                                                },
-                                                [
-                                                  _c("v-textarea", {
-                                                    attrs: {
-                                                      name: "input-7-1",
-                                                      label: "Address",
-                                                      rules: [
-                                                        function(v) {
-                                                          return (
-                                                            !!v ||
-                                                            "Address is required"
-                                                          )
-                                                        }
-                                                      ]
-                                                    },
-                                                    model: {
-                                                      value:
-                                                        _vm.editedItem.address,
-                                                      callback: function($$v) {
-                                                        _vm.$set(
-                                                          _vm.editedItem,
-                                                          "address",
-                                                          $$v
-                                                        )
-                                                      },
-                                                      expression:
-                                                        "editedItem.address"
+                                                        "editedItem.customer_id"
                                                     }
                                                   })
                                                 ],
@@ -42259,17 +42216,92 @@ var render = function() {
                                                     },
                                                     model: {
                                                       value:
-                                                        _vm.editedItem
-                                                          .package_id,
+                                                        _vm.editedItem.package,
                                                       callback: function($$v) {
                                                         _vm.$set(
                                                           _vm.editedItem,
-                                                          "package_id",
+                                                          "package",
                                                           $$v
                                                         )
                                                       },
                                                       expression:
-                                                        "editedItem.package_id"
+                                                        "editedItem.package"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-flex",
+                                                {
+                                                  attrs: {
+                                                    xs12: "",
+                                                    sm12: "",
+                                                    md6: ""
+                                                  }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    attrs: {
+                                                      label: "Price",
+                                                      required: ""
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.editedItem.price,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.editedItem,
+                                                          "price",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "editedItem.price"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-flex",
+                                                {
+                                                  attrs: {
+                                                    xs12: "",
+                                                    sm12: "",
+                                                    md6: ""
+                                                  }
+                                                },
+                                                [
+                                                  _c("v-select", {
+                                                    attrs: {
+                                                      "item-text": "name",
+                                                      "item-value": "id",
+                                                      rules: [
+                                                        function(v) {
+                                                          return (
+                                                            !!v ||
+                                                            "Month is required"
+                                                          )
+                                                        }
+                                                      ],
+                                                      items: _vm.dataMonth,
+                                                      label: "Month"
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.editedItem.month,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.editedItem,
+                                                          "month",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "editedItem.month"
                                                     }
                                                   })
                                                 ],
@@ -42288,31 +42320,29 @@ var render = function() {
                                                 [
                                                   _c("v-select", {
                                                     attrs: {
-                                                      "item-text": "name",
-                                                      "item-value": "id",
                                                       rules: [
                                                         function(v) {
                                                           return (
                                                             !!v ||
-                                                            "Area is required"
+                                                            "Year is required"
                                                           )
                                                         }
                                                       ],
-                                                      items: _vm.dataAreas,
-                                                      label: "Area"
+                                                      items: _vm.dataYear,
+                                                      label: "Year"
                                                     },
                                                     model: {
                                                       value:
-                                                        _vm.editedItem.area_id,
+                                                        _vm.editedItem.year,
                                                       callback: function($$v) {
                                                         _vm.$set(
                                                           _vm.editedItem,
-                                                          "area_id",
+                                                          "year",
                                                           $$v
                                                         )
                                                       },
                                                       expression:
-                                                        "editedItem.area_id"
+                                                        "editedItem.year"
                                                     }
                                                   })
                                                 ],
@@ -42372,32 +42402,92 @@ var render = function() {
                       _c(
                         "v-card-title",
                         [
-                          _c("v-select", {
-                            attrs: {
-                              "item-text": "name",
-                              "item-value": "id",
-                              items: _vm.dataMonth,
-                              label: "Month"
+                          _c(
+                            "v-layout",
+                            {
+                              attrs: {
+                                "align-start": "",
+                                row: "",
+                                "fill-height": ""
+                              }
                             },
-                            model: {
-                              value: _vm.filterValue.month,
-                              callback: function($$v) {
-                                _vm.$set(_vm.filterValue, "month", $$v)
-                              },
-                              expression: "filterValue.month"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-select", {
-                            attrs: { items: _vm.dataYear, label: "Year" },
-                            model: {
-                              value: _vm.filterValue.year,
-                              callback: function($$v) {
-                                _vm.$set(_vm.filterValue, "year", $$v)
-                              },
-                              expression: "filterValue.year"
-                            }
-                          }),
+                            [
+                              _c(
+                                "v-flex",
+                                { attrs: { "ma-3": "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      "item-text": "name",
+                                      "item-value": "id",
+                                      items: _vm.dataCustomer,
+                                      label: "Customer",
+                                      box: ""
+                                    },
+                                    model: {
+                                      value: _vm.filterValue.customer,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.filterValue,
+                                          "customer",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "filterValue.customer"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { "ma-3": "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      "item-text": "name",
+                                      "item-value": "id",
+                                      items: _vm.dataMonth,
+                                      label: "Month",
+                                      box: ""
+                                    },
+                                    model: {
+                                      value: _vm.filterValue.month,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.filterValue, "month", $$v)
+                                      },
+                                      expression: "filterValue.month"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { "ma-3": "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.dataYear,
+                                      label: "Year",
+                                      box: ""
+                                    },
+                                    model: {
+                                      value: _vm.filterValue.year,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.filterValue, "year", $$v)
+                                      },
+                                      expression: "filterValue.year"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c("v-spacer"),
                           _vm._v(" "),
@@ -42405,8 +42495,7 @@ var render = function() {
                             attrs: {
                               "append-icon": "search",
                               label: "Search",
-                              "single-line": "",
-                              "hide-details": ""
+                              outline: ""
                             },
                             model: {
                               value: _vm.search,
@@ -42455,17 +42544,19 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("td", [_vm._v(_vm._s(props.item.id))]),
                                 _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(props.item.name))]),
+                                _c("td", [_vm._v(_vm._s(props.item.year))]),
                                 _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(props.item.address))]),
+                                _c("td", [_vm._v(_vm._s(props.item.month))]),
                                 _vm._v(" "),
                                 _c("td", [
-                                  _vm._v(_vm._s(props.item.area.name))
+                                  _vm._v(_vm._s(props.item.customer.name))
                                 ]),
                                 _vm._v(" "),
                                 _c("td", [
-                                  _vm._v(_vm._s(props.item.package.price))
+                                  _vm._v(_vm._s(props.item.package_data.name))
                                 ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(props.item.price))]),
                                 _vm._v(" "),
                                 _c(
                                   "td",
@@ -42474,7 +42565,7 @@ var render = function() {
                                       "v-icon",
                                       {
                                         staticClass: "mr-2",
-                                        attrs: { small: "", color: "primary" },
+                                        attrs: { color: "primary" },
                                         on: {
                                           click: function($event) {
                                             return _vm.editItem(props.item)
@@ -42491,7 +42582,7 @@ var render = function() {
                                     _c(
                                       "v-icon",
                                       {
-                                        attrs: { small: "", color: "error" },
+                                        attrs: { color: "error" },
                                         on: {
                                           click: function($event) {
                                             return _vm.deleteItem(props.item)
@@ -42501,6 +42592,23 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n\t\t\t\t\t\t\t\t\t\tdelete\n\t\t\t\t\t\t\t\t\t"
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-icon",
+                                      {
+                                        attrs: { color: "success" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.invoiceItem(props.item)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\tprint\n\t\t\t\t\t\t\t\t\t"
                                         )
                                       ]
                                     )

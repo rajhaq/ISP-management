@@ -22,38 +22,19 @@
 										<v-container grid-list-md>
 											<v-layout wrap>
 												<v-flex xs12 sm12 md12>
-													<v-text-field
-														v-model="editedItem.name"
-														label="Customer Name"
-														:rules="[v => !!v || 'Name is required']"
-														required
-													></v-text-field>
-												</v-flex>
-												<v-flex xs12 sm12 md6>
-													<v-text-field
-														v-model="editedItem.contact"
-														label="Phone"
-														required
-													></v-text-field>
-												</v-flex>
-												<v-flex xs12 sm12 md6>
-													<v-text-field
-														v-model="editedItem.email"
-														label="Email"
-														required
-													></v-text-field>
-												</v-flex>
-												<v-flex xs12 sm12 md12>
-													<v-textarea
-                                                        name="input-7-1"
-                                                        label="Address"
-														:rules="[v => !!v || 'Address is required']"
-                                                        v-model="editedItem.address"
-                                                    ></v-textarea>
+													<v-select
+                                                        v-model="editedItem.customer_id"
+                                                        item-text="name"
+                                                        item-value="id"
+														:rules="[v => !!v || 'Customer is required']"
+                                                        :items="dataCustomer"
+                                                        label="Customer"
+														@change="selectCustomer"
+                                                        ></v-select>
 												</v-flex>
 												<v-flex xs12 sm12 md12>
 													<v-select
-                                                        v-model="editedItem.package_id"
+                                                        v-model="editedItem.package"
                                                         item-text="name"
                                                         item-value="id"
 														:rules="[v => !!v || 'Package is required']"
@@ -61,14 +42,29 @@
                                                         label="Package"
                                                         ></v-select>
 												</v-flex>
-                                                <v-flex xs12 sm12 md12>
+												<v-flex xs12 sm12 md6>
+													<v-text-field
+														v-model="editedItem.price"
+														label="Price"
+														required
+													></v-text-field>
+												</v-flex>
+												<v-flex xs12 sm12 md6>
 													<v-select
-                                                        v-model="editedItem.area_id"
+                                                        v-model="editedItem.month"
                                                         item-text="name"
                                                         item-value="id"
-														:rules="[v => !!v || 'Area is required']"
-                                                        :items="dataAreas"
-                                                        label="Area"
+														:rules="[v => !!v || 'Month is required']"
+                                                        :items="dataMonth"
+                                                        label="Month"
+                                                        ></v-select>
+												</v-flex>
+												<v-flex xs12 sm12 md12>
+													<v-select
+                                                        v-model="editedItem.year"
+														:rules="[v => !!v || 'Year is required']"
+                                                        :items="dataYear"
+                                                        label="Year"
                                                         ></v-select>
 												</v-flex>
 											</v-layout>
@@ -85,25 +81,42 @@
 							</v-dialog>
 						</v-toolbar>
 							<v-card-title>
-								<v-select
-                                                        v-model="filterValue.month"
-                                                        item-text="name"
-                                                        item-value="id"
-                                                        :items="dataMonth"
-                                                        label="Month"
-                                                        ></v-select>
-                                                        <v-select
-                                                        v-model="filterValue.year"
-                                                        :items="dataYear"
-                                                        label="Year"
-                                                        ></v-select>
+								<v-layout align-start row fill-height>
+									<v-flex ma-3>
+									<v-select
+										v-model="filterValue.customer"
+										item-text="name"
+										item-value="id"
+										:items="dataCustomer"
+										label="Customer"
+										box
+										></v-select>
+									</v-flex>
+									<v-flex ma-3>
+									<v-select
+										v-model="filterValue.month"
+										item-text="name"
+										item-value="id"
+										:items="dataMonth"
+										label="Month"
+										box
+										></v-select>
+									</v-flex>
+									<v-flex ma-3>
+										<v-select
+										v-model="filterValue.year"
+										:items="dataYear"
+										label="Year"
+										box
+										></v-select>
+									</v-flex>
+								</v-layout>
 								<v-spacer></v-spacer>
 								<v-text-field
 									v-model="search"
 									append-icon="search"
 									label="Search"
-									single-line
-									hide-details
+									outline
 								></v-text-field>
 							</v-card-title>
 							<v-data-table
@@ -122,17 +135,20 @@
 									></v-checkbox>
 								</td>
 								<td>{{ props.item.id }}</td>
-								<td>{{ props.item.name }}</td>
-								<td>{{ props.item.address }}</td>
-								<td>{{ props.item.area.name }}</td>
-								<td>{{ props.item.package.price }}</td>
+								<td>{{ props.item.year }}</td>
+								<td>{{ props.item.month }}</td>
+								<td>{{ props.item.customer.name }}</td>
+								<td>{{ props.item.package_data.name }}</td>
+								<td>{{ props.item.price }}</td>
 								<td>
-									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">
+									<v-icon  class="mr-2" @click="editItem(props.item)" color="primary">
 										edit
 									</v-icon>
-
-									<v-icon small @click="deleteItem(props.item)" color="error">
+									<v-icon  @click="deleteItem(props.item)" color="error">
 										delete
+									</v-icon>
+									<v-icon  @click="invoiceItem(props.item)" color="success">
+										print
 									</v-icon>
 								</td>
 							</template>
@@ -235,8 +251,9 @@ export default {
 		deleteTitle:'',
 		deleteBody:'',
         search:'',
+        dataList:[],
         dataPackages:[],
-        dataAreas:[],
+        dataCustomer:[],
 		selected: [],
 		snackbar: false,
 		y: "top",
@@ -249,24 +266,23 @@ export default {
         items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
 		headers: [
 			{ text: "ID", align: "left", value: "id" },
+			{ text: "Year", value: "year" },
+			{ text: "Month", value: "month" },
 			{
-				text: "Name",
-				value: "name"
+				text: "Customer",
+				value: "customer_id"
 			},
-			{ text: "Address", value: "address" },
-			{ text: "Area", value: "area" },
 			{ text: "Package", value: "package" },
+			{ text: "Bill Amount", value: "price" },
 			{ text: "Action", value:"action"}
 		],
 		editedIndex: -1,
 		editedItem: {
-			name: "",
-			code: "",
-			address: "",
-			contact: "",
-			email: "",
-			area_id: "",
-			package_id: "",
+			customer_id: "",
+			package: "",
+			price: "",
+			year: "",
+			month: "",
 		},
 		defaultItem: {}
 	}),
@@ -298,13 +314,39 @@ export default {
 	},
 
 	methods: {
+		selectCustomer(item)
+		{
+			console.log('customer clicked')
+			let data={};
+			for(let d of this.dataCustomer)
+			{
+				if(d.id==item)
+				{
+					data=d;
+					break;
+				}
+			}
+			// let customer = this.dataCustomer.indexOf(item);
+			this.editedItem.package=data.package_id
+			this.editedItem.price=data.package.price
+
+
+
+		},
 		async initialize() {
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/bill"
+				});
+				this.dataList = data;
+			} catch (e) {}
 			try {
 				let { data } = await axios({
 					method: "get",
 					url: "/app/customer"
 				});
-				this.dataList = data;
+				this.dataCustomer = data;
             } catch (e) {}
             try {
 				let { data } = await axios({
@@ -313,19 +355,16 @@ export default {
 				});
 				this.dataPackages = data;
             } catch (e) {}
-            try {
-				let { data } = await axios({
-					method: "get",
-					url: "/app/area"
-				});
-				this.dataAreas = data;
-			} catch (e) {}
 		},
 
 		editItem(item) {
 			this.edit = false;
 			this.editedIndex = this.dataList.indexOf(item);
-			this.editedItem = Object.assign({}, item);
+			this.editedItem.year = item.year
+			this.editedItem.month = item.month
+			this.editedItem.customer_id = item.customer_id
+			this.editedItem.package = parseInt(item.package)
+			this.editedItem.price = item.price
 			this.dialog = true;
 		},
 
@@ -334,12 +373,16 @@ export default {
 			this.deleteTitle="Are you sure you want to delete this item?";
 			this.isDelete=!this.isDelete;
 		},
+		invoiceItem(item)
+		{
+
+		},
 		async remove()
 		{
 			try {
 				let { data } = await axios({
 					method: "delete",
-					url: "/app/customer/"+this.dataList[this.dataIndex].id,
+					url: "/app/bill/"+this.dataList[this.dataIndex].id,
 				});
 				this.snackBarColor='green';
 				this.text = "Successfully Removed";
@@ -375,7 +418,7 @@ export default {
 				try {
 					let { data } = await axios({
 						method: "put",
-						url: "/app/customer/"+this.dataList[this.editedIndex].id,
+						url: "/app/bill/"+this.dataList[this.editedIndex].id,
 						data: this.editedItem
 					});
 					console.log(data);
@@ -388,10 +431,12 @@ export default {
 					this.snackbar = true;
 				}
 			} else {
+				this.editedItem.startdate=this.editedItem.year+'-'+this.editedItem.month+'-'+this.editedItem.month
+				this.editedItem.enddate=this.editedItem.year+'-'+this.editedItem.month+'-'+this.editedItem.month
 				try {
 					let { data } = await axios({
 						method: "post",
-						url: "/app/customer",
+						url: "/app/bill",
 						data: this.editedItem
 					});
 					this.text = "Data added";

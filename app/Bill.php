@@ -18,5 +18,9 @@ class Bill extends Model
     {
        return $this->belongsTo('App\Customer', 'customer_id');
     } 
+    public function package_data()
+    {
+       return $this->belongsTo('App\Package', 'package');
+    } 
 
 }
