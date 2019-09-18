@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Invoice;
+use App\InvoiceBill;
+use Auth;
 class InvoiceController extends Controller
 {
     /**
@@ -13,7 +15,11 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        $data=Invoice::orderBy('id', 'DESC')
+        ->with('customer')
+        ->with('bill')
+        ->get();
+        return $data;
     }
 
     /**
@@ -34,7 +40,39 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $auth_id=Auth::id();
+        $request->request->add(['admin_id' => $auth_id]);
+        $create=Invoice::create(
+            [
+                'admin_id' => $auth_id,
+                'customer_id'=>$request->customer_id,
+                'total_amount'=>$request->total_amount,
+                'total_bill'=>$request->total_bill,
+            ]
+        );
+        foreach($request->bills as $bill)
+        {
+            InvoiceBill::create(
+                [
+                    'invoice_id' => $create->id,
+                    'bill_id'=>$bill['id'],
+                ]
+                );
+        }
+        if($create)
+        {
+            return response()->json([
+                'msg' => 'Inserted',
+                'status' => $create
+           ],200);
+        }
+        else
+        {
+            return response()->json([
+                'msg' => 'Inserted',
+                'status' => false
+           ],200);
+        }
     }
 
     /**

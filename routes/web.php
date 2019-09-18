@@ -21,6 +21,7 @@ Route::resource('/app/customer', 'CustomerController');
 Route::resource('/app/package', 'PackageController');
 Route::resource('/app/invoice', 'InvoiceController');
 Route::get('app/billgenerate', 'BillController@generate');
+Route::get('app/customerbill/{id}', 'BillController@customerBill');
 
 Route::get('/users', 'CustomerController@index')->name('users');
 Route::post('/app/updateUser', 'UserController@updateUser');

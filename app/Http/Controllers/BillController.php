@@ -73,6 +73,17 @@ class BillController extends Controller
         $data=Bill::find($id);
         return $data;
     }
+    public function customerBill($id)
+    {
+        $data=Bill::with('customer')
+        ->with('package_data')
+        ->where('customer_id',$id)
+        ->where('status',1)
+        ->orderBy('id', 'DESC')
+        ->get();
+        return $data;
+    }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -82,6 +93,7 @@ class BillController extends Controller
      */
     public function edit($id)
     {
+
         
     }
 

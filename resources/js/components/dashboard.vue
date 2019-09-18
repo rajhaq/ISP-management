@@ -188,6 +188,8 @@
       items: [
         { icon: 'assignment', text: 'Dashboard', link:'' },
         { icon: 'assignment', text: 'Bill', link:'billlist' },
+        { icon: 'assignment', text: 'Invoice List', link:'invoicelist' },
+        { icon: 'assignment', text: 'Invoice Generate', link:'invoicecreate' },
         // { icon: 'contacts', text: 'Customer Contacts' },
         // { icon: 'history', text: 'Frequently contacted' },
         // { icon: 'content_copy', text: 'Duplicates' },

@@ -15,6 +15,8 @@ class CreateInvoiceBillsTable extends Migration
     {
         Schema::create('invoice_bills', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('invoice_id');
+            $table->integer('bill_id');
             $table->timestamps();
         });
     }

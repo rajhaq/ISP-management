@@ -6,6 +6,8 @@ import arealist from './components/area/arealist.vue'
 import packagelist from './components/package/packagelist.vue'
 import customerlist from './components/customer/customerlist.vue'
 import billlist from './components/bill/billlist.vue'
+import invoicecreate from './components/invoice/create.vue'
+import invoicelist from './components/invoice/invoicelist.vue'
 let onlyAdmin = ['Admin']
 let adminAndSale = [1, 2]
 Vue.use(Router)
@@ -67,7 +69,24 @@ export default new Router({
 			}
 				  
 		},		
+		{
+			path: '/dashboard/invoicecreate',
+			name: 'invoicecreate',
+			component: invoicecreate,
+			meta: {
+				allowed: onlyAdmin
+			}
 				  
+		},
+		{
+			path: '/dashboard/invoicelist',
+			name: 'invoicelist',
+			component: invoicelist,
+			meta: {
+				allowed: onlyAdmin
+			}
+				  
+		},							  
 	    						
 		]
 })

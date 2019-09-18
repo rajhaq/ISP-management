@@ -5,41 +5,61 @@
 				<v-flex xs12>
 					<v-card>
 						<v-toolbar flat color="white">
-							<v-toolbar-title>Invoice List</v-toolbar-title>
+							<v-toolbar-title>Invoice Generate</v-toolbar-title>
 							<v-divider class="mx-2" inset vertical></v-divider>
 							<v-spacer></v-spacer>
-							<v-btn color="error" v-show="selected[0]" @click="deleteSelected">Delete All</v-btn>
-                            <v-btn color="primary" dark class="mb-2" v-on="on" @click="edit=true">New Bill</v-btn>
+							<v-btn color="error" v-show="dataList.length" @click="generateInvoice">Generate Invoice</v-btn>
 						</v-toolbar>
 							<v-card-title>
 								<v-layout align-start row fill-height>
 									<v-flex ma-3>
-									<v-select
-										v-model="filterValue.customer"
-										item-text="name"
-										item-value="id"
-										:items="dataCustomer"
-										label="Customer"
-										box
-										></v-select>
+                                        <v-autocomplete
+                                            v-model="filterValue.customer"
+                                            :items="dataCustomer"
+                                            item-text="name"
+                                            item-value="id"
+                                            label="Customer"
+                                            box
+                                            @change="getBill"
+
+                                        >
+                                        <template v-slot:item="{ item }">
+                                            <v-list-tile-avatar
+                                            color="indigo"
+                                            class="headline font-weight-light white--text"
+                                            >
+                                            {{ item.name.charAt(0) }}
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                            <v-list-tile-title v-text="item.name"></v-list-tile-title>
+                                            <v-list-tile-sub-title v-text="item.address"></v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                        </v-autocomplete>
 									</v-flex>
 									<v-flex ma-3>
-									<v-select
-										v-model="filterValue.month"
-										item-text="name"
-										item-value="id"
-										:items="dataMonth"
-										label="Month"
-										box
-										></v-select>
-									</v-flex>
-									<v-flex ma-3>
-										<v-select
-										v-model="filterValue.year"
-										:items="dataYear"
-										label="Year"
-										box
-										></v-select>
+                                        <v-autocomplete
+                                            v-model="filterValue.customer"
+                                            :items="dataCustomer"
+                                            item-text="contact"
+                                            item-value="id"
+                                            label="Customer"
+                                            box
+                                            @change="getBill"
+                                        >
+                                        <template v-slot:item="{ item }">
+                                            <v-list-tile-avatar
+                                            color="indigo"
+                                            class="headline font-weight-light white--text"
+                                            >
+                                            {{ item.name.charAt(0) }}
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                            <v-list-tile-title v-text="item.name"></v-list-tile-title>
+                                            <v-list-tile-sub-title v-text="item.contact"></v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                        </v-autocomplete>
 									</v-flex>
 								</v-layout>
 								<v-spacer></v-spacer>
@@ -50,43 +70,46 @@
 									outline
 								></v-text-field>
 							</v-card-title>
-							<v-data-table
-							v-model="selected"
-							:headers="headers"
-							:items="dataList"
-							select-all
-							:search="search"
-							class="elevation-1">
-							<template v-slot:items="props">
-								<td>
-									<v-checkbox
-									v-model="props.selected"
-									primary
-									hide-details
-									></v-checkbox>
-								</td>
-								<td>{{ props.item.id }}</td>
-								<td>{{ props.item.year }}</td>
-								<td>{{ props.item.month }}</td>
-								<td>{{ props.item.customer.name }}</td>
-								<td>{{ props.item.package_data.name }}</td>
-								<td>{{ props.item.price }}</td>
-								<td>
-									<v-icon  class="mr-2" @click="editItem(props.item)" color="primary">
-										edit
-									</v-icon>
-									<v-icon  @click="deleteItem(props.item)" color="error">
-										delete
-									</v-icon>
-									<v-icon  @click="invoiceItem(props.item)" color="success">
-										print
-									</v-icon>
-								</td>
-							</template>
-							<template v-slot:no-data>
-								<v-btn color="primary" @click="initialize">Reset</v-btn>
-							</template>
-						</v-data-table>
+							<v-card-text>
+								<v-layout align-center justify-center row fill-height>
+      								<v-flex xs3>
+		  								<span class="subheading">Total Amount: <b>{{editedItem.total_amount}}</b></span>
+      								</v-flex>
+      								<v-flex xs3>
+		  								<span class="subheading">Total Bill: <b>{{editedItem.total_bill}}</b></span>
+      								</v-flex>
+								</v-layout>
+								<v-data-table v-show="dataList.length" 
+								v-model="selected"
+								:headers="headers"
+								:items="dataList"
+								select-all
+								:search="search">
+								<template v-slot:items="props">
+									<td>
+										<v-checkbox
+										v-model="props.selected"
+										primary
+										hide-details
+										></v-checkbox>
+									</td>
+									<td>{{ props.item.id }}</td>
+									<td>{{ props.item.year }}</td>
+									<td>{{ props.item.month }}</td>
+									<td>{{ props.item.customer.name }}</td>
+									<td>{{ props.item.package_data.name }}</td>
+									<td>{{ props.item.price }}</td>
+									<td>
+										<v-icon  @click="invoiceItem(props.item)" color="success">
+											print
+										</v-icon>
+									</td>
+								</template>
+								<template v-slot:no-data>
+									Please select customer
+								</template>
+							</v-data-table>
+						</v-card-text>
 					</v-card>
 				</v-flex>
 			</v-layout>
@@ -116,6 +139,7 @@ import zmodaldelete from './../common/zmodaldelete';
 
 export default {
 	data: () => ({
+        loading: false,
         filterValue:
         {
             year:'',
@@ -210,12 +234,14 @@ export default {
 		editedIndex: -1,
 		editedItem: {
 			customer_id: "",
-			package: "",
-			price: "",
-			year: "",
-			month: "",
+			bills:[],
+			total_amount:0,
+			total_bill:0
 		},
-		defaultItem: {}
+		defaultItem: {
+			customer_id: "",
+			bills:[],
+		}
 	}),
 	props: {
 		source: String
@@ -245,6 +271,48 @@ export default {
 	},
 
 	methods: {
+        async getBill(e)
+        {
+
+            try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/customerbill/"+e
+				});
+				this.dataList = data;
+				this.editedItem.customer_id=e
+				this.editedItem.bills=data
+				var totalAmount=0;
+				var totalItem=0;
+				for(let d of data)
+				{
+						console.log(totalItem)
+					totalAmount=totalAmount+d.price
+					totalItem++
+					console.log(d.price)
+				}
+				this.editedItem.total_amount=totalAmount
+				this.editedItem.total_bill=totalItem
+
+
+			} catch (e) {}
+		},
+		async generateInvoice()
+		{
+			try {
+				let { data } = await axios({
+					method: "post",
+					url: "/app/invoice",
+					data: this.editedItem
+				});
+				this.text = "Data added";
+				this.snackbar = true;
+				this.close();
+			} catch (e) {
+				this.text = "Failed";
+				this.snackbar = true;
+			}
+		},
 		selectCustomer(item)
 		{
 			console.log('customer clicked')
@@ -265,13 +333,7 @@ export default {
 
 		},
 		async initialize() {
-			try {
-				let { data } = await axios({
-					method: "get",
-					url: "/app/invoice"
-				});
-				this.dataList = data;
-			} catch (e) {}
+			
 			try {
 				let { data } = await axios({
 					method: "get",
