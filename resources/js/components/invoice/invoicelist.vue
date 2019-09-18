@@ -9,7 +9,7 @@
 							<v-divider class="mx-2" inset vertical></v-divider>
 							<v-spacer></v-spacer>
 							<v-btn color="error" v-show="selected[0]" @click="deleteSelected">Delete All</v-btn>
-                            <v-btn color="primary" dark class="mb-2" v-on="on" @click="edit=true">New Bill</v-btn>
+                            <v-btn color="primary" dark class="mb-2" @click="edit=true">New Bill</v-btn>
 						</v-toolbar>
 							<v-card-title>
 								<v-layout align-start row fill-height>
@@ -66,11 +66,10 @@
 									></v-checkbox>
 								</td>
 								<td>{{ props.item.id }}</td>
-								<td>{{ props.item.year }}</td>
-								<td>{{ props.item.month }}</td>
+								<td>{{ someDate | moment(props.item.created_at) }}</td>
 								<td>{{ props.item.customer.name }}</td>
-								<td>{{ props.item.package_data.name }}</td>
-								<td>{{ props.item.price }}</td>
+								<td>{{ props.item.total_bill }}</td>
+								<td>{{ props.item.total_amount }}</td>
 								<td>
 									<v-icon  class="mr-2" @click="editItem(props.item)" color="primary">
 										edit
@@ -197,14 +196,13 @@ export default {
         items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
 		headers: [
 			{ text: "ID", align: "left", value: "id" },
-			{ text: "Year", value: "year" },
-			{ text: "Month", value: "month" },
+			{ text: "Date", value: "created_at" },
 			{
 				text: "Customer",
 				value: "customer_id"
 			},
-			{ text: "Package", value: "package" },
-			{ text: "Bill Amount", value: "price" },
+			{ text: "Total Bills", value: "total_bill" },
+			{ text: "Total Amount", value: "total_amount" },
 			{ text: "Action", value:"action"}
 		],
 		editedIndex: -1,

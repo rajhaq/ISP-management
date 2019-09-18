@@ -20,6 +20,7 @@ import vueTopprogress from 'vue-top-progress'
 Vue.use(vueTopprogress)
 import common from './common';
 Vue.mixin(common);
+Vue.use(require('vue-moment'));
 
 /**
  * The following block of code may be used to automatically register your
