@@ -28,4 +28,12 @@ class HomeController extends Controller
     public function dashboard() {
         return view('dashboard');
     }
+    public function collector() {
+        $user=Auth::user();
+        if($user->userType=='Collector')
+        return view('collector');
+        else {
+            return redirect('dashboard');
+        }
+    }
 }

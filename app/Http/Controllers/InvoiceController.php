@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Invoice;
 use App\InvoiceBill;
+use App\Setting;
 use Auth;
 class InvoiceController extends Controller
 {
@@ -59,6 +60,7 @@ class InvoiceController extends Controller
                 ]
                 );
         }
+
         if($create)
         {
             return response()->json([
@@ -69,7 +71,7 @@ class InvoiceController extends Controller
         else
         {
             return response()->json([
-                'msg' => 'Inserted',
+                'msg' => 'Error',
                 'status' => false
            ],200);
         }
@@ -83,7 +85,12 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $data=Invoice::with('customer')
+        ->with('bill')
+        ->first();
+        $setting=Setting::first();
+        // return $data;
+        return view('invoice')->with(['data'=>$data, 'setting'=>$setting]);
     }
 
     /**

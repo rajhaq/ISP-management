@@ -11,14 +11,14 @@
 							<v-btn color="error" v-show="dataList.length" @click="generateInvoice">Generate Invoice</v-btn>
 						</v-toolbar>
 							<v-card-title>
-								<v-layout align-start row fill-height>
-									<v-flex ma-3>
+								<v-layout  column wrap>
+									<v-flex xs12> 
                                         <v-autocomplete
                                             v-model="filterValue.customer"
                                             :items="dataCustomer"
                                             item-text="name"
                                             item-value="id"
-                                            label="Customer"
+                                            label="Customer Name"
                                             box
                                             @change="getBill"
 
@@ -37,13 +37,13 @@
                                         </template>
                                         </v-autocomplete>
 									</v-flex>
-									<v-flex ma-3>
+									<v-flex xs12>
                                         <v-autocomplete
                                             v-model="filterValue.customer"
                                             :items="dataCustomer"
                                             item-text="contact"
                                             item-value="id"
-                                            label="Customer"
+                                            label="Customer Number"
                                             box
                                             @change="getBill"
                                         >
@@ -62,20 +62,13 @@
                                         </v-autocomplete>
 									</v-flex>
 								</v-layout>
-								<v-spacer></v-spacer>
-								<v-text-field
-									v-model="search"
-									append-icon="search"
-									label="Search"
-									outline
-								></v-text-field>
 							</v-card-title>
 							<v-card-text>
-								<v-layout align-center justify-center row fill-height>
-      								<v-flex xs3>
+								<v-layout align-center justify-center row fill-height v-show="dataList.length" >
+      								<v-flex xs6>
 		  								<span class="subheading">Total Amount: <b>{{editedItem.total_amount}}</b></span>
       								</v-flex>
-      								<v-flex xs3>
+      								<v-flex xs6>
 		  								<span class="subheading">Total Bill: <b>{{editedItem.total_bill}}</b></span>
       								</v-flex>
 								</v-layout>

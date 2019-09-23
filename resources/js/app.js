@@ -60,7 +60,8 @@ router.beforeEach((to, from, next) => {
     next();
   
   });
-Vue.component('dashboard', require('./components/dashboard.vue').default);
+  Vue.component('dashboard', require('./components/dashboard.vue').default);
+  Vue.component('collector', require('./components/collector.vue').default);
 import router from './router'
 const app = new Vue({
     el: '#app',

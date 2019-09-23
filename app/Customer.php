@@ -9,7 +9,7 @@ class Customer extends Model
 
     protected $fillable = [
         'admin_id', 'email', 'name','contact', 'address', 'area_id','package_id',
-        'status'
+        'cnic', 'status'
     ];
     public function admin()
     {

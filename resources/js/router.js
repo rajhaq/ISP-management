@@ -8,7 +8,10 @@ import customerlist from './components/customer/customerlist.vue'
 import billlist from './components/bill/billlist.vue'
 import invoicecreate from './components/invoice/create.vue'
 import invoicelist from './components/invoice/invoicelist.vue'
+import collector from './components/collector/collector.vue'
+import setting from './components/setting/setting.vue'
 let onlyAdmin = ['Admin']
+let onlyCollector = ['Collector']
 let adminAndSale = [1, 2]
 Vue.use(Router)
 export default new Router({
@@ -82,6 +85,24 @@ export default new Router({
 			path: '/dashboard/invoicelist',
 			name: 'invoicelist',
 			component: invoicelist,
+			meta: {
+				allowed: onlyAdmin
+			}
+				  
+		},	
+		{
+			path: '/collector',
+			name: 'collector',
+			component: collector,
+			meta: {
+				allowed: onlyCollector
+			}
+				  
+		},		
+		{
+			path: '/dashboard/setting',
+			name: 'setting',
+			component: setting,
 			meta: {
 				allowed: onlyAdmin
 			}

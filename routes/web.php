@@ -20,6 +20,7 @@ Route::resource('/app/bill', 'BillController');
 Route::resource('/app/customer', 'CustomerController');
 Route::resource('/app/package', 'PackageController');
 Route::resource('/app/invoice', 'InvoiceController');
+Route::resource('/app/setting', 'SettingController');
 Route::get('app/billgenerate', 'BillController@generate');
 Route::get('app/customerbill/{id}', 'BillController@customerBill');
 
@@ -29,6 +30,7 @@ Route::post('/app/updateUser', 'UserController@updateUser');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');
+Route::get('/collector', 'HomeController@collector');
 Route::get('/logout', function () {
 	Auth::logout();
     Session::flush();

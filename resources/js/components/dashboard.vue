@@ -228,6 +228,9 @@
         { icon: 'group', 
         text: 'Users',
         link: 'userlist' },
+        { icon: 'group', 
+        text: 'Setting',
+        link: 'setting' },
         // { icon: 'help', text: 'Help' },
         // { icon: 'phonelink', text: 'App downloads' },
         // { icon: 'keyboard', text: 'Go to the old version' }
