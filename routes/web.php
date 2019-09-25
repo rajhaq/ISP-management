@@ -27,6 +27,10 @@ Route::get('app/customerbill/{id}', 'BillController@customerBill');
 Route::get('/users', 'CustomerController@index')->name('users');
 Route::post('/app/updateUser', 'UserController@updateUser');
 
+Route::get('app/auth', 'UserController@auth');
+Route::get('app/customerwitharea/{id}', 'CustomerController@customerwitharea');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');

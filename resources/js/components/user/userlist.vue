@@ -49,6 +49,15 @@
 														required
 													></v-select>
 												</v-flex>
+												<v-flex xs12 sm12 md12>
+													<v-select
+														v-model="editedItem.area_id"
+														:items="dataArea"
+														item-text="name"
+														item-value="id"
+														label="Area"
+													></v-select>
+												</v-flex>
 											</v-layout>
 										</v-container>
 									</v-card-text>
@@ -140,6 +149,7 @@ export default {
 		edit: true,
 		dialog: false,
 		dataUser: [],
+		dataArea:[],
 		userType: ["Admin", "Manager", "Collector"],
 
 		headers: [
@@ -168,7 +178,8 @@ export default {
 		editedItem: {
 			name: "",
 			email: "",
-			userType: ""
+			userType: "",
+			area_id:""
 		},
 		defaultItem: {}
 	}),
@@ -195,6 +206,13 @@ export default {
 					url: "/api/users"
 				});
 				this.dataUser = data;
+			} catch (e) {}
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/area"
+				});
+				this.dataArea = data;
 			} catch (e) {}
 		},
 

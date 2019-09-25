@@ -7,6 +7,7 @@
 						<v-toolbar flat color="white">
 							<v-toolbar-title>Invoice Generate</v-toolbar-title>
 							<v-divider class="mx-2" inset vertical></v-divider>
+							Your area: {{dataArea.name}}
 							<v-spacer></v-spacer>
 							<v-btn color="error" v-show="dataList.length" @click="generateInvoice">Generate Invoice</v-btn>
 						</v-toolbar>
@@ -137,7 +138,8 @@ export default {
         {
             year:'',
             month:''
-        },
+		},
+		dataArea:{},
         dataYear:[
 
         ],
@@ -336,9 +338,16 @@ export default {
 			try {
 				let { data } = await axios({
 					method: "get",
-					url: "/app/customer"
+					url: "/app/customerwitharea/"+this.$store.state.authUser.area_id
 				});
 				this.dataCustomer = data;
+			} catch (e) {}
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/area/"+this.$store.state.authUser.area_id
+				});
+				this.dataArea = data;
             } catch (e) {}
             try {
 				let { data } = await axios({

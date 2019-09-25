@@ -1,57 +1,79 @@
 <template>
     <v-content>
-      <v-container fluid fill-height>
+      <v-container fluid>
         <v-layout justify-center row >
           <v-flex xs4>
             <v-card
-              class="mx-auto"
+              class="ma-3"
               color="blue-grey "
               dark
-              max-width="400"
             >
               <v-card-title>
                 <v-icon
                   large
                   left
                 >
-                  mdi-album
+                  mdi-account
                 </v-icon>
-                <span class="title font-weight-light">Greetings</span>
+                <span class="title font-weight-light">Total Customer</span>
               </v-card-title>
 
-              <v-card-text class="headline font-weight-bold">
-                "Welcome to our Call Center."
+              <v-card-text class="display-4 font-weight-bold">
+                43
               </v-card-text>
 
-              <v-card-actions>
-                <v-list-tile class="grow">
-                  <v-list-tile-avatar color="grey darken-3">
-                    <v-img
-                      class="elevation-6"
-                      src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                    ></v-img>
-                  </v-list-tile-avatar>
-
-                  <v-list-tile-content>
-                    <v-list-tile-title>Admin Thomas</v-list-tile-title>
-                  </v-list-tile-content>
-
-                  <v-layout
-                    align-center
-                    justify-end
-                  >
-                    <v-icon class="mr-1">mdi-heart</v-icon>
-                    <span class="subheading mr-2">256</span>
-                    <span class="mr-1">·</span>
-                    <v-icon class="mr-1">mdi-share-variant</v-icon>
-                    <span class="subheading">45</span>
-                  </v-layout>
-                </v-list-tile>
-              </v-card-actions>
             </v-card>
           </v-flex>
+
+          <v-flex xs4>
+            <v-card
+              class="ma-3"
+              color="blue-grey "
+              dark
+            >
+              <v-card-title>
+                <v-icon
+                  large
+                  left
+                >
+                mdi-calendar
+                </v-icon>
+                <span class="title font-weight-light">This Month Bill</span>
+              </v-card-title>
+
+              <v-card-text class="display-4 font-weight-bold">
+                43
+              </v-card-text>
+
+            </v-card>
+          </v-flex>
+          <v-flex xs4>
+            <v-card
+              class="ma-3"
+              color="blue-grey "
+              dark
+            >
+              <v-card-title>
+                <v-icon
+                  large
+                  left
+                >
+                  mdi-checkbox-marked
+                </v-icon>
+                <span class="title font-weight-light">Collected Bill</span>
+              </v-card-title>
+
+              <v-card-text class="display-4 font-weight-bold">
+                43
+              </v-card-text>
+
+            </v-card>
+          </v-flex>
+ 
         </v-layout>
+        
       </v-container>
+      
     </v-content>
     
 </template>
@@ -59,6 +81,26 @@
 <script>
   export default {
     data: () => ({
+      labels: [
+        '12am',
+        '3am',
+        '6am',
+        '9am',
+        '12pm',
+        '3pm',
+        '6pm',
+        '9pm'
+      ],
+      value: [
+        200,
+        675,
+        410,
+        390,
+        310,
+        460,
+        250,
+        240
+      ],
       dialog: false,
       drawer: null,
       items: [

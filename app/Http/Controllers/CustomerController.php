@@ -65,6 +65,13 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function customerwitharea($id)
+    {
+        $data=Customer::where('area_id',$id)
+        ->where('status',1)
+        ->get();
+        return $data;
+    }
     public function show($id)
     {
         $data=Customer::find($id);

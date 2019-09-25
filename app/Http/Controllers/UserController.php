@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Auth;
 class UserController extends Controller
 {
     /**
@@ -13,8 +14,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data=User::select('email','id','name','userType')
+        $data=User::select('email','id','name','userType','area_id')
         ->get();
+        return $data;
+    }
+    public function auth()
+    {
+        $data=Auth::user();
         return $data;
     }
 
