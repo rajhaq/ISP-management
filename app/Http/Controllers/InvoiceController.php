@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Invoice;
 use App\InvoiceBill;
 use App\Setting;
+use App\Bill;
 use Auth;
 class InvoiceController extends Controller
 {
@@ -59,10 +60,18 @@ class InvoiceController extends Controller
                     'bill_id'=>$bill['id'],
                 ]
                 );
+                Bill::where('id',$bill['id'])
+                ->update(
+                    [
+                        
+                        'status'=>0,
+                    ]
+                    );
         }
 
         if($create)
         {
+            
             return response()->json([
                 'msg' => 'Inserted',
                 'status' => $create
@@ -124,6 +133,24 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data=Invoice::where('id', $id)
+        ->with('bill')
+        ->first();
+        foreach($data->bill as $bill)
+        {
+
+                Bill::where('id',$bill['bill_id'])
+                ->update(
+                    [
+                        
+                        'status'=>1,
+                    ]
+                    );
+        }
+        InvoiceBill::where('invoice_id',$id)
+        ->delete();
+        $data->delete();
+        return $data;
+        
     }
 }

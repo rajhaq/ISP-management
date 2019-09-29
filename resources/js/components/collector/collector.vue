@@ -13,6 +13,30 @@
 						</v-toolbar>
 							<v-card-title>
 								<v-layout  column wrap>
+									<v-flex xs12>
+                                        <v-autocomplete
+                                            v-model="filterValue.customer"
+                                            :items="dataCustomer"
+                                            item-text="customer_id"
+                                            item-value="id"
+                                            label="Customer ID"
+                                            box
+                                            @change="getBill"
+                                        >
+                                        <template v-slot:item="{ item }">
+                                            <v-list-tile-avatar
+                                            color="indigo"
+                                            class="headline font-weight-light white--text"
+                                            >
+                                            {{ item.name.charAt(0) }}
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                            <v-list-tile-title v-text="item.name"></v-list-tile-title>
+                                            <v-list-tile-sub-title v-text="item.contact"></v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                        </v-autocomplete>
+									</v-flex>
 									<v-flex xs12> 
                                         <v-autocomplete
                                             v-model="filterValue.customer"
@@ -87,17 +111,12 @@
 										hide-details
 										></v-checkbox>
 									</td>
-									<td>{{ props.item.id }}</td>
+									<td>{{ props.item.customer_id }}</td>
 									<td>{{ props.item.year }}</td>
 									<td>{{ props.item.month }}</td>
 									<td>{{ props.item.customer.name }}</td>
 									<td>{{ props.item.package_data.name }}</td>
 									<td>{{ props.item.price }}</td>
-									<td>
-										<v-icon  @click="invoiceItem(props.item)" color="success">
-											print
-										</v-icon>
-									</td>
 								</template>
 								<template v-slot:no-data>
 									Please select customer
@@ -215,7 +234,7 @@ export default {
         dataList: [],
         items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
 		headers: [
-			{ text: "ID", align: "left", value: "id" },
+			{ text: "ID", align: "left", value: "customer_id" },
 			{ text: "Year", value: "year" },
 			{ text: "Month", value: "month" },
 			{
@@ -224,7 +243,6 @@ export default {
 			},
 			{ text: "Package", value: "package" },
 			{ text: "Bill Amount", value: "price" },
-			{ text: "Action", value:"action"}
 		],
 		editedIndex: -1,
 		editedItem: {

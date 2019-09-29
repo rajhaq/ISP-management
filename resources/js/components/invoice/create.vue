@@ -12,13 +12,13 @@
 						</v-toolbar>
 							<v-card-title>
 								<v-layout align-start row fill-height>
-									<v-flex ma-3>
+									<v-flex ma-2>
                                         <v-autocomplete
                                             v-model="filterValue.customer"
                                             :items="dataCustomer"
-                                            item-text="name"
+                                            item-text="customer_id"
                                             item-value="id"
-                                            label="Customer"
+                                            label="Customer ID"
                                             box
                                             @change="getBill"
 
@@ -37,13 +37,37 @@
                                         </template>
                                         </v-autocomplete>
 									</v-flex>
-									<v-flex ma-3>
+									<v-flex ma-2>
+                                        <v-autocomplete
+                                            v-model="filterValue.customer"
+                                            :items="dataCustomer"
+                                            item-text="name"
+                                            item-value="id"
+                                            label="Customer Name"
+                                            box
+                                            @change="getBill"
+                                        >
+                                        <template v-slot:item="{ item }">
+                                            <v-list-tile-avatar
+                                            color="indigo"
+                                            class="headline font-weight-light white--text"
+                                            >
+                                            {{ item.name.charAt(0) }}
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                            <v-list-tile-title v-text="item.name"></v-list-tile-title>
+                                            <v-list-tile-sub-title v-text="item.contact"></v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                        </template>
+                                        </v-autocomplete>
+									</v-flex>
+									<v-flex ma-2>
                                         <v-autocomplete
                                             v-model="filterValue.customer"
                                             :items="dataCustomer"
                                             item-text="contact"
                                             item-value="id"
-                                            label="Customer"
+                                            label="Customer Mobile"
                                             box
                                             @change="getBill"
                                         >

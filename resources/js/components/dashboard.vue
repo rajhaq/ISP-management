@@ -245,8 +245,9 @@
         console.log(i);
       },
         handleGoToMenu(d){
-                return d
-            }
+            return d
+        },
+        
     }
   }
 </script>

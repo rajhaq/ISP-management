@@ -21,6 +21,8 @@ Route::resource('/app/customer', 'CustomerController');
 Route::resource('/app/package', 'PackageController');
 Route::resource('/app/invoice', 'InvoiceController');
 Route::resource('/app/setting', 'SettingController');
+
+Route::post('app/generate_bill', 'BillController@generate_bill');
 Route::get('app/billgenerate', 'BillController@generate');
 Route::get('app/customerbill/{id}', 'BillController@customerBill');
 
@@ -29,6 +31,7 @@ Route::post('/app/updateUser', 'UserController@updateUser');
 
 Route::get('app/auth', 'UserController@auth');
 Route::get('app/customerwitharea/{id}', 'CustomerController@customerwitharea');
+Route::get('app/dashboard', 'DashboardController@index');
 
 
 Route::get('/dashboard', function () {

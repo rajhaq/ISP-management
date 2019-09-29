@@ -19,7 +19,7 @@
               </v-card-title>
 
               <v-card-text class="display-4 font-weight-bold">
-                43
+                {{dashboard.customer}}
               </v-card-text>
 
             </v-card>
@@ -42,7 +42,7 @@
               </v-card-title>
 
               <v-card-text class="display-4 font-weight-bold">
-                43
+                {{dashboard.bill}}
               </v-card-text>
 
             </v-card>
@@ -64,16 +64,35 @@
               </v-card-title>
 
               <v-card-text class="display-4 font-weight-bold">
-                43
+                {{dashboard.pending_bill}}
               </v-card-text>
 
             </v-card>
           </v-flex>
  
         </v-layout>
+        <v-layout justify-center align-center v-show="!dashboard.create">
+          <v-flex>
+            <h3> There is no bill for this month</h3>
+            <div>
+              <v-btn large color="primary" @click="generatebill">Generate Bill</v-btn>
+            </div>
+            </v-flex>
+        </v-layout>
         
       </v-container>
-      
+      <v-snackbar
+			v-model="snackbar"
+			:multi-line="'multi-line'"
+			:right="x === 'right'"
+			:timeout="timeout=5000"
+			:top="y === 'top'"
+			:vertical="'vertical'"
+			:color="snackBarColor"
+		>
+			{{ text }}
+			<v-btn flat @click="snackbar = false">Close</v-btn>
+		</v-snackbar>
     </v-content>
     
 </template>
@@ -81,6 +100,21 @@
 <script>
   export default {
     data: () => ({
+    snackBarColor:'green',
+    snackbar: false,
+		y: "top",
+		x: null,
+		mode: "",
+		text: "Hello, I'm a snackbar",
+		edit: true,
+		dialog: false,
+        dataList: [],
+      dashboard:
+      {
+        customer:'',
+        bill:'',
+        pending_bill:''
+      },
       labels: [
         '12am',
         '3am',
@@ -138,6 +172,37 @@
     }),
     props: {
       source: String
+    },
+    created(){
+      this.initialize();
+    },
+    methods:{
+      
+      async generatebill() {
+      
+      try {
+        let { data } = await axios({
+          method: "get",
+          url: "/app/billgenerate"
+        });
+        this.snackBarColor='green';
+				this.text = "Successfully Removed";
+				this.snackbar = true;
+        this.dashboard.create = data;
+            } catch (e) {}
+
+    },
+      async initialize() {
+      
+      try {
+        let { data } = await axios({
+          method: "get",
+          url: "/app/dashboard"
+        });
+        this.dashboard = data;
+            } catch (e) {}
+
+    },
     }
   }
 </script>

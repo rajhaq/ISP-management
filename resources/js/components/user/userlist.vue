@@ -26,11 +26,13 @@
 														label="Full Name"
 														:rules="[v => !!v || 'User type is required']"
 														required
+														box
 													></v-text-field>
 												</v-flex>
 
 												<v-flex xs12 sm12 md12>
-													<v-text-field :rules="emailRules" v-model="editedItem.email" label="Email"></v-text-field>
+													<v-text-field :rules="emailRules" v-model="editedItem.email" label="Email"
+													box></v-text-field>
 												</v-flex>
 												<v-flex xs12 sm12s md12 v-if="edit">
 													<v-text-field
@@ -38,6 +40,7 @@
 														:rules="passwordRules"
 														label="Password"
 														type="password"
+														box
 													></v-text-field>
 												</v-flex>
 												<v-flex xs12 sm12 md12>
@@ -47,15 +50,17 @@
 														:rules="[v => !!v || 'User type is required']"
 														label="User Type"
 														required
+														box
 													></v-select>
 												</v-flex>
-												<v-flex xs12 sm12 md12>
+												<v-flex xs12 sm12 md12 v-show="editedItem.userType=='Collector'">
 													<v-select
 														v-model="editedItem.area_id"
 														:items="dataArea"
 														item-text="name"
 														item-value="id"
 														label="Area"
+														box
 													></v-select>
 												</v-flex>
 											</v-layout>
@@ -79,6 +84,7 @@
 									label="Search"
 									single-line
 									hide-details
+									outline
 								></v-text-field>
 							</v-card-title>
 							<v-data-table

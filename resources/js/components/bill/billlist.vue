@@ -30,6 +30,7 @@
                                                         :items="dataCustomer"
                                                         label="Customer"
 														@change="selectCustomer"
+														box
                                                         ></v-select>
 												</v-flex>
 												<v-flex xs12 sm12 md12>
@@ -40,6 +41,7 @@
 														:rules="[v => !!v || 'Package is required']"
                                                         :items="dataPackages"
                                                         label="Package"
+														box
                                                         ></v-select>
 												</v-flex>
 												<v-flex xs12 sm12 md6>
@@ -47,6 +49,7 @@
 														v-model="editedItem.price"
 														label="Price"
 														required
+														box
 													></v-text-field>
 												</v-flex>
 												<v-flex xs12 sm12 md6>
@@ -57,6 +60,7 @@
 														:rules="[v => !!v || 'Month is required']"
                                                         :items="dataMonth"
                                                         label="Month"
+														box
                                                         ></v-select>
 												</v-flex>
 												<v-flex xs12 sm12 md12>
@@ -65,6 +69,7 @@
 														:rules="[v => !!v || 'Year is required']"
                                                         :items="dataYear"
                                                         label="Year"
+														box
                                                         ></v-select>
 												</v-flex>
 											</v-layout>
@@ -76,6 +81,50 @@
 										<v-spacer></v-spacer>
 										<v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
 										<v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+									</v-card-actions>
+								</v-card>
+							</v-dialog>
+							<v-dialog v-model="isMonth" max-width="500px" persistent>
+								<template v-slot:activator="{ on }">
+									<v-btn color="primary" dark class="mb-2" v-on="on" @click="isMonth=true">New Monthly Bill</v-btn>
+								</template>
+								<v-card>
+									<v-card-title>
+										<span class="headline">{{ formTitle }}</span>
+									</v-card-title >
+
+									<v-card-text>
+										<v-container grid-list-md>
+											<v-layout wrap>
+												<v-flex xs12 sm12 md12>
+													<v-select
+                                                        v-model="editedItem.month"
+                                                        item-text="name"
+                                                        item-value="id"
+														:rules="[v => !!v || 'Month is required']"
+                                                        :items="dataMonth"
+                                                        label="Month"
+														box
+                                                        ></v-select>
+												</v-flex>
+												<v-flex xs12 sm12 md12>
+													<v-select
+                                                        v-model="editedItem.year"
+														:rules="[v => !!v || 'Year is required']"
+                                                        :items="dataYear"
+                                                        label="Year"
+														box
+                                                        ></v-select>
+												</v-flex>
+											</v-layout>
+										</v-container>
+									</v-card-text>
+
+									<v-card-actions>
+                                        
+										<v-spacer></v-spacer>
+										<v-btn color="blue darken-1" flat @click="monthClose">Cancel</v-btn>
+										<v-btn color="blue darken-1" flat @click="monthSave">Save</v-btn>
 									</v-card-actions>
 								</v-card>
 							</v-dialog>
@@ -147,9 +196,9 @@
 									<v-icon  @click="deleteItem(props.item)" color="error">
 										delete
 									</v-icon>
-									<v-icon  @click="invoiceItem(props.item)" color="success">
+									<!-- <v-icon  @click="invoiceItem(props.item)" color="success">
 										print
-									</v-icon>
+									</v-icon> -->
 								</td>
 							</template>
 							<template v-slot:no-data>
@@ -185,6 +234,7 @@ import zmodaldelete from './../common/zmodaldelete';
 
 export default {
 	data: () => ({
+		isMonth: false,
         filterValue:
         {
             year:'',
@@ -284,7 +334,13 @@ export default {
 			year: "",
 			month: "",
 		},
-		defaultItem: {}
+		defaultItem: {
+			customer_id: "",
+			package: "",
+			price: "",
+			year: "",
+			month: "",
+		}
 	}),
 	props: {
 		source: String
@@ -412,6 +468,13 @@ export default {
 				this.editedIndex = -1;
 			}, 300);
 		},
+		monthClose() {
+			this.isMonth = false;
+			setTimeout(() => {
+				this.editedItem = Object.assign({}, this.defaultItem);
+				this.editedIndex = -1;
+			}, 300);
+		},
 
 		async save() {
 			if (this.editedIndex > -1) {
@@ -448,6 +511,26 @@ export default {
 					this.snackbar = true;
 				}
 			}
+		},
+		async monthSave() {
+			
+				this.editedItem.startdate=this.editedItem.year+'-'+this.editedItem.month+'-'+this.editedItem.month
+				this.editedItem.enddate=this.editedItem.year+'-'+this.editedItem.month+'-'+this.editedItem.month
+				try {
+					let { data } = await axios({
+						method: "post",
+						url: "/app/generate_bill",
+						data: this.editedItem
+					});
+					this.text = "Data added";
+					this.snackbar = true;
+					this.initialize();
+					this.monthClose();
+				} catch (e) {
+					this.text = "Failed";
+					this.snackbar = true;
+				}
+			
 		},
 		
 	}

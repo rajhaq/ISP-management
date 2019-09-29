@@ -9,7 +9,7 @@
 							<v-divider class="mx-2" inset vertical></v-divider>
 							<v-spacer></v-spacer>
 							<v-btn color="error" v-show="selected[0]" @click="deleteSelected">Delete All</v-btn>
-                            <v-btn color="primary" dark class="mb-2" @click="edit=true">New Bill</v-btn>
+                            <v-btn color="primary" dark class="mb-2" @click="newInvoice">New Invoice</v-btn>
 						</v-toolbar>
 							<v-card-title>
 								<v-layout align-start row fill-height>
@@ -66,14 +66,11 @@
 									></v-checkbox>
 								</td>
 								<td>{{ props.item.id }}</td>
-								<td>{{ someDate | moment(props.item.created_at) }}</td>
+								<td>{{ props.item.created_at }}</td>
 								<td>{{ props.item.customer.name }}</td>
 								<td>{{ props.item.total_bill }}</td>
 								<td>{{ props.item.total_amount }}</td>
 								<td>
-									<v-icon  class="mr-2" @click="editItem(props.item)" color="primary">
-										edit
-									</v-icon>
 									<v-icon  @click="deleteItem(props.item)" color="error">
 										delete
 									</v-icon>
@@ -243,6 +240,11 @@ export default {
 	},
 
 	methods: {
+		newInvoice()
+		{
+			this.$router.push('/dashboard/invoicecreate');
+
+		},
 		selectCustomer(item)
 		{
 			console.log('customer clicked')
@@ -304,6 +306,11 @@ export default {
 		},
 		invoiceItem(item)
 		{
+			var url='/app/invoice/'+item.id;
+			console.log(url);
+			window.location.href = url;
+			// this.$router.push('/app/invoice/'+item.id)
+
 
 		},
 		async remove()
@@ -311,7 +318,7 @@ export default {
 			try {
 				let { data } = await axios({
 					method: "delete",
-					url: "/app/bill/"+this.dataList[this.dataIndex].id,
+					url: "/app/invoice/"+this.dataList[this.dataIndex].id,
 				});
 				this.snackBarColor='green';
 				this.text = "Successfully Removed";

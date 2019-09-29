@@ -23,10 +23,20 @@
 											<v-layout wrap>
 												<v-flex xs12 sm12 md12>
 													<v-text-field
+														v-model="editedItem.customer_id"
+														label="Customer ID"
+														:rules="[v => !!v || 'ID is required']"
+														required
+														box
+													></v-text-field>
+												</v-flex>
+												<v-flex xs12 sm12 md12>
+													<v-text-field
 														v-model="editedItem.name"
 														label="Customer Name"
 														:rules="[v => !!v || 'Name is required']"
 														required
+														box
 													></v-text-field>
 												</v-flex>
 												<v-flex xs12 sm12 md6>
@@ -34,6 +44,7 @@
 														v-model="editedItem.contact"
 														label="Phone"
 														required
+														box
 													></v-text-field>
 												</v-flex>
 												<v-flex xs12 sm12 md6>
@@ -41,6 +52,7 @@
 														v-model="editedItem.email"
 														label="Email"
 														required
+														box
 													></v-text-field>
 												</v-flex>
 												<v-flex xs12 sm12 md12>
@@ -49,6 +61,7 @@
                                                         label="Address"
 														:rules="[v => !!v || 'Address is required']"
                                                         v-model="editedItem.address"
+														box
                                                     ></v-textarea>
 												</v-flex>
 												<v-flex xs12 sm12 md12>
@@ -59,6 +72,7 @@
 														:rules="[v => !!v || 'Package is required']"
                                                         :items="dataPackages"
                                                         label="Package"
+														box
                                                         ></v-select>
 												</v-flex>
                                                 <v-flex xs12 sm12 md12>
@@ -69,6 +83,7 @@
 														:rules="[v => !!v || 'Area is required']"
                                                         :items="dataAreas"
                                                         label="Area"
+														box
                                                         ></v-select>
 												</v-flex>
 											</v-layout>
@@ -92,6 +107,7 @@
 									label="Search"
 									single-line
 									hide-details
+									outline
 								></v-text-field>
 							</v-card-title>
 							<v-data-table
@@ -177,7 +193,7 @@ export default {
         dataList: [],
         items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
 		headers: [
-			{ text: "ID", align: "left", value: "id" },
+			{ text: "ID", align: "left", value: "customer_id" },
 			{
 				text: "Name",
 				value: "name"
@@ -189,6 +205,7 @@ export default {
 		],
 		editedIndex: -1,
 		editedItem: {
+			customer_id:'',
 			name: "",
 			code: "",
 			address: "",
@@ -197,7 +214,16 @@ export default {
 			area_id: "",
 			package_id: "",
 		},
-		defaultItem: {}
+		defaultItem: {
+			customer_id:'',
+			name: "",
+			code: "",
+			address: "",
+			contact: "",
+			email: "",
+			area_id: "",
+			package_id: "",
+		}
 	}),
 	props: {
 		source: String

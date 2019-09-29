@@ -8,7 +8,7 @@ class Customer extends Model
 {
 
     protected $fillable = [
-        'admin_id', 'email', 'name','contact', 'address', 'area_id','package_id',
+        'admin_id','customer_id', 'email', 'name','contact', 'address', 'area_id','package_id',
         'cnic', 'status'
     ];
     public function admin()
@@ -17,10 +17,10 @@ class Customer extends Model
     } 
     public function package()
     {
-       return $this->belongsTo('App\Package', 'package_id');
+       return $this->belongsTo('App\Package');
     } 
     public function area()
     {
-       return $this->belongsTo('App\Area', 'area_id');
+       return $this->belongsTo('App\Area');
     } 
 }

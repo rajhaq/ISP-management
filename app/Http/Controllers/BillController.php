@@ -137,17 +137,7 @@ class BillController extends Controller
         $month=date_format($date,"m");
         $year=date_format($date,"Y");
         $bills=Bill::where('enddate',date_format($date,"y-m-m"))
-        ->get();
-        if(count($bills))
-        {
-            return response()->json([
-                'msg' => 'Error',
-                'status' => $users,
-                'month' => $month,
-                'year' => $year,
-           ],200);            
-    
-        }
+        ->delete();
 
        foreach($users as $user)
             {
@@ -159,6 +149,40 @@ class BillController extends Controller
                         'price' => $user->package->price,
                         'startdate' => date_format($date,"y-m-m"),
                         'enddate' => date_format($date,"y-m-m"),
+                        'month' => $month,
+                        'year' => $year,
+                    ]
+                    );
+            }
+            return response()->json([
+                'msg' => 'Inserted',
+                'status' => $users,
+                'month' => $month,
+                'year' => $year,
+           ],200);
+    }
+    public function generate_bill(Request $request)
+    {
+        $users=Customer::where('status',1)
+        ->with('package')
+        ->get();
+        $date = Carbon::now(); 
+        $month=$request->month;
+        $year=$request->year;
+        $search_format=$year.'-'.$month.'-'.$month;
+        $bills=Bill::where('enddate',date_format($date,$search_format))
+        ->delete();
+
+       foreach($users as $user)
+            {
+                Bill::create(
+                    [
+                        'admin_id' => 1,
+                        'customer_id' => $user->id,
+                        'package' => $user->package_id,
+                        'price' => $user->package->price,
+                        'startdate' => $search_format,
+                        'enddate' => $search_format,
                         'month' => $month,
                         'year' => $year,
                     ]

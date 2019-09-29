@@ -27,6 +27,7 @@
 														label="Name"
 														:rules="[v => !!v || 'Name is required']"
 														required
+														box
 													></v-text-field>
 												</v-flex>
 												<v-flex xs12 sm12 md12>
@@ -34,12 +35,14 @@
 														v-model="editedItem.price"
 														:rules="[v => !!v || 'Price is required']"
 														label="Price"
+														box
 													></v-text-field>
 												</v-flex>
                                                 <v-flex xs12 sm12 md12>
 													<v-text-field
 														v-model="editedItem.code"
 														label="Package Code(optional)"
+														box
 													></v-text-field>
 												</v-flex>
 											</v-layout>
@@ -63,6 +66,7 @@
 									label="Search"
 									single-line
 									hide-details
+									outline
 								></v-text-field>
 							</v-card-title>
 							<v-data-table
