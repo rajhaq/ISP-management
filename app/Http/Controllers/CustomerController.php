@@ -17,6 +17,7 @@ class CustomerController extends Controller
         $data=Customer::orderBy('id', 'DESC')
         ->with('area')
         ->with('package')
+        ->with('bill') 
         ->get();
         return $data;
     }

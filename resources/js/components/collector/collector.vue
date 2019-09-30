@@ -15,6 +15,7 @@
 								<v-layout  column wrap>
 									<v-flex xs12>
                                         <v-autocomplete
+
                                             v-model="filterValue.customer"
                                             :items="dataCustomer"
                                             item-text="customer_id"
@@ -97,7 +98,9 @@
 		  								<span class="subheading">Total Bill: <b>{{editedItem.total_bill}}</b></span>
       								</v-flex>
 								</v-layout>
-								<v-data-table v-show="dataList.length" 
+								<v-data-table 
+								:pagination.sync="pagination"
+								v-show="dataList.length" 
 								v-model="selected"
 								:headers="headers"
 								:items="dataList"
@@ -152,6 +155,9 @@ import zmodaldelete from './../common/zmodaldelete';
 
 export default {
 	data: () => ({
+		pagination:{
+			rowsPerPage: 25 // -1 for All",
+		},
         loading: false,
         filterValue:
         {

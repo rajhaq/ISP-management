@@ -23,4 +23,8 @@ class Customer extends Model
     {
        return $this->belongsTo('App\Area');
     } 
+    public function bill()
+    {
+       return $this->hasMany('App\Bill')->where('status',1);
+    } 
 }

@@ -11,7 +11,7 @@ import invoicelist from './components/invoice/invoicelist.vue'
 import collector from './components/collector/collector.vue'
 import setting from './components/setting/setting.vue'
 let onlyAdmin = ['Admin']
-let onlyCollector = ['Collector', 'Admin']
+let onlyCollector = ['Collector']
 let adminAndSale = [1, 2]
 Vue.use(Router)
 export default new Router({

@@ -123,11 +123,6 @@
 									<td>{{ props.item.customer.name }}</td>
 									<td>{{ props.item.package_data.name }}</td>
 									<td>{{ props.item.price }}</td>
-									<td>
-										<v-icon  @click="invoiceItem(props.item)" color="success">
-											print
-										</v-icon>
-									</td>
 								</template>
 								<template v-slot:no-data>
 									Please select customer
@@ -253,7 +248,6 @@ export default {
 			},
 			{ text: "Package", value: "package" },
 			{ text: "Bill Amount", value: "price" },
-			{ text: "Action", value:"action"}
 		],
 		editedIndex: -1,
 		editedItem: {

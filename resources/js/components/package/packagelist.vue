@@ -70,20 +70,12 @@
 								></v-text-field>
 							</v-card-title>
 							<v-data-table
-							v-model="selected"
+							:pagination.sync="pagination"
 							:headers="headers"
 							:items="dataList"
-							select-all
 							:search="search"
 							class="elevation-1">
 							<template v-slot:items="props">
-								<td>
-									<v-checkbox
-									v-model="props.selected"
-									primary
-									hide-details
-									></v-checkbox>
-								</td>
 								<td>{{ props.item.id }}</td>
 								<td>{{ props.item.name }}</td>
 								<td>{{ props.item.price }}</td>
@@ -92,7 +84,6 @@
 									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">
 										edit
 									</v-icon>
-
 									<v-icon small @click="deleteItem(props.item)" color="error">
 										delete
 									</v-icon>
@@ -131,6 +122,9 @@ import zmodaldelete from './../common/zmodaldelete';
 
 export default {
 	data: () => ({
+		pagination:{
+			rowsPerPage: 25 // -1 for All",
+			},
 		snackBarColor:'green',
 		isDelete:false,
 		isDeleteAll:false,
@@ -153,6 +147,7 @@ export default {
 				text: "Name",
 				value: "name"
 			},
+			{ text: "Price", value: "price" },
 			{ text: "Code", value: "code" },
 			{ text: "Action", value:"action"}
 		],

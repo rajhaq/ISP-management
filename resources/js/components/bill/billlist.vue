@@ -169,6 +169,7 @@
 								></v-text-field>
 							</v-card-title>
 							<v-data-table
+							:pagination.sync="pagination"
 							v-model="selected"
 							:headers="headers"
 							:items="dataList"
@@ -234,6 +235,9 @@ import zmodaldelete from './../common/zmodaldelete';
 
 export default {
 	data: () => ({
+		pagination:{
+			rowsPerPage: 25 // -1 for All",
+		},
 		isMonth: false,
         filterValue:
         {
