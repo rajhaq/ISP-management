@@ -50,4 +50,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::any('/dashboard/{slug}', [
     'uses' => 'HomeController@dashboard',
- ])->where('slug', '([A-z\d-\/_.]+)?')->middleware('auth');
+ ])->middleware('auth');

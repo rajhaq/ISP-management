@@ -99,6 +99,29 @@
 							</v-dialog>
 						</v-toolbar>
 							<v-card-title>
+								<v-layout align-start row fill-height>
+									<v-flex ma-4>
+										<v-select
+											v-model="filterValue.area"
+											item-text="name"
+											item-value="id"
+											:items="dataAreas"
+											label="Area"
+											box
+										></v-select>
+									</v-flex>
+									<v-flex ma-4>
+										<v-select
+											v-model="filterValue.type"
+											item-text="name"
+											item-value="id"
+											:items="dataType"
+											label="Type"
+											box
+										></v-select>
+									</v-flex>
+
+								</v-layout>
 								
 								<v-spacer></v-spacer>
 								<v-text-field
@@ -112,27 +135,22 @@
 							</v-card-title>
 							<v-data-table
 								:pagination.sync="pagination"
-								v-model="selected"
 								:headers="headers"
 								:items="dataList"
-								select-all
 								:search="search"
 								class="elevation-1">
 							<template v-slot:items="props">
-								<td>
-									<v-checkbox
-									v-model="props.selected"
-									primary
-									hide-details
-									></v-checkbox>
-								</td>
-								<td>{{ props.item.id }}</td>
+								<td>{{ props.item.customer_id }}</td>
 								<td>{{ props.item.name }}</td>
 								<td>{{ props.item.address }}</td>
 								<td>{{ props.item.area.name }}</td>
 								<td>{{ props.item.package.price }}</td>
-								<td v-if="props.item.bill.length"><span color="red">UnPaid</span></td>
-								<td v-else><span color="green">Paid</span></td>
+								<td v-if="props.item.bill.length">
+									<v-chip color="red" text-color="white">UnPaid</v-chip>
+								</td>
+								<td v-else>
+									<v-chip color="red" text-color="white">UnPaid</v-chip>
+								</td>
 								<td>
 									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">
 										edit
@@ -176,6 +194,9 @@ import zmodaldelete from './../common/zmodaldelete';
 
 export default {
 	data: () => ({
+		filterValue:{
+
+		},
 		pagination:{
 			rowsPerPage: 25 // -1 for All",
 		},
@@ -221,6 +242,18 @@ export default {
 			area_id: "",
 			package_id: "",
 		},
+		dataType:
+		[
+			{
+				name:'Paid',
+				id:'1'
+			},
+			{
+				name:'UnPaid',
+				id:'2'
+			},
+
+		],
 		defaultItem: {
 			customer_id:'',
 			name: "",

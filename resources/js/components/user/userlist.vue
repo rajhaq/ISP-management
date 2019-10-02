@@ -94,7 +94,6 @@
 							:search="search"
 							class="elevation-1">
 							<template v-slot:items="props">
-								<td>
 								<td>{{ props.item.id }}</td>
 								<td>{{ props.item.name }}</td>
 								<td>{{ props.item.email }}</td>

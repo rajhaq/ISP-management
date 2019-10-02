@@ -52,20 +52,11 @@
 							</v-card-title>
 							<v-data-table
 							:pagination.sync="pagination"
-							v-model="selected"
 							:headers="headers"
 							:items="dataList"
-							select-all
 							:search="search"
 							class="elevation-1">
 							<template v-slot:items="props">
-								<td>
-									<v-checkbox
-									v-model="props.selected"
-									primary
-									hide-details
-									></v-checkbox>
-								</td>
 								<td>{{ props.item.id }}</td>
 								<td>{{ props.item.created_at }}</td>
 								<td>{{ props.item.customer.name }}</td>
