@@ -14,6 +14,8 @@ class DashboardController extends Controller
         $bill=Bill::count();
         $pending_bill=Bill::where('status',0)
         ->count();
+        $unpaid_bill=Bill::where('status',1)
+        ->count();
         $create=false;
         $date = Carbon::now(); 
         $bills=Bill::where('enddate',date_format($date,"y-m-m"))
@@ -24,6 +26,7 @@ class DashboardController extends Controller
     
         }
         $obj = (object) [
+            'unpaid_bill'=>$unpaid_bill,
             'customer' => $customer,
             'bill' => $bill,
             'pending_bill' => $pending_bill,

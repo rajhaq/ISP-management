@@ -35,6 +35,7 @@
 														v-model="editedItem.price"
 														:rules="[v => !!v || 'Price is required']"
 														label="Price"
+														type="number"
 														box
 													></v-text-field>
 												</v-flex>
@@ -78,7 +79,7 @@
 							<template v-slot:items="props">
 								<td>{{ props.item.id }}</td>
 								<td>{{ props.item.name }}</td>
-								<td>{{ props.item.price }}</td>
+								<td>{{ props.item.price }} {{dataSetting.currency}}</td>
 								<td>{{ props.item.code }}</td>
 								<td>
 									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">
@@ -132,6 +133,7 @@ export default {
 		deleteTitle:'',
 		deleteBody:'',
 		search:'',
+		dataSetting:{},
 		selected: [],
 		snackbar: false,
 		y: "top",
@@ -185,6 +187,13 @@ export default {
 					url: "/app/package"
 				});
 				this.dataList = data;
+			} catch (e) {}
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/setting"
+				});
+				this.dataSetting = data;
 			} catch (e) {}
 		},
 
@@ -247,10 +256,12 @@ export default {
 					console.log(data);
 					this.text = "Data Edited";
 					this.snackbar = true;
+					this.snackBarColor="green"
 					Object.assign(this.dataList[this.editedIndex], this.editedItem);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			} else {
@@ -262,11 +273,14 @@ export default {
 					});
 					this.text = "Data added";
 					this.snackbar = true;
+					this.snackBarColor="green"
 					this.dataList.unshift(data.status);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
 					this.snackbar = true;
+					this.snackBarColor="red"
+
 				}
 			}
 		},

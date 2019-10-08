@@ -9,6 +9,7 @@
 							<v-divider class="mx-2" inset vertical></v-divider>
 							Your area: {{dataArea.name}}
 							<v-spacer></v-spacer>
+							<v-btn color="primary" @click="goCustomer">Customer List</v-btn>
 							<v-btn color="error" v-show="dataList.length" @click="generateInvoice">Generate Invoice</v-btn>
 						</v-toolbar>
 							<v-card-title>
@@ -92,7 +93,7 @@
 							<v-card-text>
 								<v-layout align-center justify-center row fill-height v-show="dataList.length" >
       								<v-flex xs6>
-		  								<span class="subheading">Total Amount: <b>{{editedItem.total_amount}}</b></span>
+		  								<span class="subheading">Total Amount: <b>{{editedItem.total_amount}} {{dataSetting.currency}}</b></span>
       								</v-flex>
       								<v-flex xs6>
 		  								<span class="subheading">Total Bill: <b>{{editedItem.total_bill}}</b></span>
@@ -101,25 +102,15 @@
 								<v-data-table 
 								:pagination.sync="pagination"
 								v-show="dataList.length" 
-								v-model="selected"
 								:headers="headers"
 								:items="dataList"
-								select-all
 								:search="search">
 								<template v-slot:items="props">
-									<td>
-										<v-checkbox
-										v-model="props.selected"
-										primary
-										hide-details
-										></v-checkbox>
-									</td>
-									<td>{{ props.item.customer_id }}</td>
+									<td>{{ props.item.id }}</td>
 									<td>{{ props.item.year }}</td>
-									<td>{{ props.item.month }}</td>
-									<td>{{ props.item.customer.name }}</td>
+									<td>{{ dataMonth[props.item.month-1].name }}</td>
 									<td>{{ props.item.package_data.name }}</td>
-									<td>{{ props.item.price }}</td>
+									<td>{{ props.item.price }} {{dataSetting.currency}}</td>
 								</template>
 								<template v-slot:no-data>
 									Please select customer
@@ -243,13 +234,10 @@ export default {
 			{ text: "ID", align: "left", value: "customer_id" },
 			{ text: "Year", value: "year" },
 			{ text: "Month", value: "month" },
-			{
-				text: "Customer",
-				value: "customer_id"
-			},
 			{ text: "Package", value: "package" },
 			{ text: "Bill Amount", value: "price" },
 		],
+		dataSetting:{},
 		editedIndex: -1,
 		editedItem: {
 			customer_id: "",
@@ -290,6 +278,11 @@ export default {
 	},
 
 	methods: {
+		goCustomer()
+		{
+			this.$router.push('/collector/customerlist')
+
+		},
         async getBill(e)
         {
 
@@ -372,6 +365,13 @@ export default {
 					url: "/app/area/"+this.$store.state.authUser.area_id
 				});
 				this.dataArea = data;
+			} catch (e) {}
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/setting"
+				});
+				this.dataSetting = data;
             } catch (e) {}
             try {
 				let { data } = await axios({
@@ -448,11 +448,13 @@ export default {
 					});
 					console.log(data);
 					this.text = "Data Edited";
+					this.snackBarColor="green"
 					this.snackbar = true;
 					Object.assign(this.dataList[this.editedIndex], this.editedItem);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			} else {
@@ -465,11 +467,13 @@ export default {
 						data: this.editedItem
 					});
 					this.text = "Data added";
+					this.snackBarColor="green"
 					this.snackbar = true;
 					this.dataList.unshift(data.status);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			}

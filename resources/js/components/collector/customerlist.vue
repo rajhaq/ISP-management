@@ -100,7 +100,7 @@
 						</v-toolbar>
 							<v-card-title>
 								<v-layout align-start row fill-height>
-									<v-flex ma-4>
+									<!-- <v-flex ma-4>
 										<v-select
 											v-model="filterValue.area"
 											item-text="name"
@@ -110,7 +110,7 @@
 											@change="getData"
 											box
 										></v-select>
-									</v-flex>
+									</v-flex> -->
 									<!-- <v-flex ma-4>
 										<v-select
 											v-model="filterValue.type"
@@ -197,8 +197,6 @@ export default {
 	data: () => ({
 		filterValue:{
 			area:'',
-
-
 		},
 		pagination:{
 			rowsPerPage: 25 // -1 for All",
@@ -277,7 +275,7 @@ export default {
 	},
 	computed: {
 		formTitle() {
-			return this.editedIndex === -1 ? "New Customer" : "Edit Customer";
+			return this.editedIndex === -1 ? "New Item" : "Edit Item";
 		}
 	},
 
@@ -292,7 +290,7 @@ export default {
             this.$router.push(d);
         },
 		async initialize() {
-			this.getData();
+			
             try {
 				let { data } = await axios({
 					method: "get",
@@ -303,9 +301,10 @@ export default {
             try {
 				let { data } = await axios({
 					method: "get",
-					url: "/app/area"
+					url: "/app/auth"
 				});
-				this.dataAreas = data;
+				this.filterValue.area = data.area_id;
+				this.getData();
 
 			} catch (e) {}
 		},
@@ -396,14 +395,6 @@ export default {
 						url: "/app/customer",
 						data: this.editedItem
 					});
-					if(data.status==false)
-					{
-					this.text = data.msg;
-					this.snackBarColor="red"
-					this.snackbar = true;
-					return
-
-					}
 					this.text = "Data added";
 					this.snackBarColor="green"
 					this.snackbar = true;

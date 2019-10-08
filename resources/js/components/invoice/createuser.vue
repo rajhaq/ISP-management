@@ -5,7 +5,7 @@
 				<v-flex xs12>
 					<v-card>
 						<v-toolbar flat color="white">
-							<v-toolbar-title>Invoice Generate</v-toolbar-title>
+							<v-toolbar-title>User Invoice Generate</v-toolbar-title>
 							<v-divider class="mx-2" inset vertical></v-divider>
 							<v-spacer></v-spacer>
 							<v-btn color="error" v-show="dataList.length" @click="generateInvoice">Generate Invoice</v-btn>
@@ -97,10 +97,10 @@
 							<v-card-text>
 								<v-layout align-center justify-center row fill-height>
       								<v-flex xs3>
-		  								<span class="subheading">Total Amount: <b>{{editedItem.total_amount}} {{dataSetting.currency}}</b></span>
+		  								<span class="subheading">Total Amount: <b>{{editedItem.total_amount}}</b></span>
       								</v-flex>
       								<v-flex xs3>
-		  								<span class="subheading">Total Bill: <b>{{editedItem.total_bill}} </b></span>
+		  								<span class="subheading">Total Bill: <b>{{editedItem.total_bill}}</b></span>
       								</v-flex>
 								</v-layout>
 								<v-data-table v-show="dataList.length" 
@@ -113,7 +113,7 @@
 									<td>{{ props.item.month }}</td>
 									<td>{{ props.item.customer.name }}</td>
 									<td>{{ props.item.package_data.name }}</td>
-									<td>{{ props.item.price }}  {{dataSetting.currency}}</td>
+									<td>{{ props.item.price }}</td>
 								</template>
 								<template v-slot:no-data>
 									Please select customer
@@ -152,7 +152,7 @@ export default {
         loading: false,
         filterValue:
         {
-            customer:''
+            customer:null,
         },
         dataYear:[
 
@@ -214,8 +214,7 @@ export default {
 		dataIndex:null,
 		deleteTitle:'',
 		deleteBody:'',
-		search:'',
-		dataSetting:{},
+        search:'',
         dataList:[],
         dataPackages:[],
         dataCustomer:[],
@@ -268,7 +267,7 @@ export default {
 	watch: {},
 
 	created() {
-
+		
 		
 		
         this.initialize();
@@ -279,7 +278,8 @@ export default {
             
             this.dataYear.push(year)
             year++;
-        }
+		}
+		
 	},
 
 	methods: {
@@ -328,6 +328,7 @@ export default {
 				this.close();
 			} catch (e) {
 				this.text = "Failed";
+				this.snackBarColor="red"
 				this.snackbar = true;
 			}
 		},
@@ -358,13 +359,6 @@ export default {
 					url: "/app/customer"
 				});
 				this.dataCustomer = data;
-			} catch (e) {}
-			try {
-				let { data } = await axios({
-					method: "get",
-					url: "/app/setting"
-				});
-				this.dataSetting = data;
             } catch (e) {}
             try {
 				let { data } = await axios({
@@ -372,7 +366,9 @@ export default {
 					url: "/app/package"
 				});
 				this.dataPackages = data;
-            } catch (e) {}
+			} catch (e) {}
+			this.filterValue.customer=parseInt(this.$route.params.id);
+			this.getBill(this.filterValue.customer);
 		},
 
 		editItem(item) {
@@ -441,8 +437,8 @@ export default {
 					});
 					console.log(data);
 					this.text = "Data Edited";
-					this.snackBarColor="green"
 					this.snackbar = true;
+					this.snackBarColor="green"
 					Object.assign(this.dataList[this.editedIndex], this.editedItem);
 					this.close();
 				} catch (e) {
@@ -460,8 +456,8 @@ export default {
 						data: this.editedItem
 					});
 					this.text = "Data added";
-					this.snackBarColor="green"
 					this.snackbar = true;
+					this.snackBarColor="green"
 					this.dataList.unshift(data.status);
 					this.close();
 				} catch (e) {

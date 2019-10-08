@@ -15,12 +15,17 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $data=Invoice::orderBy('id', 'DESC')
         ->with('customer')
-        ->with('bill')
-        ->get();
+        ->with('bill');
+        if(isset($request->customer) && !empty($request->customer))
+        {
+            $data->where('customer_id',$request->customer);
+
+        }
+        $data=$data->get();
         return $data;
     }
 
@@ -96,6 +101,8 @@ class InvoiceController extends Controller
     {
         $data=Invoice::with('customer')
         ->with('bill')
+        ->with('admin')
+        ->where('id',$id)
         ->first();
         $setting=Setting::first();
         // return $data;

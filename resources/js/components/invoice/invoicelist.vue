@@ -20,27 +20,11 @@
 										item-value="id"
 										:items="dataCustomer"
 										label="Customer"
+										@change="getData"
 										box
 										></v-select>
 									</v-flex>
-									<v-flex ma-3>
-									<v-select
-										v-model="filterValue.month"
-										item-text="name"
-										item-value="id"
-										:items="dataMonth"
-										label="Month"
-										box
-										></v-select>
-									</v-flex>
-									<v-flex ma-3>
-										<v-select
-										v-model="filterValue.year"
-										:items="dataYear"
-										label="Year"
-										box
-										></v-select>
-									</v-flex>
+
 								</v-layout>
 								<v-spacer></v-spacer>
 								<v-text-field
@@ -61,7 +45,7 @@
 								<td>{{ props.item.created_at }}</td>
 								<td>{{ props.item.customer.name }}</td>
 								<td>{{ props.item.total_bill }}</td>
-								<td>{{ props.item.total_amount }}</td>
+								<td>{{ props.item.total_amount }} {{dataSetting.currency}}</td>
 								<td>
 									<v-icon  @click="deleteItem(props.item)" color="error">
 										delete
@@ -107,8 +91,9 @@ export default {
 		pagination:{
 			rowsPerPage: 25 // -1 for All",
 		},
-        filterValue:
+		filterValue:
         {
+			customer:'',
             year:'',
             month:''
         },
@@ -172,7 +157,8 @@ export default {
 		dataIndex:null,
 		deleteTitle:'',
 		deleteBody:'',
-        search:'',
+		search:'',
+		dataSetting:'',
         dataList:[],
         dataPackages:[],
         dataCustomer:[],
@@ -223,6 +209,7 @@ export default {
 	watch: {},
 
 	created() {
+		this.getData();
         this.initialize();
         var d = new Date();
         var year = d.getFullYear();
@@ -280,7 +267,27 @@ export default {
 					url: "/app/package"
 				});
 				this.dataPackages = data;
-            } catch (e) {}
+			} catch (e) {}
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/setting"
+				});
+				this.dataSetting = data;
+			} catch (e) {}
+			
+		},
+		async getData()
+		{
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/invoice",
+					params: this.filterValue
+				});
+				this.dataList = data;
+			} catch (e) {
+			}
 		},
 
 		editItem(item) {
@@ -321,7 +328,7 @@ export default {
 				this.dataList.splice(this.dataIndex,1);
 				this.close();
 			} catch (e) {
-				this.snackBarColor='red';
+				this.snackBarColor="red";
 				this.text = "Failed";
 				this.snackbar = true;
 			}
@@ -355,9 +362,11 @@ export default {
 					console.log(data);
 					this.text = "Data Edited";
 					this.snackbar = true;
+					this.snackBarColor="green"
 					Object.assign(this.dataList[this.editedIndex], this.editedItem);
 					this.close();
 				} catch (e) {
+					this.snackBarColor="red";
 					this.text = "Failed";
 					this.snackbar = true;
 				}
@@ -372,10 +381,12 @@ export default {
 					});
 					this.text = "Data added";
 					this.snackbar = true;
+					this.snackBarColor="green"
 					this.dataList.unshift(data.status);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red";
 					this.snackbar = true;
 				}
 			}

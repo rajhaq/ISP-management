@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Customer;
 use Auth;
+
+use Illuminate\Support\Facades\Validator;
 class CustomerController extends Controller
 {
     /**
@@ -12,13 +14,18 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $data=Customer::orderBy('id', 'DESC')
         ->with('area')
         ->with('package')
-        ->with('bill') 
-        ->get();
+        ->with('bill') ;
+        if(isset($request->area) && !empty($request->area))
+        {
+            $data->where('area_id',$request->area);
+
+        }
+        $data=$data->get();
         return $data;
     }
 
@@ -40,6 +47,15 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'customer_id' => ['required', 'max:255', 'unique:customers'],
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'msg' => $validator->errors(),
+                'status' => false
+           ],200);
+        }
         $auth_id=Auth::id();
         $request->request->add(['admin_id' => $auth_id]);
         $create=Customer::create($request->all());

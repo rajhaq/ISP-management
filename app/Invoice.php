@@ -13,6 +13,10 @@ class Invoice extends Model
     {
        return $this->hasMany('App\InvoiceBill')->with('bill');
     } 
+    public function admin()
+    {
+       return $this->belongsTo('App\User','admin_id');
+    } 
     public function customer()
     {
        return $this->belongsTo('App\Customer');

@@ -237,11 +237,13 @@ export default {
 					});
 					console.log(data);
 					this.text = "Data Edited";
+					this.snackBarColor="green"
 					this.snackbar = true;
 					Object.assign(this.dataList[this.editedIndex], this.editedItem);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			} else {
@@ -252,11 +254,13 @@ export default {
 						data: this.editedItem
 					});
 					this.text = "Data added";
+					this.snackBarColor="green"
 					this.snackbar = true;
 					this.dataList.unshift(data.status);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			}

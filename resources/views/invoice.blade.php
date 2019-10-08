@@ -62,17 +62,19 @@
     </style>
 </head>
 
-<body>
+<body onload="window.print()">
     <div class="invoice-box">
     <table>
                         <tr>
                             <td class="title">
+                            <img src="{{$setting->image}}" style="max-width:100px;width:100%">
                                 <h3>Invoice</h3>
                             </td>
                             
                             <td>
                                 Invoice #: {{ $data->id }}<br>
                                 Created: {{ $data->created_at }}<br>
+                                Collector: {{ $data->admin->name }}<br>
                             </td>
                         </tr>
                     </table>
@@ -87,7 +89,7 @@
                             
                             <td>
                                 To:<br>
-                                {{ $data->customer->name }}<br>
+                                {{ $data->customer->name }}( {{$data->customer->customer_id}} )<br>
                                 {{ $data->customer->contact }}<br>
                                 {{ $data->customer->address }}
                             </td>
@@ -119,17 +121,17 @@
                     {{$bill->bill->id}}
                 </td>
                 <td>
-                    {{$bill->bill->month}}
+                  {{date('F', mktime(0, 0, 0, $bill->bill->month, 10))}}
                 </td>
                 <td>
                     {{$bill->bill->year}}
                 </td>
                 <td>
-                    {{$bill->bill->package}}
+                    {{$bill->bill->package_data->name}}
                 </td>
                 
                 <td>
-                    {{$bill->bill->price}}
+                    {{$bill->bill->price}} {{$setting->currency}}
                 </td>
 
             </tr>
@@ -139,8 +141,10 @@
         </table>
         <p style="font-size: 14px;">Total Item: <b>{{ $data->total_bill}}</b>
         <br>
-        Total Amount: <b>{{ $data->total_amount}}</b>
+        Total Amount: <b>{{ $data->total_amount}} {{$setting->currency}}</b>
         </p>
+        <br/>
+    <p style="font-size: 14px;text-align:center;">{{$setting->invoice_message}}</p>
     </div>
 </body>
 </html>

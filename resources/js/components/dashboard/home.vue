@@ -58,6 +58,28 @@
                   large
                   left
                 >
+                  mdi-information
+                </v-icon>
+                <span class="title font-weight-light">Unpaid Bill</span>
+              </v-card-title>
+
+              <v-card-text class="display-4 font-weight-bold">
+                {{dashboard.unpaid_bill}}
+              </v-card-text>
+
+            </v-card>
+          </v-flex>
+          <v-flex xs4>
+            <v-card
+              class="ma-3"
+              color="blue-grey "
+              dark
+            >
+              <v-card-title>
+                <v-icon
+                  large
+                  left
+                >
                   mdi-checkbox-marked
                 </v-icon>
                 <span class="title font-weight-light">Collected Bill</span>
@@ -68,8 +90,7 @@
               </v-card-text>
 
             </v-card>
-          </v-flex>
- 
+          </v-flex> 
         </v-layout>
         <v-layout justify-center align-center v-show="!dashboard.create">
           <v-flex>

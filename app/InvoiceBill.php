@@ -12,7 +12,7 @@ class InvoiceBill extends Model
     ];
     public function bill()
     {
-       return $this->belongsTo('App\Bill');
+       return $this->belongsTo('App\Bill')->with('package_data');
     } 
 
 }

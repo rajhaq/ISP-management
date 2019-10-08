@@ -13,7 +13,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $data=Setting::select('name','address', 'number', 'invoice_message','currency')
+        $data=Setting::select('name','address', 'number', 'invoice_message','currency','image')
         ->first();
         return $data;
     }
@@ -36,7 +36,21 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        $create=Setting::where('id',1)->update($request->all());
+        if($request->hasFile('myFile'))
+        {
+            $data=$request->myFile->store('public');
+            $pic= '/storage/'.$request->myFile->hashName(); 
+            $request->image=$pic;
+
+        }
+        $create=Setting::where('id',1)->update([
+            'name' => $request->name,
+            'address' => $request->address,
+            'number' => $request->number,
+            'currency' => $request->currency,
+            'invoice_message' => $request->invoice_message,
+            'image' => $request->image,
+        ]);
         if($create)
         {
             return response()->json([

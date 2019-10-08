@@ -48,6 +48,7 @@
 													<v-text-field
 														v-model="editedItem.price"
 														label="Price"
+														type="number"
 														required
 														box
 													></v-text-field>
@@ -138,7 +139,9 @@
 										item-value="id"
 										:items="dataCustomer"
 										label="Customer"
+										@change="getData"
 										box
+										clearable
 										></v-select>
 									</v-flex>
 									<v-flex ma-3>
@@ -148,7 +151,9 @@
 										item-value="id"
 										:items="dataMonth"
 										label="Month"
+										@change="getData"
 										box
+										clearable
 										></v-select>
 									</v-flex>
 									<v-flex ma-3>
@@ -156,9 +161,23 @@
 										v-model="filterValue.year"
 										:items="dataYear"
 										label="Year"
+										@change="getData"
 										box
+										clearable
 										></v-select>
 									</v-flex>
+									<!-- <v-flex ma-3>
+										<v-select
+										v-model="filterValue.area"
+										:items="dataArea"
+										item-text="name"
+										item-value="id"
+										label="area"
+										@change="getData"
+										box
+										clearable
+										></v-select>
+									</v-flex> -->
 								</v-layout>
 								<v-spacer></v-spacer>
 								<v-text-field
@@ -177,10 +196,10 @@
 							<template v-slot:items="props">
 								<td>{{ props.item.id }}</td>
 								<td>{{ props.item.year }}</td>
-								<td>{{ props.item.month }}</td>
+								<td>{{ dataMonth[props.item.month-1].name }}</td>
 								<td>{{ props.item.customer.name }}</td>
 								<td>{{ props.item.package_data.name }}</td>
-								<td>{{ props.item.price }}</td>
+								<td>{{ props.item.price }} {{dataSetting.currency}}</td>
 								<td>
 									<v-icon  class="mr-2" @click="editItem(props.item)" color="primary">
 										edit
@@ -232,8 +251,10 @@ export default {
 		isMonth: false,
         filterValue:
         {
+			customer:'',
             year:'',
-            month:''
+            month:'',
+            area:''
         },
         dataYear:[
 
@@ -295,10 +316,12 @@ export default {
 		dataIndex:null,
 		deleteTitle:'',
 		deleteBody:'',
-        search:'',
+		search:'',
+		dataSetting:{},
         dataList:[],
         dataPackages:[],
         dataCustomer:[],
+		dataArea:[],
 		selected: [],
 		snackbar: false,
 		y: "top",
@@ -353,6 +376,7 @@ export default {
 	watch: {},
 
 	created() {
+		this.getData();
         this.initialize();
         var d = new Date();
         var year = d.getFullYear();
@@ -385,13 +409,7 @@ export default {
 
 		},
 		async initialize() {
-			try {
-				let { data } = await axios({
-					method: "get",
-					url: "/app/bill"
-				});
-				this.dataList = data;
-			} catch (e) {}
+			
 			try {
 				let { data } = await axios({
 					method: "get",
@@ -399,13 +417,39 @@ export default {
 				});
 				this.dataCustomer = data;
             } catch (e) {}
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/area"
+				});
+				this.dataArea = data;
+            } catch (e) {}
             try {
 				let { data } = await axios({
 					method: "get",
-					url: "/app/package"
+					url: "/app/package",
 				});
 				this.dataPackages = data;
+			} catch (e) {}
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/setting"
+				});
+				this.dataSetting = data;
             } catch (e) {}
+		},
+		async getData()
+		{
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/bill",
+					params:this.filterValue
+
+				});
+				this.dataList = data;
+			} catch (e) {}
 		},
 
 		editItem(item) {
@@ -481,11 +525,13 @@ export default {
 					});
 					console.log(data);
 					this.text = "Data Edited";
+					this.snackBarColor="green"
 					this.snackbar = true;
 					Object.assign(this.dataList[this.editedIndex], this.editedItem);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			} else {
@@ -498,11 +544,13 @@ export default {
 						data: this.editedItem
 					});
 					this.text = "Data added";
+					this.snackBarColor="green"
 					this.snackbar = true;
 					this.dataList.unshift(data.status);
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			}
@@ -518,11 +566,14 @@ export default {
 						data: this.editedItem
 					});
 					this.text = "Data added";
+					this.snackBarColor="green"
 					this.snackbar = true;
-					this.initialize();
+					this.getData();
 					this.monthClose();
+					
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			

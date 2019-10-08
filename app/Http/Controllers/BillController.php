@@ -15,11 +15,29 @@ class BillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $data=Bill::with('customer')
-        ->with('package_data')
-        ->orderBy('id', 'DESC')
+    public function index(Request $request)
+    {  
+        
+        $data=Bill::orderBy('id', 'DESC')
+        ->with('customer')
+        ->with('package_data');
+        if(isset($request->customer) && !empty($request->customer))
+        {
+            $data->where('customer_id',$request->customer);
+
+        }
+        if(isset($request->month) && !empty($request->month))
+        {
+            $data->where('month',$request->month);
+
+        }
+        if(isset($request->year) && !empty($request->year))
+        {
+            $data->where('year',$request->year);
+
+        }
+        
+        $data=$data->where('status',1)
         ->get();
         return $data;
     }
@@ -47,9 +65,12 @@ class BillController extends Controller
         $create=Bill::create($request->all());
         if($create)
         {
+            $data=Bill::with('customer')
+            ->with('package_data')
+            ->find($create->id);
             return response()->json([
                 'msg' => 'Inserted',
-                'status' => $create
+                'status' => $data
            ],200);
         }
         else
@@ -130,6 +151,7 @@ class BillController extends Controller
     }
     public function generate()
     {
+        $auth_id=Auth::id();
         $users=Customer::where('status',1)
         ->with('package')
         ->get();
@@ -143,7 +165,7 @@ class BillController extends Controller
             {
                 Bill::create(
                     [
-                        'admin_id' => 1,
+                        'admin_id' => $auth_id,
                         'customer_id' => $user->id,
                         'package' => $user->package_id,
                         'price' => $user->package->price,

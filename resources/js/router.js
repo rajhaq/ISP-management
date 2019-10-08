@@ -7,9 +7,12 @@ import packagelist from './components/package/packagelist.vue'
 import customerlist from './components/customer/customerlist.vue'
 import billlist from './components/bill/billlist.vue'
 import invoicecreate from './components/invoice/create.vue'
+import invoicecreateuser from './components/invoice/createuser.vue'
 import invoicelist from './components/invoice/invoicelist.vue'
 import collector from './components/collector/collector.vue'
 import setting from './components/setting/setting.vue'
+import customerlistcollector from './components/collector/customerlist.vue'
+
 let onlyAdmin = ['Admin']
 let onlyCollector = ['Collector']
 let adminAndSale = [1, 2]
@@ -73,6 +76,15 @@ export default new Router({
 				  
 		},		
 		{
+			path: '/dashboard/invoicecreate/:id',
+			name: 'invoicecreateuser',
+			component: invoicecreateuser,
+			meta: {
+				allowed: onlyAdmin
+			}
+				  
+		},
+		{
 			path: '/dashboard/invoicecreate',
 			name: 'invoicecreate',
 			component: invoicecreate,
@@ -81,6 +93,7 @@ export default new Router({
 			}
 				  
 		},
+
 		{
 			path: '/dashboard/invoicelist',
 			name: 'invoicelist',
@@ -94,6 +107,15 @@ export default new Router({
 			path: '/collector',
 			name: 'collector',
 			component: collector,
+			meta: {
+				allowed: onlyCollector
+			}
+				  
+		},
+		{
+			path: '/collector/customerlist',
+			name: 'customerlistcollector',
+			component: customerlistcollector,
 			meta: {
 				allowed: onlyCollector
 			}

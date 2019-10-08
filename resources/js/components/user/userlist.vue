@@ -253,6 +253,7 @@ export default {
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			} else {
@@ -268,6 +269,7 @@ export default {
 					this.close();
 				} catch (e) {
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			}

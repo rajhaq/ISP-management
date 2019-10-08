@@ -38,6 +38,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');
 Route::get('/collector', 'HomeController@collector');
+Route::get('/collector/customerlist', 'HomeController@collector');
 Route::get('/logout', function () {
 	Auth::logout();
     Session::flush();
@@ -49,5 +50,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::any('/dashboard/{slug}', [
+    'uses' => 'HomeController@dashboard',
+ ])->middleware('auth');
+ Route::any('/dashboard/invoicecreate/{slug}', [
     'uses' => 'HomeController@dashboard',
  ])->middleware('auth');

@@ -2,14 +2,26 @@
 	<v-content>
 		<v-container fluid fill-height>
 			<v-layout justify-center row>
-				<v-flex xs12>
+				<v-flex xs12 md8 >
 					<v-card>
 							<v-card-title>
 								Settings
 							</v-card-title>
 							<v-card-text>
 								<v-layout align-center justify-center row fill-height>
-                                <v-flex xs12 sm12 md12>
+
+                                <v-flex xs12 sm12 md12>												
+									<v-img
+									:src="image"
+									max-width="300px" max-height="300px"
+									>
+									</v-img>
+									<v-btn @click="$refs.inputUpload.click()" color="blue-grey" 
+										class="white--text mb-3">Upload <v-icon right dark >add_a_photo</v-icon>
+									</v-btn>
+
+									<input v-show="false" ref="inputUpload" accept="image/*" type="file" @change="profileChange()" >
+												
                                     <v-text-field
                                         v-model="editedValue.name"
                                         label="Company Name"
@@ -38,16 +50,11 @@
 									<v-btn color="primary" @click="update">Update</v-btn>
                                     </v-flex>
 								</v-layout>
-
 						</v-card-text>
 					</v-card>
 				</v-flex>
 			</v-layout>
 		</v-container>
-		<zmodaldelete :trigger="isDeleteAll" :title="deleteTitle" :body="deleteBody" @request="deleteAll">
-		</zmodaldelete>
-		<zmodaldelete :trigger="isDelete" :title="deleteTitle" :body="deleteBody" @request="remove">
-		</zmodaldelete>
 
 		<v-snackbar
 			v-model="snackbar"
@@ -69,6 +76,7 @@ import zmodaldelete from './../common/zmodaldelete';
 
 export default {
 	data: () => ({
+		image:'/upload.png',
         loading: false,
         filterValue:
         {
@@ -163,10 +171,13 @@ export default {
 		],
 		editedIndex: -1,
 		editedValue: {
-			customer_id: "",
-			bills:[],
-			total_amount:0,
-			total_bill:0
+			name: "",
+			address:'',
+			number:'',
+			currency:'',
+			invoice_message:'',
+			image:'',
+
 		},
 		defaultItem: {
 			customer_id: "",
@@ -201,6 +212,17 @@ export default {
 	},
 
 	methods: {
+	async profileChange(e)
+    {
+		console.log(event.target.files[0])
+		this.imageFile = event.target.files[0]
+		var blob = event.target.files[0];
+		var URLObj = this._getURLObj();
+		this.image = URLObj.createObjectURL(blob);
+    },
+    _getURLObj(){
+       return window.URL || window.webkitURL;
+     },
 
 
 		async initialize() {
@@ -211,21 +233,33 @@ export default {
 					url: "/app/setting"
 				});
 				this.editedValue = data;
+				if(data.image)
+				{
+					this.image=data.image
+				}
             } catch (e) {}
 
 		},
 		async update() {
 				try {
+					const formData = new FormData()
+					  formData.append('myFile', this.imageFile)
+					  for(var key in this.editedValue)
+					  {
+						  formData.append(key,this.editedValue[key])
+					  }
 					let { data } = await axios({
 						method: "post",
 						url: "/app/setting",
-						data: this.editedValue
+						data: formData
 					});
 					this.text = "Data Updated";
+					this.snackBarColor="green"
 					this.snackbar = true;
-					this.close();
 				} catch (e) {
+					console.log(e)
 					this.text = "Failed";
+					this.snackBarColor="red"
 					this.snackbar = true;
 				}
 			
