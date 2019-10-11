@@ -8,95 +8,8 @@
 							<v-toolbar-title>Customer List</v-toolbar-title>
 							<v-divider class="mx-2" inset vertical></v-divider>
 							<v-spacer></v-spacer>
-							<v-btn color="error" v-show="selected[0]" @click="deleteSelected">Delete All</v-btn>
-							<v-dialog v-model="dialog" max-width="500px" persistent>
-								<template v-slot:activator="{ on }">
-									<v-btn color="primary" dark class="mb-2" v-on="on" @click="edit=true">New Customer</v-btn>
-								</template>
-								<v-card>
-									<v-card-title>
-										<span class="headline">{{ formTitle }}</span>
-									</v-card-title >
+							<v-btn color="error"  :to="'/collector'">Collect Bill</v-btn>
 
-									<v-card-text>
-										<v-container grid-list-md>
-											<v-layout wrap>
-												<v-flex xs12 sm12 md12>
-													<v-text-field
-														v-model="editedItem.customer_id"
-														label="Customer ID"
-														:rules="[v => !!v || 'ID is required']"
-														required
-														box
-													></v-text-field>
-												</v-flex>
-												<v-flex xs12 sm12 md12>
-													<v-text-field
-														v-model="editedItem.name"
-														label="Customer Name"
-														:rules="[v => !!v || 'Name is required']"
-														required
-														box
-													></v-text-field>
-												</v-flex>
-												<v-flex xs12 sm12 md6>
-													<v-text-field
-														v-model="editedItem.contact"
-														label="Phone"
-														required
-														box
-													></v-text-field>
-												</v-flex>
-												<v-flex xs12 sm12 md6>
-													<v-text-field
-														v-model="editedItem.email"
-														label="Email"
-														required
-														box
-													></v-text-field>
-												</v-flex>
-												<v-flex xs12 sm12 md12>
-													<v-textarea
-                                                        name="input-7-1"
-                                                        label="Address"
-														:rules="[v => !!v || 'Address is required']"
-                                                        v-model="editedItem.address"
-														box
-                                                    ></v-textarea>
-												</v-flex>
-												<v-flex xs12 sm12 md12>
-													<v-select
-                                                        v-model="editedItem.package_id"
-                                                        item-text="name"
-                                                        item-value="id"
-														:rules="[v => !!v || 'Package is required']"
-                                                        :items="dataPackages"
-                                                        label="Package"
-														box
-                                                        ></v-select>
-												</v-flex>
-                                                <v-flex xs12 sm12 md12>
-													<v-select
-                                                        v-model="editedItem.area_id"
-                                                        item-text="name"
-                                                        item-value="id"
-														:rules="[v => !!v || 'Area is required']"
-                                                        :items="dataAreas"
-                                                        label="Area"
-														box
-                                                        ></v-select>
-												</v-flex>
-											</v-layout>
-										</v-container>
-									</v-card-text>
-
-									<v-card-actions>
-										<v-spacer></v-spacer>
-										<v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-										<v-btn color="blue darken-1" flat @click="save">Save</v-btn>
-									</v-card-actions>
-								</v-card>
-							</v-dialog>
 						</v-toolbar>
 							<v-card-title>
 								<v-layout align-start row fill-height>
@@ -152,15 +65,6 @@
 								<td v-else>
 									<v-chip color="green" text-color="white">Paid</v-chip>
 								</td>
-								<td>
-									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">
-										edit
-									</v-icon>
-
-									<v-icon small @click="deleteItem(props.item)" color="error">
-										delete
-									</v-icon>
-								</td>
 							</template>
 							<template v-slot:no-data>
 								<v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -170,10 +74,7 @@
 				</v-flex>
 			</v-layout>
 		</v-container>
-		<zmodaldelete :trigger="isDeleteAll" :title="deleteTitle" :body="deleteBody" @request="deleteAll">
-		</zmodaldelete>
-		<zmodaldelete :trigger="isDelete" :title="deleteTitle" :body="deleteBody" @request="remove">
-		</zmodaldelete>
+
 
 		<v-snackbar
 			v-model="snackbar"
@@ -230,7 +131,6 @@ export default {
 			{ text: "Area", value: "area" },
 			{ text: "Package", value: "package" },
 			{ text: "Status", value:"bill"},
-			{ text: "Action", value:"action"}
 		],
 		editedIndex: -1,
 		editedItem: {

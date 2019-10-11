@@ -5,12 +5,12 @@
 				<v-flex xs12>
 					<v-card>
 						<v-toolbar flat color="white">
-							<v-toolbar-title>Invoice Generate</v-toolbar-title>
-							<v-divider class="mx-2" inset vertical></v-divider>
+							<!-- <v-toolbar-title>Invoice Generate</v-toolbar-title>
+							<v-divider class="mx-2" inset vertical></v-divider> -->
 							Your area: {{dataArea.name}}
 							<v-spacer></v-spacer>
-							<v-btn color="primary" @click="goCustomer">Customer List</v-btn>
-							<v-btn color="error" v-show="dataList.length" @click="generateInvoice">Generate Invoice</v-btn>
+							<v-btn color="primary"  small @click="goCustomer">Customers</v-btn>
+							<v-btn color="error"  small v-show="dataList.length" @click="generateInvoice">Create</v-btn>
 						</v-toolbar>
 							<v-card-title>
 								<v-layout  column wrap>
@@ -18,7 +18,7 @@
                                         <v-autocomplete
 
                                             v-model="filterValue.customer"
-                                            :items="dataCustomer"
+                                            :items="filterData"
                                             item-text="customer_id"
                                             item-value="id"
                                             label="Customer ID"
@@ -42,7 +42,7 @@
 									<v-flex xs12> 
                                         <v-autocomplete
                                             v-model="filterValue.customer"
-                                            :items="dataCustomer"
+                                            :items="filterData"
                                             item-text="name"
                                             item-value="id"
                                             label="Customer Name"
@@ -67,7 +67,7 @@
 									<v-flex xs12>
                                         <v-autocomplete
                                             v-model="filterValue.customer"
-                                            :items="dataCustomer"
+                                            :items="filterData"
                                             item-text="contact"
                                             item-value="id"
                                             label="Customer Number"
@@ -121,10 +121,6 @@
 				</v-flex>
 			</v-layout>
 		</v-container>
-		<zmodaldelete :trigger="isDeleteAll" :title="deleteTitle" :body="deleteBody" @request="deleteAll">
-		</zmodaldelete>
-		<zmodaldelete :trigger="isDelete" :title="deleteTitle" :body="deleteBody" @request="remove">
-		</zmodaldelete>
 
 		<v-snackbar
 			v-model="snackbar"
@@ -142,7 +138,6 @@
 </template>
 
 <script>
-import zmodaldelete from './../common/zmodaldelete';
 
 export default {
 	data: () => ({
@@ -253,14 +248,16 @@ export default {
 	props: {
 		source: String
 	},
-	components:
-	{
-		zmodaldelete,
-	},
+
 	computed: {
-		formTitle() {
-			return this.editedIndex === -1 ? "New Item" : "Edit Item";
-		}
+		filterData()
+            {
+                return this.dataCustomer.filter((data)=>{
+                    
+					return data.bill.length;
+                }
+                );
+            },
 	},
 
 	watch: {},
@@ -366,20 +363,7 @@ export default {
 				});
 				this.dataArea = data;
 			} catch (e) {}
-			try {
-				let { data } = await axios({
-					method: "get",
-					url: "/app/setting"
-				});
-				this.dataSetting = data;
-            } catch (e) {}
-            try {
-				let { data } = await axios({
-					method: "get",
-					url: "/app/package"
-				});
-				this.dataPackages = data;
-            } catch (e) {}
+			
 		},
 
 		editItem(item) {

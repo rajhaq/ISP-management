@@ -85,6 +85,7 @@ class CustomerController extends Controller
     public function customerwitharea($id)
     {
         $data=Customer::where('area_id',$id)
+        ->with('bill') 
         ->where('status',1)
         ->get();
         return $data;

@@ -10,16 +10,8 @@
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer" ></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down" >ISP</span>
+        <span class="hidden-sm-and-down" >{{dataSetting.name}}</span>
       </v-toolbar-title>
-      <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="search"
-        label="Search"
-        class="hidden-sm-and-down"
-      ></v-text-field>
       <v-spacer></v-spacer>
       <!-- <v-btn icon>
         <v-icon>apps</v-icon>
@@ -41,7 +33,7 @@
 import collector from './collector/collector'
   export default {
     data: () => ({
-      
+      dataSetting:{},
       dialog: false,
       drawer: null,
       items: [
@@ -94,6 +86,16 @@ import collector from './collector/collector'
     }),
     props: {
       source: String
+    },
+    async created()
+    {
+      			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/setting"
+				});
+				this.dataSetting = data;
+			} catch (e) {}
     },
     components:
 	{
