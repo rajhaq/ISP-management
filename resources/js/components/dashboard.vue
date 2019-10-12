@@ -175,6 +175,9 @@
 <script>
   export default {
     data: () => ({
+      dataSetting:{
+        name:'ISP'
+      },
       
       dialog: false,
       drawer: null,

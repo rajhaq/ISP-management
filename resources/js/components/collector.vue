@@ -33,7 +33,9 @@
 import collector from './collector/collector'
   export default {
     data: () => ({
-      dataSetting:{},
+      dataSetting:{
+        name:'ISP'
+      },
       dialog: false,
       drawer: null,
       items: [
