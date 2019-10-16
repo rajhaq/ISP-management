@@ -28,6 +28,10 @@ Route::get('app/customerbill/{id}', 'BillController@customerBill');
 
 Route::get('/users', 'CustomerController@index')->name('users');
 Route::post('/app/updateUser', 'UserController@updateUser');
+Route::get('/app/profile', 'UserController@profile');
+Route::post('/app/changepassword', 'UserController@changePass');
+Route::get('/app/updatepassword/{id}', 'UserController@updatepassword');
+
 
 Route::get('app/auth', 'UserController@auth');
 Route::get('app/customerwitharea/{id}', 'CustomerController@customerwitharea');
@@ -38,7 +42,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');
 Route::get('/collector', 'HomeController@collector');
-Route::get('/collector/customerlist', 'HomeController@collector');
+Route::get('/collector/{slug}', 'HomeController@collector');
 Route::get('/logout', function () {
 	Auth::logout();
     Session::flush();

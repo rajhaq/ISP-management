@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
     /**
@@ -85,6 +87,20 @@ class UserController extends Controller
     {
 
     }
+    public function updatepassword($id)
+    {
+         $update=User::where('id',$id)->update(
+            [
+                'password'=>bcrypt('password'),
+            ]
+         );
+        return $update;
+    }
+    public function profile()
+    {
+        $data=Auth::user();
+        return $data;
+    }
     public function updateUser(Request $request)
     {
         $update=User::where('id',$request->id)->update($request->all());
@@ -103,5 +119,43 @@ class UserController extends Controller
           ->first();
         $group->delete();
         return $group;
+    }
+    public function changePass(Request $request)
+    {
+        
+
+        $request->validate([
+            'newPassword' => ['required'],
+            'confirmPassword' => ['same:newPassword'],
+        ]);
+        if(!Hash::check($request->oldPassword,Auth::user()->password))
+        {
+            return response()->json(
+                [
+                    'status'=> false,
+                    'message'=> 'Current Password dose not matched'
+                ], 200);
+        }
+        else
+        {                     
+            $update=User::find(auth()->user()->id)->update(['password'=> Hash::make($request->newPassword)]);  
+            if($update)   
+            {
+                return response()->json(
+                    [
+                        'status'=> true,
+                        'message'=> 'Successfuly Changed'
+                    ], 200);
+            } 
+            else
+            {
+                return response()->json(
+                    [
+                        'status'=> false,
+                        'message'=> 'Failed, Try again'
+                    ], 200);
+            }
+
+        }
     }
 }

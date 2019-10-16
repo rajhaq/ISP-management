@@ -11,6 +11,8 @@ import invoicecreateuser from './components/invoice/createuser.vue'
 import invoicelist from './components/invoice/invoicelist.vue'
 import collector from './components/collector/collector.vue'
 import setting from './components/setting/setting.vue'
+import profile from './components/setting/profile.vue'
+import collectorprofile from './components/collector/profile.vue'
 import customerlistcollector from './components/collector/customerlist.vue'
 
 let onlyAdmin = ['Admin']
@@ -113,6 +115,15 @@ export default new Router({
 				  
 		},
 		{
+			path: '/collector/profile',
+			name: 'collectorprofile',
+			component: collectorprofile,
+			meta: {
+				allowed: onlyCollector
+			}
+				  
+		},
+		{
 			path: '/collector/customerlist',
 			name: 'customerlistcollector',
 			component: customerlistcollector,
@@ -129,7 +140,16 @@ export default new Router({
 				allowed: onlyAdmin
 			}
 				  
-		},							  
+		},
+		{
+			path: '/dashboard/profile',
+			name: 'profile',
+			component: profile,
+			meta: {
+				allowed: onlyAdmin
+			}
+				  
+		},						  
 	    						
 		]
 })

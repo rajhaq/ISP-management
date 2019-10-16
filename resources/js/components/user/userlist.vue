@@ -100,13 +100,12 @@
 								<td>{{ props.item.userType }}</td>
 								<td class="justify-center layout px-0">
 									<v-icon small class="mr-2" @click="editItem(props.item)" color="primary">edit</v-icon>
-
-									<!-- <v-icon
-							small
-							@click="deleteItem(props.item)"
-						>
-							delete
-									</v-icon>-->
+									<v-icon small class="mr-2" @click="deleteItem(props.item)" >
+										delete
+									</v-icon>
+									<v-icon small @click="setPass(props.item)" >
+										lock
+									</v-icon>
 								</td>
 							</template>
 							<template v-slot:no-data>
@@ -130,12 +129,19 @@
 			{{ text }}
 			<v-btn color="pink" flat @click="snackbar = false">Close</v-btn>
 		</v-snackbar>
+			<zmodaldelete :trigger="isDelete" :title="deleteTitle" :body="deleteBody" @request="remove">
+			</zmodaldelete>	
 	</v-content>
 </template>
 
 <script>
+import zmodaldelete from './../common/zmodaldelete';
 export default {
 	data: () => ({
+		isDelete:false,
+		deleteBody:'',
+		deleteTitle:'',
+		dataIndex:null,
 		pagination:{
 			rowsPerPage: 25 // -1 for All",
 		},
@@ -187,6 +193,10 @@ export default {
 	props: {
 		source: String
 	},
+	components:
+	{
+		zmodaldelete,
+	},
 	computed: {
 		formTitle() {
 			return this.editedIndex === -1 ? "New Item" : "Edit Item";
@@ -223,11 +233,17 @@ export default {
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
+		setPass(item) {
+			this.edit = false;
+			this.editedIndex = this.dataUser.indexOf(item);
+			this.editedItem = Object.assign({}, item);
+			this.dialog = true;
+		},
 
 		deleteItem(item) {
-			const index = this.dataUser.indexOf(item);
-			confirm("Are you sure you want to delete this item?") &&
-				this.dataUser.splice(index, 1);
+			this.dataIndex = this.dataUser.indexOf(item);
+			this.deleteTitle="Are you sure you want to delete this item?";
+			this.isDelete=!this.isDelete;
 		},
 
 		close() {
@@ -272,6 +288,40 @@ export default {
 					this.snackBarColor="red"
 					this.snackbar = true;
 				}
+			}
+		},
+		async remove()
+		{
+			try {
+				let { data } = await axios({
+					method: "delete",
+					url: "/api/users/"+this.dataUser[this.dataIndex].id,
+				});
+				this.snackBarColor='green';
+				this.text = "Successfully Removed";
+				this.snackbar = true;
+				this.dataUser.splice(this.dataIndex,1);
+				this.close();
+			} catch (e) {
+				this.snackBarColor='red';
+				this.text = "Failed, try again";
+				this.snackbar = true;
+			}
+		},
+		async setPass(item)
+		{
+			try {
+				let { data } = await axios({
+					method: "get",
+					url: "/app/updatepassword/"+item.id,
+				});
+				this.snackBarColor='green';
+				this.text = "Successfully Changed, new password is 'password'";
+				this.snackbar = true;
+			} catch (e) {
+				this.snackBarColor='red';
+				this.text = "Failed, try again";
+				this.snackbar = true;
 			}
 		},
 		toggleAll () {
